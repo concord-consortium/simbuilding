@@ -60,11 +60,12 @@ function createHouse() {
     var wallTexture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
     wallTexture.wrapS = THREE.RepeatWrapping;
     wallTexture.wrapT = THREE.RepeatWrapping;
-    //    var material = new THREE.MeshNormalMaterial();
+
     var material = new THREE.MeshLambertMaterial();
     material.map = wallTexture;
     material.side = THREE.DoubleSide;
     material.color = material.ambient = new THREE.Color(0xff9900);
+    
     var simpleWallShape = new THREE.Shape();
     simpleWallShape.moveTo(-1, -1);
     simpleWallShape.lineTo(1, -1);
@@ -150,21 +151,18 @@ function render() {
 
     camControls.update(delta);
     renderer.clear();
-    // render using requestAnimationFrame
     requestAnimationFrame(render);
     renderer.render(scene, camera);
 }
 
 function initStats() {
     var stats = new Stats();
-    stats.setMode(0); // 0: fps, 1: ms
+    stats.setMode(0);
 
-    // Align top-left
     stats.domElement.style.position = 'absolute';
     stats.domElement.style.left = '0px';
     stats.domElement.style.top = '0px';
 
     $("#Stats-output").append(stats.domElement);
-
     return stats;
 }
