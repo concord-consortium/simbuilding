@@ -49,8 +49,8 @@ function initLights() {
     scene.add(ambientLight);
     
     var spotLight = new THREE.SpotLight();
-    spotLight.position.x = 1;
-    spotLight.position.y = 5;
+    spotLight.position.x = 2;
+    spotLight.position.y = 6;
     spotLight.position.z = 5;
     scene.add(spotLight);
 }
