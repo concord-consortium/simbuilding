@@ -286,7 +286,7 @@ function createHouse() {
     mesh.rotation.x = -Math.PI / 2;
     mesh.position.x = 4;
     mesh.position.y = 2;
-    mesh.position.z = 3.8;
+    mesh.position.z = 3.8;    
     house.add(mesh);    
     
     return house;

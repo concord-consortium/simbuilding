@@ -4,10 +4,18 @@ var camControls;
 var renderer;
 var scene;
 var camera;
+var mouse;
+var projector;
+var raycaster;
+var land;
 
 function startSimBuilding() {
     clock = new THREE.Clock();
+    mouse = new THREE.Vector2();
+    projector = new THREE.Projector();
+    raycaster = new THREE.Raycaster();
     stats = initStats();
+    document.addEventListener('mousemove', handleMouseMove, false);
 
     scene = new THREE.Scene();
 
@@ -34,6 +42,11 @@ function startSimBuilding() {
     renderer.setClearColor(0xEEEEEE);
     renderer.setSize(window.innerWidth, window.innerHeight);
 
+    land = new THREE.Mesh(new THREE.PlaneGeometry(100, 100));    
+    land.rotation.x = -Math.PI / 2;
+    land.geometry.computeBoundingBox();
+    scene.add(land);
+
     var axis = new THREE.AxisHelper(20);
     scene.add(axis);
 
@@ -44,25 +57,27 @@ function startSimBuilding() {
     render();
 }
 
-function initLights() {
-    var ambientLight = new THREE.AmbientLight();
-    scene.add(ambientLight);
-    
-    var spotLight = new THREE.SpotLight();
-    spotLight.position.x = 2;
-    spotLight.position.y = 6;
-    spotLight.position.z = 5;
-    scene.add(spotLight);
-}
-
 function render() {
-    stats.update();
     var delta = clock.getDelta();
+    stats.update();
+
+    hover();
 
     camControls.update(delta);
     renderer.clear();
     requestAnimationFrame(render);
     renderer.render(scene, camera);
+}
+
+function initLights() {
+    var ambientLight = new THREE.AmbientLight();
+    scene.add(ambientLight);
+
+    var spotLight = new THREE.SpotLight();
+    spotLight.position.x = 2;
+    spotLight.position.y = 6;
+    spotLight.position.z = 5;
+    scene.add(spotLight);
 }
 
 function initStats() {
@@ -75,4 +90,19 @@ function initStats() {
 
     $("#Stats-output").append(stats.domElement);
     return stats;
+}
+
+function handleMouseMove(event) {
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+}
+
+function hover() {
+    var vector = new THREE.Vector3(mouse.x, mouse.y, 0);
+    projector.unprojectVector(vector, camera);
+    raycaster.set(camera.position, vector.sub(camera.position).normalize());
+    var intersects = raycaster.intersectObjects(scene.children);
+    if (intersects.length > 0) {
+        console.log("collision!");
+    }
 }
