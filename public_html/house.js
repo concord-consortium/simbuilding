@@ -1,8 +1,17 @@
 var SIM = SIM || { REVISION: '1' };
 
+SIM.drawEditPoints = function(editPointsRoot, points) {
+    for (var i = 0; i < points.length; i++) {
+        if (i === editPointsRoot.children.length)
+            editPointsRoot.add(new THREE.Mesh(new THREE.SphereGeometry(1)));
+        editPointsRoot.children[i].position = points[i];
+    }
+}
+
 SIM.Platform = function() {
     this.points = [new THREE.Vector3(), new THREE.Vector3()];
     this.root = new THREE.Object3D();
+    this.editPointsRoot = new THREE.Object3D();    
 };
 
 SIM.Platform.prototype.setPreview = function(p) {
@@ -13,6 +22,9 @@ SIM.Platform.prototype.setPreview = function(p) {
 SIM.Platform.prototype.draw = function() {
     for (var i = this.root.children.length; i >= 0; i--)
         this.root.remove(this.root.children[i]);
+    
+    this.root.add(this.editPointsRoot);
+    SIM.drawEditPoints(this.editPointsRoot, this.points);
     
     if (SIM.Platform.texture === undefined) {
         SIM.Platform.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
