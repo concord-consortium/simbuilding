@@ -51,7 +51,8 @@ function startSimBuilding() {
     scene.add(axis);
 
     initLights();
-    scene.add(createHouse());
+    platform = new SIM.Platform();
+    scene.add(platform.root);
 
     $("#WebGL-output").append(renderer.domElement);
     render();
@@ -104,5 +105,6 @@ function hover() {
     var intersects = raycaster.intersectObjects(scene.children);
     if (intersects.length > 0) {
         console.log("collision!");
+        platform.setPreview(intersects[0].point);
     }
 }
