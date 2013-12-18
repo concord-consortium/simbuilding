@@ -3,36 +3,38 @@ var SIM = SIM || { REVISION: '1' };
 SIM.Platform = function() {
     this.points = [new THREE.Vector3(), new THREE.Vector3()];
     this.root = new THREE.Object3D();
-}
+};
 
 SIM.Platform.prototype.setPreview = function(p) {
     this.points[1] = p;
     this.draw();
-}
+};
 
 SIM.Platform.prototype.draw = function() {
     for (var i = this.root.children.length; i >= 0; i--)
         this.root.remove(this.root.children[i]);
     
-    var texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
-    texture.wrapS = THREE.RepeatWrapping;    
-    texture.wrapT = THREE.RepeatWrapping;
-    texture.repeat.x = 0.5;
+    if (SIM.Platform.texture === undefined) {
+        SIM.Platform.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
+        SIM.Platform.texture.wrapS = THREE.RepeatWrapping;    
+        SIM.Platform.texture.wrapT = THREE.RepeatWrapping;
+        SIM.Platform.texture.repeat.x = 0.5;
+    }
     
     var material = new THREE.MeshLambertMaterial();
-    material.map = texture;
+    material.map = SIM.Platform.texture;
        
     var mesh = new THREE.Mesh(new THREE.CubeGeometry(Math.abs(this.points[1].x - this.points[0].x), Math.abs(this.points[1].z - this.points[0].z), 0.2), material);
     mesh.rotation.x = -Math.PI / 2;
     mesh.position.x = this.points[0].x + (this.points[1].x - this.points[0].x) / 2;
     mesh.position.z = this.points[0].z + (this.points[1].z - this.points[0].z) / 2;
     this.root.add(mesh);
-}
+};
 
 SIM.Wall = function() {
     this.root = new THREE.Object3D();
     this.draw();
-}
+};
 
 SIM.Wall.prototype.draw = function() {
     var wallTexture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
@@ -81,4 +83,4 @@ SIM.Wall.prototype.draw = function() {
     mesh.position.x = 3.8;
     mesh.position.z = 4;
     this.root.add(mesh);
-}
+};
