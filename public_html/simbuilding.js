@@ -105,6 +105,6 @@ function hover() {
     var intersects = raycaster.intersectObjects(scene.children);
     if (intersects.length > 0) {
         console.log("collision!");
-        platform.setPreview(intersects[0].point);
+        platform.moveCurrentEditPoint(intersects[0].point);
     }
 }
