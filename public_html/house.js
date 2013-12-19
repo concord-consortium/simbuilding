@@ -3,12 +3,24 @@ var SIM = SIM || { REVISION: '1' };
 SIM.HousePart = function() {
     this.points = [new THREE.Vector3(), new THREE.Vector3()];
     this.root = new THREE.Object3D();
-    this.editPointsRoot = new THREE.Object3D();
-    this.setCurrentEditPointIndex(0);    
+    this.editPointsRoot = new THREE.Object3D();    
+    this.setCurrentEditPointIndex(0);
+};
+
+SIM.HousePart.prototype.complete = function() {
+    this.completed = true;    
+};
+
+SIM.HousePart.prototype.isCompleted = function() {
+    return this.completed;
 };
 
 SIM.HousePart.prototype.setCurrentEditPointIndex = function(i) {
     this.currentEditPointIndex = i;
+    if (!this.editMode)
+        if (this.completed)
+            this.editMode = true;
+    this.completed = false;
 };
 
 SIM.HousePart.prototype.getCurrentEditPointIndex = function() {
@@ -16,7 +28,9 @@ SIM.HousePart.prototype.getCurrentEditPointIndex = function() {
 };
 
 SIM.HousePart.prototype.moveCurrentEditPoint = function(p) {
-    this.points[1] = p;
+    this.points[this.currentEditPointIndex] = p;
+    if (!this.editMode && this.currentEditPointIndex === 0)
+        this.points[1] = this.points[0];
     this.draw();
 };
 
@@ -41,7 +55,7 @@ SIM.Platform.prototype.draw = function() {
     this.drawEditPoints();
     
     if (SIM.Platform.texture === undefined) {
-        SIM.Platform.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
+        SIM.Platform.texture = THREE.ImageUtils.loadTexture("resources/textures/platform.jpg");
         SIM.Platform.texture.wrapS = THREE.RepeatWrapping;    
         SIM.Platform.texture.wrapT = THREE.RepeatWrapping;
         SIM.Platform.texture.repeat.x = 0.5;
@@ -50,7 +64,7 @@ SIM.Platform.prototype.draw = function() {
     var material = new THREE.MeshLambertMaterial();
     material.map = SIM.Platform.texture;
        
-    var mesh = new THREE.Mesh(new THREE.CubeGeometry(Math.abs(this.points[1].x - this.points[0].x), Math.abs(this.points[1].z - this.points[0].z), 0.2), material);
+    var mesh = new THREE.Mesh(new THREE.CubeGeometry(Math.abs(this.points[1].x - this.points[0].x), Math.abs(this.points[1].z - this.points[0].z), 1), material);
     mesh.rotation.x = -Math.PI / 2;
     mesh.position.x = this.points[0].x + (this.points[1].x - this.points[0].x) / 2;
     mesh.position.z = this.points[0].z + (this.points[1].z - this.points[0].z) / 2;

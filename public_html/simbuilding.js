@@ -8,6 +8,7 @@ var mouse;
 var projector;
 var raycaster;
 var land;
+var insertNewHousePart = true;
 
 function startSimBuilding() {
     clock = new THREE.Clock();
@@ -16,6 +17,8 @@ function startSimBuilding() {
     raycaster = new THREE.Raycaster();
     stats = initStats();
     document.addEventListener('mousemove', handleMouseMove, false);
+    document.addEventListener('mousedown', handleMouseDown, false);
+    document.addEventListener('mouseup', handleMouseUp, false);
 
     scene = new THREE.Scene();
 
@@ -51,8 +54,8 @@ function startSimBuilding() {
     scene.add(axis);
 
     initLights();
-    platform = new SIM.Platform();
-    scene.add(platform.root);
+    currentHousePart = new SIM.Platform();
+    scene.add(currentHousePart.root);
 
     $("#WebGL-output").append(renderer.domElement);
     render();
@@ -64,7 +67,7 @@ function render() {
 
     hover();
 
-    camControls.update(delta);
+//    camControls.update(delta);
     renderer.clear();
     requestAnimationFrame(render);
     renderer.render(scene, camera);
@@ -98,13 +101,23 @@ function handleMouseMove(event) {
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 }
 
+function handleMouseDown() {    
+    if (insertNewHousePart)
+        currentHousePart.setCurrentEditPointIndex(currentHousePart.getCurrentEditPointIndex() + 1);
+}
+
+function handleMouseUp() {
+    currentHousePart.complete();
+    insertNewHousePart = false;
+}
+
 function hover() {
     var vector = new THREE.Vector3(mouse.x, mouse.y, 0);
     projector.unprojectVector(vector, camera);
     raycaster.set(camera.position, vector.sub(camera.position).normalize());
     var intersects = raycaster.intersectObjects(scene.children);
     if (intersects.length > 0) {
-        console.log("collision!");
-        platform.moveCurrentEditPoint(intersects[0].point);
+        if (!currentHousePart.isCompleted())
+        currentHousePart.moveCurrentEditPoint(intersects[0].point);
     }
 }
