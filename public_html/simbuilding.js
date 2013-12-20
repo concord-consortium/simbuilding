@@ -8,7 +8,10 @@ var mouse;
 var projector;
 var raycaster;
 var land;
-var insertNewHousePart = true;
+var insertNewHousePart;
+var sceneRoot;
+var houseParts = [];
+var currentHousePart;
 
 function startSimBuilding() {
     clock = new THREE.Clock();
@@ -16,6 +19,7 @@ function startSimBuilding() {
     projector = new THREE.Projector();
     raycaster = new THREE.Raycaster();
     stats = initStats();
+    initGui();
     document.addEventListener('mousemove', handleMouseMove, false);
     document.addEventListener('mousedown', handleMouseDown, false);
     document.addEventListener('mouseup', handleMouseUp, false);
@@ -45,17 +49,18 @@ function startSimBuilding() {
     renderer.setClearColor(0xEEEEEE);
     renderer.setSize(window.innerWidth, window.innerHeight);
 
-    land = new THREE.Mesh(new THREE.PlaneGeometry(100, 100));    
+    land = new THREE.Mesh(new THREE.PlaneGeometry(100, 100));
     land.rotation.x = -Math.PI / 2;
     land.geometry.computeBoundingBox();
     scene.add(land);
 
     var axis = new THREE.AxisHelper(20);
     scene.add(axis);
+    
+    sceneRoot = new THREE.Object3D();
+    scene.add(sceneRoot);
 
     initLights();
-    currentHousePart = new SIM.Platform();
-    scene.add(currentHousePart.root);
 
     $("#WebGL-output").append(renderer.domElement);
     render();
@@ -96,18 +101,31 @@ function initStats() {
     return stats;
 }
 
+function initGui() {
+    var controls = new function() {
+        this.newPlatform = function() {
+            currentHousePart = new SIM.Platform();
+            sceneRoot.add(currentHousePart.root);
+            insertNewHousePart = true;
+        };
+    };
+    var gui = new dat.GUI();
+    gui.add(controls, 'newPlatform');
+}
+
 function handleMouseMove(event) {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 }
 
-function handleMouseDown() {    
+function handleMouseDown() {
     if (insertNewHousePart)
         currentHousePart.setCurrentEditPointIndex(currentHousePart.getCurrentEditPointIndex() + 1);
 }
 
 function handleMouseUp() {
-    currentHousePart.complete();
+    if (currentHousePart)
+        currentHousePart.complete();
     insertNewHousePart = false;
 }
 
@@ -116,8 +134,8 @@ function hover() {
     projector.unprojectVector(vector, camera);
     raycaster.set(camera.position, vector.sub(camera.position).normalize());
     var intersects = raycaster.intersectObjects(scene.children);
-    if (intersects.length > 0) {
+    if (intersects.length > 0 && currentHousePart) {
         if (!currentHousePart.isCompleted())
-        currentHousePart.moveCurrentEditPoint(intersects[0].point);
+            currentHousePart.moveCurrentEditPoint(intersects[0].point);
     }
 }
