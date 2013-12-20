@@ -56,7 +56,7 @@ function startSimBuilding() {
 
     var axis = new THREE.AxisHelper(20);
     scene.add(axis);
-    
+
     sceneRoot = new THREE.Object3D();
     scene.add(sceneRoot);
 
@@ -112,7 +112,7 @@ function initGui() {
             currentHousePart = new SIM.Wall();
             sceneRoot.add(currentHousePart.root);
             insertNewHousePart = true;
-        };        
+        };
     };
     var gui = new dat.GUI();
     gui.add(controls, 'platform');
@@ -125,15 +125,24 @@ function handleMouseMove(event) {
 }
 
 function handleMouseDown() {
-    if (insertNewHousePart) {        
+    if (insertNewHousePart) {
         currentHousePart.setCurrentEditPointIndex(currentHousePart.getCurrentEditPointIndex() + 1);
         camControls.enabled = false;
+    } else if (hoveredUserData.housePart) {
+        currentHousePart = hoveredUserData.housePart;
+        if (hoveredUserData.editPointIndex !== null) {
+            currentHousePart.setCurrentEditPointIndex(hoveredUserData.editPointIndex);
+            camControls.enabled = false;
+        }
     }
 }
 
 function handleMouseUp() {
-    if (currentHousePart)
+    if (currentHousePart) {
         currentHousePart.complete();
+        houseParts.push(currentHousePart);
+        currentHousePart = null;
+    }
     insertNewHousePart = false;
     camControls.enabled = true;
 }
@@ -142,9 +151,19 @@ function hover() {
     var vector = new THREE.Vector3(mouse.x, mouse.y, 0);
     projector.unprojectVector(vector, camera);
     raycaster.set(camera.position, vector.sub(camera.position).normalize());
-    var intersects = raycaster.intersectObjects(scene.children);
-    if (intersects.length > 0 && currentHousePart) {
-        if (!currentHousePart.isCompleted())
+    var editing = currentHousePart && !currentHousePart.isCompleted();
+    var collidables = [land];
+    if (!editing)
+        houseParts.forEach(function(part) {
+            collidables.push(part.meshRoot);
+            part.editPointsRoot.children.forEach(function(sphere) {
+                collidables.push(sphere);
+            });
+        });
+    var intersects = raycaster.intersectObjects(collidables);
+    if (intersects.length > 0) {
+        hoveredUserData = intersects[0].object.userData;
+        if (editing)
             currentHousePart.moveCurrentEditPoint(intersects[0].point);
     }
 }

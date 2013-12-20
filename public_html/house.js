@@ -14,10 +14,11 @@ SIM.HousePart = function() {
 };
 
 SIM.HousePart.prototype.complete = function() {
+    this.currentEditPointIndex = null;
     this.completed = true;
 };
 
-SIM.HousePart.prototype.isCompleted = function() {
+SIM.HousePart.prototype.isCompleted = function() {    
     return this.completed;
 };
 
@@ -50,8 +51,12 @@ SIM.HousePart.prototype.moveCurrentEditPoint = function(p) {
 
 SIM.HousePart.prototype.drawEditPoints = function() {
     for (var i = 0; i < this.points.length; i++) {
-        if (i === this.editPointsRoot.children.length)
-            this.editPointsRoot.add(new THREE.Mesh(new THREE.SphereGeometry(1)));
+        if (i === this.editPointsRoot.children.length) {
+            var sphere = new THREE.Mesh(new THREE.SphereGeometry(1));
+            sphere.userData.housePart = this;
+            sphere.userData.editPointIndex = i;
+            this.editPointsRoot.add(sphere);
+        }
         this.editPointsRoot.children[i].position = this.points[i];
     }
 };
