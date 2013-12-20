@@ -103,14 +103,20 @@ function initStats() {
 
 function initGui() {
     var controls = new function() {
-        this.newPlatform = function() {
+        this.platform = function() {
             currentHousePart = new SIM.Platform();
             sceneRoot.add(currentHousePart.root);
             insertNewHousePart = true;
         };
+        this.wall = function() {
+            currentHousePart = new SIM.Wall();
+            sceneRoot.add(currentHousePart.root);
+            insertNewHousePart = true;
+        };        
     };
     var gui = new dat.GUI();
-    gui.add(controls, 'newPlatform');
+    gui.add(controls, 'platform');
+    gui.add(controls, 'wall');
 }
 
 function handleMouseMove(event) {

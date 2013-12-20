@@ -6,6 +6,9 @@ SIM.HousePart = function() {
     this.points = [new THREE.Vector3(), new THREE.Vector3()];
     this.root = new THREE.Object3D();
     this.editPointsRoot = new THREE.Object3D();
+    this.meshRoot = new THREE.Object3D();
+    this.root.add(this.editPointsRoot);
+    this.root.add(this.meshRoot);
     this.setCurrentEditPointIndex(0);
     this.id = id++;
 };
@@ -34,6 +37,14 @@ SIM.HousePart.prototype.moveCurrentEditPoint = function(p) {
     this.points[this.currentEditPointIndex] = p;
     if (!this.editMode && this.currentEditPointIndex === 0)
         this.points[1] = this.points[0];
+    else {
+        var sourceIndex = this.currentEditPointIndex < 2 ? 0 : 2;
+        var destinationIndex = sourceIndex === 0 ? 2 : 0;
+        this.points[destinationIndex] = this.points[sourceIndex].clone();
+        this.points[destinationIndex].z = this.points[sourceIndex + 1].z;
+        this.points[destinationIndex + 1] = this.points[sourceIndex + 1].clone();
+        this.points[destinationIndex + 1].z = this.points[sourceIndex].z;        
+    }
     this.draw();
 };
 
@@ -52,10 +63,9 @@ SIM.Platform = function() {
 SIM.Platform.prototype = new SIM.HousePart();
 
 SIM.Platform.prototype.draw = function() {
-    for (var i = this.root.children.length; i >= 0; i--)
-        this.root.remove(this.root.children[i]);
+    for (var i = this.meshRoot.children.length; i >= 0; i--)
+        this.meshRoot.remove(this.meshRoot.children[i]);
 
-    this.root.add(this.editPointsRoot);
     this.drawEditPoints();
 
     if (SIM.Platform.texture === undefined) {
@@ -72,15 +82,21 @@ SIM.Platform.prototype.draw = function() {
     mesh.rotation.x = -Math.PI / 2;
     mesh.position.x = this.points[0].x + (this.points[1].x - this.points[0].x) / 2;
     mesh.position.z = this.points[0].z + (this.points[1].z - this.points[0].z) / 2;
-    this.root.add(mesh);
+    this.meshRoot.add(mesh);
 };
 
 SIM.Wall = function() {
-    this.root = new THREE.Object3D();
-    this.draw();
+    SIM.HousePart.call(this);
 };
 
+SIM.Wall.prototype = new SIM.HousePart();
+
 SIM.Wall.prototype.draw = function() {
+    for (var i = this.meshRoot.children.length; i >= 0; i--)
+        this.meshRoot.remove(this.meshRoot.children[i]);
+
+    this.drawEditPoints();
+    
     var wallTexture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
     wallTexture.wrapS = THREE.RepeatWrapping;
     wallTexture.wrapT = THREE.RepeatWrapping;
@@ -126,5 +142,5 @@ SIM.Wall.prototype.draw = function() {
     mesh.rotation.y = Math.PI / 2;
     mesh.position.x = 3.8;
     mesh.position.z = 4;
-    this.root.add(mesh);
+    this.meshRoot.add(mesh);
 };
