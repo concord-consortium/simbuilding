@@ -72,7 +72,7 @@ function render() {
 
     hover();
 
-//    camControls.update(delta);
+    camControls.update(delta);
     renderer.clear();
     requestAnimationFrame(render);
     renderer.render(scene, camera);
@@ -119,14 +119,17 @@ function handleMouseMove(event) {
 }
 
 function handleMouseDown() {
-    if (insertNewHousePart)
+    if (insertNewHousePart) {        
         currentHousePart.setCurrentEditPointIndex(currentHousePart.getCurrentEditPointIndex() + 1);
+        camControls.enabled = false;
+    }
 }
 
 function handleMouseUp() {
     if (currentHousePart)
         currentHousePart.complete();
     insertNewHousePart = false;
+    camControls.enabled = true;
 }
 
 function hover() {
