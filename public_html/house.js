@@ -34,21 +34,6 @@ SIM.HousePart.prototype.getCurrentEditPointIndex = function() {
     return this.currentEditPointIndex;
 };
 
-SIM.HousePart.prototype.moveCurrentEditPoint = function(p) {
-    this.points[this.currentEditPointIndex] = p;
-    if (!this.editMode && this.currentEditPointIndex === 0)
-        this.points[1] = this.points[0];
-    else {
-        var sourceIndex = this.currentEditPointIndex < 2 ? 0 : 2;
-        var destinationIndex = sourceIndex === 0 ? 2 : 0;
-        this.points[destinationIndex] = this.points[sourceIndex].clone();
-        this.points[destinationIndex].z = this.points[sourceIndex + 1].z;
-        this.points[destinationIndex + 1] = this.points[sourceIndex + 1].clone();
-        this.points[destinationIndex + 1].z = this.points[sourceIndex].z;        
-    }
-    this.draw();
-};
-
 SIM.HousePart.prototype.drawEditPoints = function() {
     for (var i = 0; i < this.points.length; i++) {
         if (i === this.editPointsRoot.children.length) {
@@ -66,6 +51,21 @@ SIM.Platform = function() {
 };
 
 SIM.Platform.prototype = new SIM.HousePart();
+
+SIM.Platform.prototype.moveCurrentEditPoint = function(p) {
+    this.points[this.currentEditPointIndex] = p;
+    if (!this.editMode && this.currentEditPointIndex === 0)
+        this.points[1] = this.points[0];
+    else {
+        var sourceIndex = this.currentEditPointIndex < 2 ? 0 : 2;
+        var destinationIndex = sourceIndex === 0 ? 2 : 0;
+        this.points[destinationIndex] = this.points[sourceIndex].clone();
+        this.points[destinationIndex].z = this.points[sourceIndex + 1].z;
+        this.points[destinationIndex + 1] = this.points[sourceIndex + 1].clone();
+        this.points[destinationIndex + 1].z = this.points[sourceIndex].z;        
+    }
+    this.draw();
+};
 
 SIM.Platform.prototype.draw = function() {
     for (var i = this.meshRoot.children.length; i >= 0; i--)
@@ -96,56 +96,40 @@ SIM.Wall = function() {
 
 SIM.Wall.prototype = new SIM.HousePart();
 
+SIM.Wall.prototype.moveCurrentEditPoint = function(p) {
+    this.points[this.currentEditPointIndex] = p;
+    this.draw();
+};
+
 SIM.Wall.prototype.draw = function() {
     for (var i = this.meshRoot.children.length; i >= 0; i--)
         this.meshRoot.remove(this.meshRoot.children[i]);
 
     this.drawEditPoints();
+
+    if (SIM.Platform.texture === undefined) {
+        SIM.Platform.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
+        SIM.Platform.texture.wrapS = THREE.RepeatWrapping;
+        SIM.Platform.texture.wrapT = THREE.RepeatWrapping;
+        SIM.Platform.texture.repeat.x = 0.5;
+    }
+
+    var material = new THREE.MeshLambertMaterial();
+    material.map = SIM.Platform.texture;
+    material.side = THREE.DoubleSide;
     
-    var wallTexture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
-    wallTexture.wrapS = THREE.RepeatWrapping;
-    wallTexture.wrapT = THREE.RepeatWrapping;
-    wallTexture.repeat.x = 0.5;
-
-    var brickMaterial = new THREE.MeshLambertMaterial();
-    brickMaterial.map = wallTexture;
-    brickMaterial.side = THREE.DoubleSide;
-
-    var whiteMaterial = new THREE.MeshLambertMaterial();
-    whiteMaterial.side = THREE.DoubleSide;
-    whiteMaterial.color = whiteMaterial.ambient = new THREE.Color(0xcccccc);
-
+    var w = this.points[0].distanceTo(this.points[1]);
+    var h = 10;
     var shape = new THREE.Shape();
-    shape.moveTo(0, 0);
-    shape.moveTo(0.5, 0);
-    shape.moveTo(0.5, 2);
-    shape.moveTo(3.5, 2);
-    shape.moveTo(3.5, 0);
-    shape.lineTo(4, 0);
-    shape.lineTo(4, 2.5);
-    shape.lineTo(0, 2.5);
-
-    // wall
-    var mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), brickMaterial);
-    mesh.rotation.y = Math.PI / 2;
-    mesh.position.x = 4;
-    mesh.position.z = 4;
-    this.root.add(mesh);
-
-    var shape = new THREE.Shape();
-    shape.moveTo(0, 0);
-    shape.moveTo(0.7, 0);
-    shape.moveTo(0.7, 2);
-    shape.moveTo(3.3, 2);
-    shape.moveTo(3.3, 0);
-    shape.lineTo(4, 0);
-    shape.lineTo(4, 2.5);
-    shape.lineTo(0, 2.5);
-
-    // inner wall
-    var mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), whiteMaterial);
-    mesh.rotation.y = Math.PI / 2;
-    mesh.position.x = 3.8;
-    mesh.position.z = 4;
+    shape.moveTo(0, 0);    
+    shape.lineTo(w, 0);
+    shape.lineTo(w, h);
+    shape.lineTo(0, h);
+       
+    var mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), material);
+    var v01 = new THREE.Vector3().subVectors(this.points[1], this.points[0]).normalize();
+    mesh.rotation.y = (v01.dot(new THREE.Vector3(0, 0, 1)) > 0 ? -1 : 1) * v01.angleTo(new THREE.Vector3(1, 0, 0));
+    mesh.position.x = this.points[0].x;
+    mesh.position.z = this.points[0].z;
     this.meshRoot.add(mesh);
 };
