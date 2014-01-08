@@ -102,6 +102,10 @@ SIM.Wall.prototype.moveCurrentEditPoint = function(p) {
         if (this.currentEditPointIndex === 0)
             this.points[1] = this.points[0];
     }
+    if (this.currentEditPointIndex < 2) {
+        this.points[this.currentEditPointIndex + 2] = this.points[this.currentEditPointIndex].clone();
+        this.points[this.currentEditPointIndex + 2].y = 10;
+    }
     this.draw();
 };
 
