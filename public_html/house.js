@@ -18,7 +18,7 @@ SIM.HousePart.prototype.complete = function() {
     this.completed = true;
 };
 
-SIM.HousePart.prototype.isCompleted = function() {    
+SIM.HousePart.prototype.isCompleted = function() {
     return this.completed;
 };
 
@@ -54,16 +54,16 @@ SIM.Platform.prototype = new SIM.HousePart();
 
 SIM.Platform.prototype.moveCurrentEditPoint = function(p) {
     this.points[this.currentEditPointIndex] = p;
-    if (!this.editMode && this.currentEditPointIndex === 0)
-        this.points[1] = this.points[0];
-    else {
-        var sourceIndex = this.currentEditPointIndex < 2 ? 0 : 2;
-        var destinationIndex = sourceIndex === 0 ? 2 : 0;
-        this.points[destinationIndex] = this.points[sourceIndex].clone();
-        this.points[destinationIndex].z = this.points[sourceIndex + 1].z;
-        this.points[destinationIndex + 1] = this.points[sourceIndex + 1].clone();
-        this.points[destinationIndex + 1].z = this.points[sourceIndex].z;        
+    if (!this.editMode) {
+        if (this.currentEditPointIndex === 0)
+            this.points[1] = this.points[0];
     }
+    var sourceIndex = this.currentEditPointIndex < 2 ? 0 : 2;
+    var destinationIndex = sourceIndex === 0 ? 2 : 0;
+    this.points[destinationIndex] = this.points[sourceIndex].clone();
+    this.points[destinationIndex].z = this.points[sourceIndex + 1].z;
+    this.points[destinationIndex + 1] = this.points[sourceIndex + 1].clone();
+    this.points[destinationIndex + 1].z = this.points[sourceIndex].z;
     this.draw();
 };
 
@@ -98,6 +98,10 @@ SIM.Wall.prototype = new SIM.HousePart();
 
 SIM.Wall.prototype.moveCurrentEditPoint = function(p) {
     this.points[this.currentEditPointIndex] = p;
+    if (!this.editMode) {
+        if (this.currentEditPointIndex === 0)
+            this.points[1] = this.points[0];
+    }
     this.draw();
 };
 
@@ -107,25 +111,25 @@ SIM.Wall.prototype.draw = function() {
 
     this.drawEditPoints();
 
-    if (SIM.Platform.texture === undefined) {
-        SIM.Platform.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
-        SIM.Platform.texture.wrapS = THREE.RepeatWrapping;
-        SIM.Platform.texture.wrapT = THREE.RepeatWrapping;
-        SIM.Platform.texture.repeat.x = 0.5;
+    if (SIM.Wall.texture === undefined) {
+        SIM.Wall.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
+        SIM.Wall.texture.wrapS = THREE.RepeatWrapping;
+        SIM.Wall.texture.wrapT = THREE.RepeatWrapping;
+        SIM.Wall.texture.repeat.x = 0.5;
     }
 
     var material = new THREE.MeshLambertMaterial();
-    material.map = SIM.Platform.texture;
+    material.map = SIM.Wall.texture;
     material.side = THREE.DoubleSide;
-    
+
     var w = this.points[0].distanceTo(this.points[1]);
     var h = 10;
     var shape = new THREE.Shape();
-    shape.moveTo(0, 0);    
+    shape.moveTo(0, 0);
     shape.lineTo(w, 0);
     shape.lineTo(w, h);
     shape.lineTo(0, h);
-       
+
     var mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), material);
     var v01 = new THREE.Vector3().subVectors(this.points[1], this.points[0]).normalize();
     mesh.rotation.y = (v01.dot(new THREE.Vector3(0, 0, 1)) > 0 ? -1 : 1) * v01.angleTo(new THREE.Vector3(1, 0, 0));
