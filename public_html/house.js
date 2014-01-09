@@ -107,21 +107,20 @@ SIM.Wall.prototype = new SIM.HousePart();
 
 SIM.Wall.prototype.moveCurrentEditPoint = function(p) {
     this.points[this.currentEditPointIndex] = p;
+    
     if (this.initMode) {
         if (this.currentEditPointIndex === 0) {
             this.points[1] = this.points[0].clone();
             this.points[2] = this.points[0].clone().setY(10);
             this.points[3] = this.points[0].clone().setY(10);
         }
-    } 
-    if (this.currentEditPointIndex < 2)
-            this.points[this.currentEditPointIndex + 2].setX(p.x).setZ(p.z);
-        else 
-            this.points[this.currentEditPointIndex === 2 ? 3 : 2].y = p.y;
+    }
     
-//    if (this.currentEditPointIndex < 2) {
-//        this.points[this.currentEditPointIndex + 2] = this.points[this.currentEditPointIndex].clone().setY(this.points[]);
-//    }
+    if (this.currentEditPointIndex < 2)
+        this.points[this.currentEditPointIndex + 2].setX(p.x).setZ(p.z);
+    else
+        this.points[this.currentEditPointIndex === 2 ? 3 : 2].y = p.y;
+    
     this.draw();
 };
 
@@ -143,7 +142,7 @@ SIM.Wall.prototype.draw = function() {
     material.side = THREE.DoubleSide;
 
     var w = this.points[0].distanceTo(this.points[1]);
-    var h = 10;
+    var h = this.points[0].distanceTo(this.points[2]);
     var shape = new THREE.Shape();
     shape.moveTo(0, 0);
     shape.lineTo(w, 0);
