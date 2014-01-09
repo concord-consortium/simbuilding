@@ -27,9 +27,9 @@ function startSimBuilding() {
     scene = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-    camera.position.x = 100;
-    camera.position.y = 10;
-    camera.position.z = 10;
+    camera.position.x = 2;
+    camera.position.y = 6;
+    camera.position.z = -10;
     camera.lookAt(new THREE.Vector3(0, 0, 0));
 
 //    camControls = new THREE.FirstPersonControls(camera);

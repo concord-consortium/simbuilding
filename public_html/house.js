@@ -16,7 +16,6 @@ SIM.HousePart = function() {
 
 SIM.HousePart.prototype.complete = function() {
     this.currentEditPointIndex = null;
-//    this.editMode = false;
     this.initMode = false;
     this.completed = true;
 };
@@ -27,8 +26,6 @@ SIM.HousePart.prototype.isCompleted = function() {
 
 SIM.HousePart.prototype.setCurrentEditPointIndex = function(i) {
     this.currentEditPointIndex = i;
-//    if (this.completed)
-//        this.editMode = true;
     this.completed = false;
 };
 
@@ -43,7 +40,7 @@ SIM.HousePart.prototype.isCurrentEditPointVertical = function() {
 SIM.HousePart.prototype.drawEditPoints = function() {
     for (var i = 0; i < this.points.length; i++) {
         if (i === this.editPointsRoot.children.length) {
-            var sphere = new THREE.Mesh(new THREE.SphereGeometry(1));
+            var sphere = new THREE.Mesh(new THREE.SphereGeometry(0.1));
             sphere.userData.housePart = this;
             sphere.userData.editPointIndex = i;
             this.editPointsRoot.add(sphere);
@@ -60,8 +57,6 @@ SIM.Platform.prototype = new SIM.HousePart();
 
 SIM.Platform.prototype.moveCurrentEditPoint = function(p) {
     this.points[this.currentEditPointIndex] = p;
-//    var initMode = !this.editMode;
-//    if (initMode) {
     if (this.initMode) {
         if (this.currentEditPointIndex === 0)
             this.points[1] = this.points[0];
@@ -111,8 +106,8 @@ SIM.Wall.prototype.moveCurrentEditPoint = function(p) {
     if (this.initMode) {
         if (this.currentEditPointIndex === 0) {
             this.points[1] = this.points[0].clone();
-            this.points[2] = this.points[0].clone().setY(10);
-            this.points[3] = this.points[0].clone().setY(10);
+            this.points[2] = this.points[0].clone().setY(3);
+            this.points[3] = this.points[0].clone().setY(3);
         }
     }
     
@@ -134,7 +129,8 @@ SIM.Wall.prototype.draw = function() {
         SIM.Wall.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
         SIM.Wall.texture.wrapS = THREE.RepeatWrapping;
         SIM.Wall.texture.wrapT = THREE.RepeatWrapping;
-        SIM.Wall.texture.repeat.x = 0.5;
+        SIM.Wall.texture.repeat.x = 0.2;
+        SIM.Wall.texture.repeat.y = SIM.Wall.texture.repeat.x * 2;
     }
 
     var material = new THREE.MeshLambertMaterial();
