@@ -113,10 +113,16 @@ function initGui() {
             sceneRoot.add(currentHousePart.root);
             insertNewHousePart = true;
         };
+        this.window = function() {
+            currentHousePart = new SIM.Window();
+            sceneRoot.add(currentHousePart.root);
+            insertNewHousePart = true;
+        };
     };
     var gui = new dat.GUI();
     gui.add(controls, 'platform');
     gui.add(controls, 'wall');
+    gui.add(controls, 'window');
 }
 
 function handleMouseMove(event) {
@@ -153,25 +159,31 @@ function hover() {
     var pickDirection = vector.sub(camera.position).normalize();
     raycaster.set(camera.position, pickDirection);
     var editing = currentHousePart && !currentHousePart.isCompleted();
-    var isVerticalMove = editing && currentHousePart.isCurrentEditPointVertical();
     if (currentHousePart && currentHousePart.isCurrentEditPointVertical()) {
         currentHousePart.moveCurrentEditPoint(closestPoint(currentHousePart.points[currentHousePart.getCurrentEditPointIndex()], new THREE.Vector3(0, 1, 0), camera.position, pickDirection));
     } else {
-    var collidables = [land];
-    if (!editing)
+        var collidables = [];
+        if (currentHousePart && currentHousePart.canBeInsertedOn(null))
+            collidables.push(land);
+
         houseParts.forEach(function(part) {
-            collidables.push(part.meshRoot);
-            part.editPointsRoot.children.forEach(function(sphere) {
-                collidables.push(sphere);
-            });
+            if (!currentHousePart || currentHousePart.canBeInsertedOn(part)) {
+                collidables.push(part.meshRoot.children[0]);
+                if (!editing)
+                    part.editPointsRoot.children.forEach(function(sphere) {
+                        collidables.push(sphere);
+                    });
+            }
         });
-    var intersects = raycaster.intersectObjects(collidables);
-    if (intersects.length > 0) {
-        hoveredUserData = intersects[0].object.userData;
-        if (editing)
-            currentHousePart.moveCurrentEditPoint(intersects[0].point);
+
+        var intersects = raycaster.intersectObjects(collidables);
+        console.log(intersects.length);
+        if (intersects.length > 0) {
+            hoveredUserData = intersects[0].object.userData;
+            if (editing)
+                currentHousePart.moveCurrentEditPoint(intersects[0].point);
+        }
     }
-}
 }
 
 function closestPoint(p1, p21, p3, p43) {

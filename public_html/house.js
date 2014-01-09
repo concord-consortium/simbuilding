@@ -86,11 +86,15 @@ SIM.Platform.prototype.draw = function() {
     var material = new THREE.MeshLambertMaterial();
     material.map = SIM.Platform.texture;
 
-    var mesh = new THREE.Mesh(new THREE.CubeGeometry(Math.abs(this.points[1].x - this.points[0].x), Math.abs(this.points[1].z - this.points[0].z), 1), material);
+    var mesh = new THREE.Mesh(new THREE.CubeGeometry(Math.abs(this.points[1].x - this.points[0].x), Math.abs(this.points[1].z - this.points[0].z), 0.2), material);
     mesh.rotation.x = -Math.PI / 2;
     mesh.position.x = this.points[0].x + (this.points[1].x - this.points[0].x) / 2;
     mesh.position.z = this.points[0].z + (this.points[1].z - this.points[0].z) / 2;
     this.meshRoot.add(mesh);
+};
+
+SIM.Platform.prototype.canBeInsertedOn = function(container) {
+    return container === null;
 };
 
 SIM.Wall = function() {
@@ -149,10 +153,48 @@ SIM.Wall.prototype.draw = function() {
     var v01 = new THREE.Vector3().subVectors(this.points[1], this.points[0]).normalize();
     mesh.rotation.y = (v01.dot(new THREE.Vector3(0, 0, 1)) > 0 ? -1 : 1) * v01.angleTo(new THREE.Vector3(1, 0, 0));
     mesh.position.x = this.points[0].x;
+    mesh.position.y = this.points[0].y;
     mesh.position.z = this.points[0].z;
     this.meshRoot.add(mesh);
 };
 
+SIM.Wall.prototype.canBeInsertedOn = function(container) {
+    return container instanceof SIM.Platform;
+};
+
 SIM.Wall.prototype.isCurrentEditPointVertical = function() {
     return this.currentEditPointIndex >= 2;
+};
+
+SIM.Window = function() {
+    SIM.HousePart.call(this);
+};
+
+SIM.Window.prototype = new SIM.HousePart();
+
+SIM.Window.prototype.moveCurrentEditPoint = function(p) {
+    this.points[this.currentEditPointIndex] = p;
+    if (this.initMode) {
+        if (this.currentEditPointIndex === 0)
+            this.points[1] = this.points[0];
+    }
+    var sourceIndex = this.currentEditPointIndex < 2 ? 0 : 2;
+    var destinationIndex = sourceIndex === 0 ? 2 : 0;
+    this.points[destinationIndex] = this.points[sourceIndex].clone();
+    this.points[destinationIndex].z = this.points[sourceIndex + 1].z;
+    this.points[destinationIndex + 1] = this.points[sourceIndex + 1].clone();
+    this.points[destinationIndex + 1].z = this.points[sourceIndex].z;
+    this.draw();
+};
+
+SIM.Window.prototype.draw = function() {
+    for (var i = this.meshRoot.children.length; i >= 0; i--)
+        this.meshRoot.remove(this.meshRoot.children[i]);
+
+    this.drawEditPoints();
+
+};
+
+SIM.Window.prototype.canBeInsertedOn = function(container) {
+    return container instanceof SIM.Wall;
 };
