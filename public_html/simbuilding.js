@@ -150,8 +150,13 @@ function handleMouseUp() {
 function hover() {
     var vector = new THREE.Vector3(mouse.x, mouse.y, 0);
     projector.unprojectVector(vector, camera);
-    raycaster.set(camera.position, vector.sub(camera.position).normalize());
+    var pickDirection = vector.sub(camera.position).normalize();
+    raycaster.set(camera.position, pickDirection);
     var editing = currentHousePart && !currentHousePart.isCompleted();
+    var isVerticalMove = editing && currentHousePart.isCurrentEditPointVertical();
+    if (currentHousePart && currentHousePart.isCurrentEditPointVertical()) {
+        currentHousePart.moveCurrentEditPoint(closestPoint(currentHousePart.points[currentHousePart.getCurrentEditPointIndex()], new THREE.Vector3(0, 1, 0), camera.position, pickDirection));
+    } else {
     var collidables = [land];
     if (!editing)
         houseParts.forEach(function(part) {
@@ -166,4 +171,34 @@ function hover() {
         if (editing)
             currentHousePart.moveCurrentEditPoint(intersects[0].point);
     }
+}
+}
+
+function closestPoint(p1, p21, p3, p43) {
+    var EPS = 0.0001;
+    var p13;
+    var d1343, d4321, d1321, d4343, d2121;
+    var numer, denom;
+
+    p13 = new THREE.Vector3().subVectors(p1, p3);
+    if (Math.abs(p43.x) < EPS && Math.abs(p43.y) < EPS && Math.abs(p43.z) < EPS)
+        return null;
+    if (Math.abs(p21.length()) < EPS)
+        return null;
+
+    d1343 = p13.x * p43.x + p13.y * p43.y + p13.z * p43.z;
+    d4321 = p43.x * p21.x + p43.y * p21.y + p43.z * p21.z;
+    d1321 = p13.x * p21.x + p13.y * p21.y + p13.z * p21.z;
+    d4343 = p43.x * p43.x + p43.y * p43.y + p43.z * p43.z;
+    d2121 = p21.x * p21.x + p21.y * p21.y + p21.z * p21.z;
+
+    denom = d2121 * d4343 - d4321 * d4321;
+    if (Math.abs(denom) < EPS)
+        return null;
+    numer = d1343 * d4321 - d1321 * d4343;
+
+    var mua = numer / denom;
+    var pa = new THREE.Vector3(p1.x + mua * p21.x, p1.y + mua * p21.y, p1.z + mua * p21.z);
+
+    return pa;
 }

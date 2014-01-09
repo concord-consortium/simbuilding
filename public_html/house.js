@@ -9,12 +9,15 @@ SIM.HousePart = function() {
     this.meshRoot = new THREE.Object3D();
     this.root.add(this.editPointsRoot);
     this.root.add(this.meshRoot);
-    this.setCurrentEditPointIndex(0);
     this.id = id++;
+    this.initMode = true;
+    this.setCurrentEditPointIndex(0);
 };
 
 SIM.HousePart.prototype.complete = function() {
     this.currentEditPointIndex = null;
+//    this.editMode = false;
+    this.initMode = false;
     this.completed = true;
 };
 
@@ -24,14 +27,17 @@ SIM.HousePart.prototype.isCompleted = function() {
 
 SIM.HousePart.prototype.setCurrentEditPointIndex = function(i) {
     this.currentEditPointIndex = i;
-    if (!this.editMode)
-        if (this.completed)
-            this.editMode = true;
+//    if (this.completed)
+//        this.editMode = true;
     this.completed = false;
 };
 
 SIM.HousePart.prototype.getCurrentEditPointIndex = function() {
     return this.currentEditPointIndex;
+};
+
+SIM.HousePart.prototype.isCurrentEditPointVertical = function() {
+    return false;
 };
 
 SIM.HousePart.prototype.drawEditPoints = function() {
@@ -54,7 +60,9 @@ SIM.Platform.prototype = new SIM.HousePart();
 
 SIM.Platform.prototype.moveCurrentEditPoint = function(p) {
     this.points[this.currentEditPointIndex] = p;
-    if (!this.editMode) {
+//    var initMode = !this.editMode;
+//    if (initMode) {
+    if (this.initMode) {
         if (this.currentEditPointIndex === 0)
             this.points[1] = this.points[0];
     }
@@ -92,20 +100,28 @@ SIM.Platform.prototype.draw = function() {
 
 SIM.Wall = function() {
     SIM.HousePart.call(this);
+    this.top = 10;
 };
 
 SIM.Wall.prototype = new SIM.HousePart();
 
 SIM.Wall.prototype.moveCurrentEditPoint = function(p) {
     this.points[this.currentEditPointIndex] = p;
-    if (!this.editMode) {
-        if (this.currentEditPointIndex === 0)
-            this.points[1] = this.points[0];
-    }
-    if (this.currentEditPointIndex < 2) {
-        this.points[this.currentEditPointIndex + 2] = this.points[this.currentEditPointIndex].clone();
-        this.points[this.currentEditPointIndex + 2].y = 10;
-    }
+    if (this.initMode) {
+        if (this.currentEditPointIndex === 0) {
+            this.points[1] = this.points[0].clone();
+            this.points[2] = this.points[0].clone().setY(10);
+            this.points[3] = this.points[0].clone().setY(10);
+        }
+    } 
+    if (this.currentEditPointIndex < 2)
+            this.points[this.currentEditPointIndex + 2].setX(p.x).setZ(p.z);
+        else 
+            this.points[this.currentEditPointIndex === 2 ? 3 : 2].y = p.y;
+    
+//    if (this.currentEditPointIndex < 2) {
+//        this.points[this.currentEditPointIndex + 2] = this.points[this.currentEditPointIndex].clone().setY(this.points[]);
+//    }
     this.draw();
 };
 
@@ -140,4 +156,8 @@ SIM.Wall.prototype.draw = function() {
     mesh.position.x = this.points[0].x;
     mesh.position.z = this.points[0].z;
     this.meshRoot.add(mesh);
+};
+
+SIM.Wall.prototype.isCurrentEditPointVertical = function() {
+    return this.currentEditPointIndex >= 2;
 };
