@@ -37,6 +37,15 @@ SIM.HousePart.prototype.isCurrentEditPointVertical = function() {
     return false;
 };
 
+SIM.HousePart.prototype.setContainerIfAllowed = function(container) {
+    if (this.initMode && this.currentEditPointIndex === 0)
+        this.container = container;
+};
+
+SIM.HousePart.prototype.getContainer = function() {
+    return this.container;
+};
+
 SIM.HousePart.prototype.drawEditPoints = function() {
     for (var i = 0; i < this.points.length; i++) {
         if (i === this.editPointsRoot.children.length) {
@@ -90,6 +99,7 @@ SIM.Platform.prototype.draw = function() {
     mesh.rotation.x = -Math.PI / 2;
     mesh.position.x = this.points[0].x + (this.points[1].x - this.points[0].x) / 2;
     mesh.position.z = this.points[0].z + (this.points[1].z - this.points[0].z) / 2;
+    mesh.userData.housePart = this;
     this.meshRoot.add(mesh);
 };
 
@@ -155,6 +165,7 @@ SIM.Wall.prototype.draw = function() {
     mesh.position.x = this.points[0].x;
     mesh.position.y = this.points[0].y;
     mesh.position.z = this.points[0].z;
+    mesh.userData.housePart = this;
     this.meshRoot.add(mesh);
 };
 
@@ -173,6 +184,7 @@ SIM.Window = function() {
 SIM.Window.prototype = new SIM.HousePart();
 
 SIM.Window.prototype.moveCurrentEditPoint = function(p) {
+    var matrix = this.container.meshRoot.children[0].getTransform();
     this.points[this.currentEditPointIndex] = p;
     if (this.initMode) {
         if (this.currentEditPointIndex === 0)
@@ -192,7 +204,6 @@ SIM.Window.prototype.draw = function() {
         this.meshRoot.remove(this.meshRoot.children[i]);
 
     this.drawEditPoints();
-
 };
 
 SIM.Window.prototype.canBeInsertedOn = function(container) {

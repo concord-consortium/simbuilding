@@ -180,29 +180,31 @@ function hover() {
         console.log(intersects.length);
         if (intersects.length > 0) {
             hoveredUserData = intersects[0].object.userData;
-            if (editing)
-                currentHousePart.moveCurrentEditPoint(intersects[0].point);
+            if (editing) {                
+                currentHousePart.setContainerIfAllowed(hoveredUserData.housePart);
+                currentHousePart.moveCurrentEditPoint(intersects[0].point);                
+            }
         }
     }
 }
 
-function closestPoint(p1, p21, p3, p43) {
+function closestPoint(p1, v1, p2, v2) {
     var EPS = 0.0001;
     var p13;
     var d1343, d4321, d1321, d4343, d2121;
     var numer, denom;
 
-    p13 = new THREE.Vector3().subVectors(p1, p3);
-    if (Math.abs(p43.x) < EPS && Math.abs(p43.y) < EPS && Math.abs(p43.z) < EPS)
+    p13 = new THREE.Vector3().subVectors(p1, p2);
+    if (Math.abs(v2.x) < EPS && Math.abs(v2.y) < EPS && Math.abs(v2.z) < EPS)
         return null;
-    if (Math.abs(p21.length()) < EPS)
+    if (Math.abs(v1.length()) < EPS)
         return null;
 
-    d1343 = p13.x * p43.x + p13.y * p43.y + p13.z * p43.z;
-    d4321 = p43.x * p21.x + p43.y * p21.y + p43.z * p21.z;
-    d1321 = p13.x * p21.x + p13.y * p21.y + p13.z * p21.z;
-    d4343 = p43.x * p43.x + p43.y * p43.y + p43.z * p43.z;
-    d2121 = p21.x * p21.x + p21.y * p21.y + p21.z * p21.z;
+    d1343 = p13.x * v2.x + p13.y * v2.y + p13.z * v2.z;
+    d4321 = v2.x * v1.x + v2.y * v1.y + v2.z * v1.z;
+    d1321 = p13.x * v1.x + p13.y * v1.y + p13.z * v1.z;
+    d4343 = v2.x * v2.x + v2.y * v2.y + v2.z * v2.z;
+    d2121 = v1.x * v1.x + v1.y * v1.y + v1.z * v1.z;
 
     denom = d2121 * d4343 - d4321 * d4321;
     if (Math.abs(denom) < EPS)
@@ -210,7 +212,7 @@ function closestPoint(p1, p21, p3, p43) {
     numer = d1343 * d4321 - d1321 * d4343;
 
     var mua = numer / denom;
-    var pa = new THREE.Vector3(p1.x + mua * p21.x, p1.y + mua * p21.y, p1.z + mua * p21.z);
+    var pa = new THREE.Vector3(p1.x + mua * v1.x, p1.y + mua * v1.y, p1.z + mua * v1.z);
 
     return pa;
 }
