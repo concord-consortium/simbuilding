@@ -9,7 +9,7 @@ SIM.HousePart = function() {
     this.meshRoot = new THREE.Object3D();
     this.root.add(this.editPointsRoot);
     this.root.add(this.meshRoot);
-    this.id = id++;
+    this.id = id++;    
     this.initMode = true;
     this.setCurrentEditPointIndex(0);
 };
@@ -96,11 +96,12 @@ SIM.Platform.prototype.draw = function() {
     material.map = SIM.Platform.texture;
 
     var mesh = new THREE.Mesh(new THREE.CubeGeometry(Math.abs(this.points[1].x - this.points[0].x), Math.abs(this.points[1].z - this.points[0].z), 0.2), material);
-    mesh.rotation.x = -Math.PI / 2;
-    mesh.position.x = this.points[0].x + (this.points[1].x - this.points[0].x) / 2;
-    mesh.position.z = this.points[0].z + (this.points[1].z - this.points[0].z) / 2;
     mesh.userData.housePart = this;
     this.meshRoot.add(mesh);
+    
+    this.meshRoot.rotation.x = -Math.PI / 2;
+    this.meshRoot.position.x = this.points[0].x + (this.points[1].x - this.points[0].x) / 2;
+    this.meshRoot.position.z = this.points[0].z + (this.points[1].z - this.points[0].z) / 2;
 };
 
 SIM.Platform.prototype.canBeInsertedOn = function(container) {
@@ -160,13 +161,14 @@ SIM.Wall.prototype.draw = function() {
     shape.lineTo(0, h);
 
     var mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), material);
-    var v01 = new THREE.Vector3().subVectors(this.points[1], this.points[0]).normalize();
-    mesh.rotation.y = (v01.dot(new THREE.Vector3(0, 0, 1)) > 0 ? -1 : 1) * v01.angleTo(new THREE.Vector3(1, 0, 0));
-    mesh.position.x = this.points[0].x;
-    mesh.position.y = this.points[0].y;
-    mesh.position.z = this.points[0].z;
     mesh.userData.housePart = this;
     this.meshRoot.add(mesh);
+    
+    var v01 = new THREE.Vector3().subVectors(this.points[1], this.points[0]).normalize();
+    this.meshRoot.rotation.y = (v01.dot(new THREE.Vector3(0, 0, 1)) > 0 ? -1 : 1) * v01.angleTo(new THREE.Vector3(1, 0, 0));
+    this.meshRoot.position.x = this.points[0].x;
+    this.meshRoot.position.y = this.points[0].y;
+    this.meshRoot.position.z = this.points[0].z;
 };
 
 SIM.Wall.prototype.canBeInsertedOn = function(container) {
@@ -184,7 +186,7 @@ SIM.Window = function() {
 SIM.Window.prototype = new SIM.HousePart();
 
 SIM.Window.prototype.moveCurrentEditPoint = function(p) {
-    var matrix = this.container.meshRoot.children[0].getTransform();
+//    p = this.container.meshRoot.worldToLocal(p);
     this.points[this.currentEditPointIndex] = p;
     if (this.initMode) {
         if (this.currentEditPointIndex === 0)

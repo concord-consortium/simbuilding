@@ -12,6 +12,7 @@ var insertNewHousePart;
 var sceneRoot;
 var houseParts = [];
 var currentHousePart;
+var hoveredUserData;
 
 function startSimBuilding() {
     clock = new THREE.Clock();
@@ -134,9 +135,9 @@ function handleMouseDown() {
     if (insertNewHousePart) {
         currentHousePart.setCurrentEditPointIndex(currentHousePart.getCurrentEditPointIndex() + 1);
         camControls.enabled = false;
-    } else if (hoveredUserData.housePart) {
+    } else if (hoveredUserData && hoveredUserData.housePart) {
         currentHousePart = hoveredUserData.housePart;
-        if (hoveredUserData.editPointIndex !== null) {
+        if (hoveredUserData.editPointIndex) {
             currentHousePart.setCurrentEditPointIndex(hoveredUserData.editPointIndex);
             camControls.enabled = false;
         }
@@ -176,8 +177,8 @@ function hover() {
             }
         });
 
+        hoveredUserData = null;
         var intersects = raycaster.intersectObjects(collidables);
-        console.log(intersects.length);
         if (intersects.length > 0) {
             hoveredUserData = intersects[0].object.userData;
             if (editing) {                
