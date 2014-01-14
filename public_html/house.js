@@ -20,8 +20,6 @@ SIM.HousePart.prototype.complete = function() {
     this.currentEditPointIndex = null;
     this.initMode = false;
     this.completed = true;    
-    if (this.parent && this.parent.children.indexOf(this) === -1)
-        this.parent.children.push(this);
 };
 
 SIM.HousePart.prototype.isCompleted = function() {
@@ -31,6 +29,8 @@ SIM.HousePart.prototype.isCompleted = function() {
 SIM.HousePart.prototype.setCurrentEditPointIndex = function(i) {
     this.currentEditPointIndex = i;
     this.completed = false;
+    if (this.initMode && i !== 0 && this.parent && this.parent.children.indexOf(this) === -1)
+        this.parent.children.push(this);    
 };
 
 SIM.HousePart.prototype.getCurrentEditPointIndex = function() {
@@ -164,6 +164,10 @@ SIM.Wall.prototype.draw = function() {
     shape.lineTo(w, h);
     shape.lineTo(0, h);
     
+    var collisionMesh = new THREE.Mesh(new THREE.ShapeGeometry(shape));
+    collisionMesh.userData.housePart = this;
+    collisionMesh.visible = false;
+    this.meshRoot.add(collisionMesh);
 
     this.children.forEach(function(part) {
         var windowHole = new THREE.Path();        
@@ -180,7 +184,6 @@ SIM.Wall.prototype.draw = function() {
     });
 
     var mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), material);
-    mesh.userData.housePart = this;
     this.meshRoot.add(mesh);
     
     var v01 = new THREE.Vector3().subVectors(this.points[1], this.points[0]).normalize();
@@ -218,13 +221,14 @@ SIM.Window.prototype.moveCurrentEditPoint = function(p) {
     this.points[destinationIndex + 1] = this.points[sourceIndex + 1].clone();
     this.points[destinationIndex + 1].y = this.points[sourceIndex].y;
     this.draw();
+    this.parent.draw();
 };
 
 SIM.Window.prototype.draw = function() {
     for (var i = this.meshRoot.children.length; i >= 0; i--)
         this.meshRoot.remove(this.meshRoot.children[i]);
 
-    this.drawEditPoints();
+    this.drawEditPoints();    
 };
 
 SIM.Window.prototype.canBeInsertedOn = function(parent) {
@@ -238,7 +242,7 @@ SIM.Window.prototype.drawEditPoints = function() {
             sphere.userData.housePart = this;
             sphere.userData.editPointIndex = i;
             this.editPointsRoot.add(sphere);
-        }        
+        }
         this.editPointsRoot.children[i].position = this.parent ? this.parent.meshRoot.localToWorld(this.points[i].clone()) : this.points[i];
     }
 };
