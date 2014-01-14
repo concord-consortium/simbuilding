@@ -111,12 +111,10 @@ function initGui() {
         };
         this.wall = function() {
             currentHousePart = new SIM.Wall();
-            sceneRoot.add(currentHousePart.root);
             insertNewHousePart = true;
         };
         this.window = function() {
             currentHousePart = new SIM.Window();
-            sceneRoot.add(currentHousePart.root);
             insertNewHousePart = true;
         };
     };
@@ -183,6 +181,7 @@ function hover() {
             hoveredUserData = intersects[0].object.userData;
             if (editing) {                
                 currentHousePart.setParentIfAllowed(hoveredUserData.housePart);
+                scene.updateMatrixWorld();
                 currentHousePart.moveCurrentEditPoint(intersects[0].point);
             }
         }
