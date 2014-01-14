@@ -182,8 +182,8 @@ function hover() {
         if (intersects.length > 0) {
             hoveredUserData = intersects[0].object.userData;
             if (editing) {                
-                currentHousePart.setContainerIfAllowed(hoveredUserData.housePart);
-                currentHousePart.moveCurrentEditPoint(intersects[0].point);                
+                currentHousePart.setParentIfAllowed(hoveredUserData.housePart);
+                currentHousePart.moveCurrentEditPoint(intersects[0].point);
             }
         }
     }

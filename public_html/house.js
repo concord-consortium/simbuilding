@@ -11,13 +11,17 @@ SIM.HousePart = function() {
     this.root.add(this.meshRoot);
     this.id = id++;    
     this.initMode = true;
-    this.setCurrentEditPointIndex(0);
+    this.parent = null;
+    this.children = [];
+    this.setCurrentEditPointIndex(0);    
 };
 
 SIM.HousePart.prototype.complete = function() {
     this.currentEditPointIndex = null;
     this.initMode = false;
-    this.completed = true;
+    this.completed = true;    
+    if (this.parent && this.parent.children.indexOf(this) === -1)
+        this.parent.children.push(this);
 };
 
 SIM.HousePart.prototype.isCompleted = function() {
@@ -37,13 +41,13 @@ SIM.HousePart.prototype.isCurrentEditPointVertical = function() {
     return false;
 };
 
-SIM.HousePart.prototype.setContainerIfAllowed = function(container) {
+SIM.HousePart.prototype.setParentIfAllowed = function(parent) {
     if (this.initMode && this.currentEditPointIndex === 0)
-        this.container = container;
+        this.parent = parent;
 };
 
-SIM.HousePart.prototype.getContainer = function() {
-    return this.container;
+SIM.HousePart.prototype.getParent = function() {
+    return this.parent;
 };
 
 SIM.HousePart.prototype.drawEditPoints = function() {
@@ -104,8 +108,8 @@ SIM.Platform.prototype.draw = function() {
     this.meshRoot.position.z = this.points[0].z + (this.points[1].z - this.points[0].z) / 2;
 };
 
-SIM.Platform.prototype.canBeInsertedOn = function(container) {
-    return container === null;
+SIM.Platform.prototype.canBeInsertedOn = function(parent) {
+    return parent === null;
 };
 
 SIM.Wall = function() {
@@ -159,6 +163,21 @@ SIM.Wall.prototype.draw = function() {
     shape.lineTo(w, 0);
     shape.lineTo(w, h);
     shape.lineTo(0, h);
+    
+
+    this.children.forEach(function(part) {
+        var windowHole = new THREE.Path();        
+//        windowHole.moveTo(part.points[0].x, part.points[0].y);
+//        windowHole.lineTo(part.points[3].x, part.points[3].y);
+//        windowHole.lineTo(part.points[1].x, part.points[1].y);
+//        windowHole.lineTo(part.points[2].x, part.points[2].y);        
+        var C = 100;
+        windowHole.moveTo(Math.round(part.points[0].x * C) / C, Math.round(part.points[0].y * C) / C);
+        windowHole.lineTo(Math.round(part.points[3].x * C) / C, Math.round(part.points[3].y * C) / C);
+        windowHole.lineTo(Math.round(part.points[1].x * C) / C, Math.round(part.points[1].y * C) / C);
+        windowHole.lineTo(Math.round(part.points[2].x * C) / C, Math.round(part.points[2].y * C) / C);
+        shape.holes.push(windowHole);
+    });
 
     var mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), material);
     mesh.userData.housePart = this;
@@ -171,8 +190,8 @@ SIM.Wall.prototype.draw = function() {
     this.meshRoot.position.z = this.points[0].z;
 };
 
-SIM.Wall.prototype.canBeInsertedOn = function(container) {
-    return container instanceof SIM.Platform;
+SIM.Wall.prototype.canBeInsertedOn = function(parent) {
+    return parent instanceof SIM.Platform;
 };
 
 SIM.Wall.prototype.isCurrentEditPointVertical = function() {
@@ -186,7 +205,7 @@ SIM.Window = function() {
 SIM.Window.prototype = new SIM.HousePart();
 
 SIM.Window.prototype.moveCurrentEditPoint = function(p) {
-//    p = this.container.meshRoot.worldToLocal(p);
+    p = this.parent.meshRoot.worldToLocal(p);
     this.points[this.currentEditPointIndex] = p;
     if (this.initMode) {
         if (this.currentEditPointIndex === 0)
@@ -195,9 +214,9 @@ SIM.Window.prototype.moveCurrentEditPoint = function(p) {
     var sourceIndex = this.currentEditPointIndex < 2 ? 0 : 2;
     var destinationIndex = sourceIndex === 0 ? 2 : 0;
     this.points[destinationIndex] = this.points[sourceIndex].clone();
-    this.points[destinationIndex].z = this.points[sourceIndex + 1].z;
+    this.points[destinationIndex].y = this.points[sourceIndex + 1].y;
     this.points[destinationIndex + 1] = this.points[sourceIndex + 1].clone();
-    this.points[destinationIndex + 1].z = this.points[sourceIndex].z;
+    this.points[destinationIndex + 1].y = this.points[sourceIndex].y;
     this.draw();
 };
 
@@ -208,6 +227,18 @@ SIM.Window.prototype.draw = function() {
     this.drawEditPoints();
 };
 
-SIM.Window.prototype.canBeInsertedOn = function(container) {
-    return container instanceof SIM.Wall;
+SIM.Window.prototype.canBeInsertedOn = function(parent) {
+    return parent instanceof SIM.Wall;
+};
+
+SIM.Window.prototype.drawEditPoints = function() {
+    for (var i = 0; i < this.points.length; i++) {
+        if (i === this.editPointsRoot.children.length) {
+            var sphere = new THREE.Mesh(new THREE.SphereGeometry(0.1));
+            sphere.userData.housePart = this;
+            sphere.userData.editPointIndex = i;
+            this.editPointsRoot.add(sphere);
+        }        
+        this.editPointsRoot.children[i].position = this.parent ? this.parent.meshRoot.localToWorld(this.points[i].clone()) : this.points[i];
+    }
 };
