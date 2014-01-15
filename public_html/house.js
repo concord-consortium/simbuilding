@@ -156,20 +156,18 @@ SIM.Wall.prototype.draw = function() {
         SIM.Wall.texture.wrapS = THREE.RepeatWrapping;
         SIM.Wall.texture.wrapT = THREE.RepeatWrapping;
     }
-    SIM.Wall.texture.repeat.x = 0.1 * this.root.matrixWorld.elements[0];
-    SIM.Wall.texture.repeat.y = 0.5;
+//    SIM.Wall.texture.repeat.x = 0.1 * this.rootTG.matrixWorld.elements[0];
+//    SIM.Wall.texture.repeat.y = 0.5;
 
     var material = new THREE.MeshLambertMaterial();
     material.map = SIM.Wall.texture;
     material.side = THREE.DoubleSide;
 
-    var w = this.points[0].distanceTo(this.points[1]);
-    var h = this.points[0].distanceTo(this.points[2]);
     var shape = new THREE.Shape();
     shape.moveTo(0, 0);
-    shape.lineTo(w, 0);
-    shape.lineTo(w, h);
-    shape.lineTo(0, h);
+    shape.lineTo(1, 0);
+    shape.lineTo(1, 1);
+    shape.lineTo(0, 1);
 
     var collisionMesh = new THREE.Mesh(new THREE.ShapeGeometry(shape));
     collisionMesh.userData.housePart = this;
@@ -179,26 +177,27 @@ SIM.Wall.prototype.draw = function() {
     this.childrenRoot.children.forEach(function(child) {
         var part = child.userData.housePart;
         var windowHole = new THREE.Path();
-//        windowHole.moveTo(part.points[0].x, part.points[0].y);
-//        windowHole.lineTo(part.points[3].x, part.points[3].y);
-//        windowHole.lineTo(part.points[1].x, part.points[1].y);
-//        windowHole.lineTo(part.points[2].x, part.points[2].y);        
-        var C = 100;
-        windowHole.moveTo(Math.round(part.points[0].x * C) / C, Math.round(part.points[0].y * C) / C);
-        windowHole.lineTo(Math.round(part.points[3].x * C) / C, Math.round(part.points[3].y * C) / C);
-        windowHole.lineTo(Math.round(part.points[1].x * C) / C, Math.round(part.points[1].y * C) / C);
-        windowHole.lineTo(Math.round(part.points[2].x * C) / C, Math.round(part.points[2].y * C) / C);
+        windowHole.moveTo(part.points[0].x, part.points[0].y);
+        windowHole.lineTo(part.points[3].x, part.points[3].y);
+        windowHole.lineTo(part.points[1].x, part.points[1].y);
+        windowHole.lineTo(part.points[2].x, part.points[2].y);        
         shape.holes.push(windowHole);
     });
 
-    var mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), material);
-    this.meshRoot.add(mesh);
 
     var v01 = new THREE.Vector3().subVectors(this.points[1], this.points[0]).normalize();
     this.rootTG.rotation.y = (v01.dot(new THREE.Vector3(0, 0, 1)) > 0 ? -1 : 1) * v01.angleTo(new THREE.Vector3(1, 0, 0));
     this.rootTG.position.x = this.points[0].x;
     this.rootTG.position.y = this.points[0].y;
     this.rootTG.position.z = this.points[0].z;
+    this.rootTG.scale.x = this.points[0].distanceTo(this.points[1]);
+    this.rootTG.scale.y = this.points[0].distanceTo(this.points[2]);
+    
+    SIM.Wall.texture.repeat.x = 0.1 * this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[1].clone()));
+    SIM.Wall.texture.repeat.y = 0.5;
+    
+    var mesh = new THREE.Mesh(new THREE.ShapeGeometry(shape), material);
+    this.meshRoot.add(mesh);
 };
 
 SIM.Wall.prototype.canBeInsertedOn = function(parent) {
