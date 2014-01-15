@@ -120,7 +120,7 @@ SIM.Platform.prototype.draw = function() {
     this.meshRoot.add(mesh);
 
     this.rootTG.scale.x = Math.abs(this.points[1].x - this.points[0].x);
-    this.rootTG.scale.z = Math.abs(this.points[1].z - this.points[0].z)
+    this.rootTG.scale.z = Math.abs(this.points[1].z - this.points[0].z);
     this.rootTG.position.x = this.points[0].x + (this.points[1].x - this.points[0].x) / 2;
     this.rootTG.position.z = this.points[0].z + (this.points[1].z - this.points[0].z) / 2;
 };
@@ -226,7 +226,7 @@ SIM.Window = function() {
 SIM.Window.prototype = new SIM.HousePart();
 
 SIM.Window.prototype.moveCurrentEditPoint = function(p) {
-    p = this.parent.root.worldToLocal(p);
+    p = this.root.worldToLocal(p);
     this.points[this.currentEditPointIndex] = p;
     if (this.initMode) {
         if (this.currentEditPointIndex === 0)

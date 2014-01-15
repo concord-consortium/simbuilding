@@ -159,7 +159,7 @@ function hover() {
     raycaster.set(camera.position, pickDirection);
     var editing = currentHousePart && !currentHousePart.isCompleted();
     if (currentHousePart && currentHousePart.isCurrentEditPointVertical()) {
-        currentHousePart.moveCurrentEditPoint(closestPoint(currentHousePart.points[currentHousePart.getCurrentEditPointIndex()], new THREE.Vector3(0, 1, 0), camera.position, pickDirection));
+        currentHousePart.moveCurrentEditPoint(closestPoint(currentHousePart.root.localToWorld(currentHousePart.points[currentHousePart.getCurrentEditPointIndex()]), new THREE.Vector3(0, 1, 0), camera.position, pickDirection));
     } else {
         var collidables = [];
         if (currentHousePart && currentHousePart.canBeInsertedOn(null))
