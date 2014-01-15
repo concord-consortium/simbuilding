@@ -135,7 +135,7 @@ function handleMouseDown() {
         camControls.enabled = false;
     } else if (hoveredUserData && hoveredUserData.housePart) {
         currentHousePart = hoveredUserData.housePart;
-        if (hoveredUserData.editPointIndex) {
+        if (hoveredUserData.editPointIndex !== undefined) {
             currentHousePart.setCurrentEditPointIndex(hoveredUserData.editPointIndex);
             camControls.enabled = false;
         }
@@ -179,7 +179,8 @@ function hover() {
         var intersects = raycaster.intersectObjects(collidables);
         if (intersects.length > 0) {
             hoveredUserData = intersects[0].object.userData;
-            if (editing) {                
+            console.log(hoveredUserData.housePart); 
+            if (editing) {
                 currentHousePart.setParentIfAllowed(hoveredUserData.housePart);
                 scene.updateMatrixWorld();
                 currentHousePart.moveCurrentEditPoint(intersects[0].point);
