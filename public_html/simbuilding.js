@@ -179,7 +179,6 @@ function hover() {
         var intersects = raycaster.intersectObjects(collidables);
         if (intersects.length > 0) {
             hoveredUserData = intersects[0].object.userData;
-            console.log(hoveredUserData.housePart); 
             if (editing) {
                 currentHousePart.setParentIfAllowed(hoveredUserData.housePart);
                 scene.updateMatrixWorld();

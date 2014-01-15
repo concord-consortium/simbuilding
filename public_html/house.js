@@ -4,7 +4,7 @@ var id = 0;
 
 SIM.HousePart = function() {
     this.points = [new THREE.Vector3(), new THREE.Vector3()];
-    this.root = new THREE.Object3D();
+    this.root = new THREE.Object3D();    
     this.rootTG = new THREE.Object3D();
     this.editPointsRoot = new THREE.Object3D();
     this.meshRoot = new THREE.Object3D();
@@ -15,8 +15,7 @@ SIM.HousePart = function() {
     this.rootTG.add(this.childrenRoot);
     this.id = id++;
     this.initMode = true;
-    this.parent = null;
-    this.children = [];
+    this.root.userData.housePart = this.rootTG.userData.housePart = this.childrenRoot.userData.housePart = this;
     this.setCurrentEditPointIndex(0);
 };
 
@@ -33,10 +32,6 @@ SIM.HousePart.prototype.isCompleted = function() {
 SIM.HousePart.prototype.setCurrentEditPointIndex = function(i) {
     this.currentEditPointIndex = i;
     this.completed = false;
-    if (this.initMode && i !== 0 && this.parent && this.parent.children.indexOf(this) === -1) {
-        this.parent.children.push(this);
-        this.parent.childrenRoot.add(this.root);
-    }
 };
 
 SIM.HousePart.prototype.getCurrentEditPointIndex = function() {
@@ -48,15 +43,9 @@ SIM.HousePart.prototype.isCurrentEditPointVertical = function() {
 };
 
 SIM.HousePart.prototype.setParentIfAllowed = function(parent) {
-    if (this.initMode && this.currentEditPointIndex === 0) {
-        this.parent = parent;
-        if (parent)
-            parent.rootTG.add(this.root);
+    if (parent && this.initMode && this.currentEditPointIndex === 0) {
+        parent.childrenRoot.add(this.root);
     }
-};
-
-SIM.HousePart.prototype.getParent = function() {
-    return this.parent;
 };
 
 SIM.HousePart.prototype.drawEditPoints = function() {
@@ -93,8 +82,8 @@ SIM.Platform.prototype.moveCurrentEditPoint = function(p) {
     this.points[destinationIndex + 1] = this.points[sourceIndex + 1].clone();
     this.points[destinationIndex + 1].z = this.points[sourceIndex].z;
     this.draw();
-    this.children.forEach(function(part) {
-        part.draw();
+    this.childrenRoot.children.forEach(function(child) {
+        child.userData.housePart.draw();
     });
 };
 
@@ -187,7 +176,8 @@ SIM.Wall.prototype.draw = function() {
     collisionMesh.visible = false;
     this.meshRoot.add(collisionMesh);
 
-    this.children.forEach(function(part) {
+    this.childrenRoot.children.forEach(function(child) {
+        var part = child.userData.housePart;
         var windowHole = new THREE.Path();
 //        windowHole.moveTo(part.points[0].x, part.points[0].y);
 //        windowHole.lineTo(part.points[3].x, part.points[3].y);
@@ -239,7 +229,7 @@ SIM.Window.prototype.moveCurrentEditPoint = function(p) {
     this.points[destinationIndex + 1] = this.points[sourceIndex + 1].clone();
     this.points[destinationIndex + 1].y = this.points[sourceIndex].y;
     this.draw();
-    this.parent.draw();
+    this.root.parent.userData.housePart.draw();
 };
 
 SIM.Window.prototype.draw = function() {
