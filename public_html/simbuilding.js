@@ -1,6 +1,6 @@
 var clock;
 var stats;
-var camControls;
+var camControl;
 var renderer;
 var scene;
 var camera;
@@ -44,7 +44,8 @@ function startSimBuilding() {
 //    camControls.lon = -150;
 //    camControls.lat = 120;
 
-    camControls = new THREE.OrbitControls(camera);
+    camControl = new THREE.OrbitControls(camera);
+    camControl.userPanSpeed = 0.05;
 
     renderer = new THREE.WebGLRenderer();
     renderer.setClearColor(0xEEEEEE);
@@ -73,7 +74,7 @@ function render() {
 
     hover();
 
-    camControls.update(delta);
+    camControl.update(delta);
     renderer.clear();
     requestAnimationFrame(render);
     renderer.render(scene, camera);
@@ -132,12 +133,12 @@ function handleMouseMove(event) {
 function handleMouseDown() {
     if (insertNewHousePart) {
         currentHousePart.setCurrentEditPointIndex(currentHousePart.getCurrentEditPointIndex() + 1);
-        camControls.enabled = false;
+        camControl.enabled = false;
     } else if (hoveredUserData && hoveredUserData.housePart) {
         currentHousePart = hoveredUserData.housePart;
         if (hoveredUserData.editPointIndex !== undefined) {
             currentHousePart.setCurrentEditPointIndex(hoveredUserData.editPointIndex);
-            camControls.enabled = false;
+            camControl.enabled = false;
         }
     }
 }
@@ -149,7 +150,7 @@ function handleMouseUp() {
         currentHousePart = null;
     }
     insertNewHousePart = false;
-    camControls.enabled = true;
+    camControl.enabled = true;
 }
 
 function hover() {
