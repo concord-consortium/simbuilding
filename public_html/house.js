@@ -72,6 +72,22 @@ SIM.HousePart.prototype.drawEditPoints = function() {
 
 SIM.Platform = function() {
     SIM.HousePart.call(this);
+    
+    if (SIM.Platform.texture === undefined) {
+        SIM.Platform.texture = THREE.ImageUtils.loadTexture("resources/textures/platform.jpg");
+        SIM.Platform.texture.wrapS = THREE.RepeatWrapping;
+        SIM.Platform.texture.wrapT = THREE.RepeatWrapping;
+        SIM.Platform.texture.repeat.x = 0.5;
+    }  
+
+    this.material = new THREE.MeshLambertMaterial();
+    this.material.map = SIM.Platform.texture.clone();
+    this.material.map.needsUpdate = true;
+    
+    this.gridsMaterial = new THREE.MeshBasicMaterial();
+    this.gridsMaterial.map = SIM.HousePart.gridsTexture.clone();
+    this.gridsMaterial.map.needsUpdate = true;
+    this.gridsMaterial.transparent = true;
 };
 
 SIM.Platform.prototype = new SIM.HousePart();
@@ -100,31 +116,17 @@ SIM.Platform.prototype.draw = function() {
 
     this.drawEditPoints();
 
-    if (SIM.Platform.texture === undefined) {
-        SIM.Platform.texture = THREE.ImageUtils.loadTexture("resources/textures/platform.jpg");
-        SIM.Platform.texture.wrapS = THREE.RepeatWrapping;
-        SIM.Platform.texture.wrapT = THREE.RepeatWrapping;
-        SIM.Platform.texture.repeat.x = 0.5;
-    }  
-
     this.rootTG.scale.x = Math.abs(this.points[1].x - this.points[0].x);
     this.rootTG.scale.z = Math.abs(this.points[1].z - this.points[0].z);
     this.rootTG.position.x = this.points[0].x + (this.points[1].x - this.points[0].x) / 2;
     this.rootTG.position.z = this.points[0].z + (this.points[1].z - this.points[0].z) / 2;
     
-    var material = new THREE.MeshLambertMaterial();
-    material.map = SIM.Platform.texture;
-    
-    var gridsMaterial = new THREE.MeshBasicMaterial();
-    gridsMaterial.map = SIM.HousePart.gridsTexture;
-    gridsMaterial.transparent = true;
-
     var w = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[3].clone()));
     var h = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[2].clone()));
-    SIM.HousePart.gridsTexture.repeat.x = 0.2 * w;
-    SIM.HousePart.gridsTexture.repeat.y = 0.2 * h;
+    this.gridsMaterial.map.repeat.x = 0.2 * w;
+    this.gridsMaterial.map.repeat.y = 0.2 * h;
 
-    var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.CubeGeometry(1, 1, 0.2), [material, gridsMaterial]);
+    var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.CubeGeometry(1, 1, 0.2), [this.material, this.gridsMaterial]);
     mesh.rotation.x = -Math.PI / 2;
     this.collisionMesh = mesh.children[0];
     this.collisionMesh.userData.housePart = this;
@@ -137,6 +139,23 @@ SIM.Platform.prototype.canBeInsertedOn = function(parent) {
 
 SIM.Wall = function() {
     SIM.HousePart.call(this);
+    
+    if (SIM.Wall.texture === undefined) {
+        SIM.Wall.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
+        SIM.Wall.texture.wrapS = THREE.RepeatWrapping;
+        SIM.Wall.texture.wrapT = THREE.RepeatWrapping;
+    }
+    
+    this.material = new THREE.MeshLambertMaterial();
+    this.material.map = SIM.Wall.texture.clone();
+    this.material.map.needsUpdate = true;
+    this.material.side = THREE.DoubleSide;
+
+    this.gridsMaterial = new THREE.MeshBasicMaterial();
+    this.gridsMaterial.map = SIM.HousePart.gridsTexture.clone();
+    this.gridsMaterial.map.needsUpdate = true;
+    this.gridsMaterial.transparent = true;    
+    
     this.top = 10;
 };
 
@@ -168,12 +187,6 @@ SIM.Wall.prototype.draw = function() {
 
     this.drawEditPoints();
 
-    if (SIM.Wall.texture === undefined) {
-        SIM.Wall.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
-        SIM.Wall.texture.wrapS = THREE.RepeatWrapping;
-        SIM.Wall.texture.wrapT = THREE.RepeatWrapping;
-    }
-
     var shape = new THREE.Shape();
     shape.moveTo(0, 0);
     shape.lineTo(1, 0);
@@ -203,23 +216,15 @@ SIM.Wall.prototype.draw = function() {
     this.rootTG.position.z = this.points[0].z;
     this.rootTG.scale.x = this.points[0].distanceTo(this.points[1]);
     this.rootTG.scale.y = this.points[0].distanceTo(this.points[2]);
-    
-    var material = new THREE.MeshLambertMaterial();
-    material.map = SIM.Wall.texture;
-    material.side = THREE.DoubleSide;
-
-    var gridsMaterial = new THREE.MeshBasicMaterial();
-    gridsMaterial.map = SIM.HousePart.gridsTexture;
-    gridsMaterial.transparent = true;
 
     var w = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[1].clone()));
     var h = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[2].clone()));
-    SIM.Wall.texture.repeat.x = 0.2 * w;
-    SIM.Wall.texture.repeat.y = 0.4 * h;
-    SIM.HousePart.gridsTexture.repeat.x = 1 * w;
-    SIM.HousePart.gridsTexture.repeat.y = 1 * h;
+    this.material.map.repeat.x = 0.2 * w;
+    this.material.map.repeat.y = 0.4 * h;
+    this.gridsMaterial.map.repeat.x = 1 * w;
+    this.gridsMaterial.map.repeat.y = 1 * h;
 
-    var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.ShapeGeometry(shape), [material, gridsMaterial]);
+    var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.ShapeGeometry(shape), [this.material, this.gridsMaterial]);
     this.meshRoot.add(mesh);
 };
 
