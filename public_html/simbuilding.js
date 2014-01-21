@@ -168,7 +168,7 @@ function hover() {
 
         houseParts.forEach(function(part) {
             if (!currentHousePart || currentHousePart.canBeInsertedOn(part)) {
-                collidables.push(part.meshRoot.children[0]);
+                collidables.push(part.collisionMesh);
                 if (!editing)
                     part.editPointsRoot.children.forEach(function(sphere) {
                         collidables.push(sphere);

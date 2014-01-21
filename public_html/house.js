@@ -105,20 +105,30 @@ SIM.Platform.prototype.draw = function() {
         SIM.Platform.texture.wrapS = THREE.RepeatWrapping;
         SIM.Platform.texture.wrapT = THREE.RepeatWrapping;
         SIM.Platform.texture.repeat.x = 0.5;
-    }
-
-    var material = new THREE.MeshLambertMaterial();
-    material.map = SIM.Platform.texture;
-
-    var mesh = new THREE.Mesh(new THREE.CubeGeometry(1, 1, 0.2), material);
-    mesh.userData.housePart = this;
-    mesh.rotation.x = -Math.PI / 2;
-    this.meshRoot.add(mesh);
+    }  
 
     this.rootTG.scale.x = Math.abs(this.points[1].x - this.points[0].x);
     this.rootTG.scale.z = Math.abs(this.points[1].z - this.points[0].z);
     this.rootTG.position.x = this.points[0].x + (this.points[1].x - this.points[0].x) / 2;
     this.rootTG.position.z = this.points[0].z + (this.points[1].z - this.points[0].z) / 2;
+    
+    var material = new THREE.MeshLambertMaterial();
+    material.map = SIM.Platform.texture;
+    
+    var gridsMaterial = new THREE.MeshBasicMaterial();
+    gridsMaterial.map = SIM.HousePart.gridsTexture;
+    gridsMaterial.transparent = true;
+
+    var w = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[3].clone()));
+    var h = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[2].clone()));
+    SIM.HousePart.gridsTexture.repeat.x = 0.2 * w;
+    SIM.HousePart.gridsTexture.repeat.y = 0.2 * h;
+
+    var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.CubeGeometry(1, 1, 0.2), [material, gridsMaterial]);
+    mesh.rotation.x = -Math.PI / 2;
+    this.collisionMesh = mesh.children[0];
+    this.collisionMesh.userData.housePart = this;
+    this.meshRoot.add(mesh);
 };
 
 SIM.Platform.prototype.canBeInsertedOn = function(parent) {
@@ -170,10 +180,10 @@ SIM.Wall.prototype.draw = function() {
     shape.lineTo(1, 1);
     shape.lineTo(0, 1);
 
-    var collisionMesh = new THREE.Mesh(new THREE.ShapeGeometry(shape));
-    collisionMesh.userData.housePart = this;
-    collisionMesh.visible = false;
-    this.meshRoot.add(collisionMesh);
+    this.collisionMesh = new THREE.Mesh(new THREE.ShapeGeometry(shape));
+    this.collisionMesh.userData.housePart = this;
+    this.collisionMesh.visible = false;
+    this.meshRoot.add(this.collisionMesh);
 
     this.childrenRoot.children.forEach(function(child) {
         var part = child.userData.housePart;
