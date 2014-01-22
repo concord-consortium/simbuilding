@@ -15,6 +15,7 @@ var currentHousePart;
 var hoveredUserData;
 
 function startSimBuilding() {
+    SIM.loadTextures();
     clock = new THREE.Clock();
     mouse = new THREE.Vector2();
     projector = new THREE.Projector();

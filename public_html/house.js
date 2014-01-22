@@ -2,6 +2,20 @@ var SIM = SIM || {REVISION: '1'};
 
 var id = 0;
 
+SIM.loadTextures = function() {
+        SIM.HousePart.gridsTexture = THREE.ImageUtils.loadTexture("resources/textures/grid.png");
+        SIM.HousePart.gridsTexture.wrapS = THREE.RepeatWrapping;
+        SIM.HousePart.gridsTexture.wrapT = THREE.RepeatWrapping;
+
+        SIM.Platform.texture = THREE.ImageUtils.loadTexture("resources/textures/platform.jpg");
+        SIM.Platform.texture.wrapS = THREE.RepeatWrapping;
+        SIM.Platform.texture.wrapT = THREE.RepeatWrapping;
+
+        SIM.Wall.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
+        SIM.Wall.texture.wrapS = THREE.RepeatWrapping;
+        SIM.Wall.texture.wrapT = THREE.RepeatWrapping;    
+};
+
 SIM.HousePart = function() {
     this.points = [new THREE.Vector3(), new THREE.Vector3()];
     this.root = new THREE.Object3D();
@@ -16,13 +30,6 @@ SIM.HousePart = function() {
     this.id = id++;
     this.initMode = true;
     this.root.userData.housePart = this.rootTG.userData.housePart = this.childrenRoot.userData.housePart = this;
-
-    if (SIM.HousePart.gridsTexture === undefined) {
-        SIM.HousePart.gridsTexture = THREE.ImageUtils.loadTexture("resources/textures/grid.png");
-        SIM.HousePart.gridsTexture.wrapS = THREE.RepeatWrapping;
-        SIM.HousePart.gridsTexture.wrapT = THREE.RepeatWrapping;
-    }
-
     this.setCurrentEditPointIndex(0);
 };
 
@@ -73,21 +80,14 @@ SIM.HousePart.prototype.drawEditPoints = function() {
 SIM.Platform = function() {
     SIM.HousePart.call(this);
     
-    if (SIM.Platform.texture === undefined) {
-        SIM.Platform.texture = THREE.ImageUtils.loadTexture("resources/textures/platform.jpg");
-        SIM.Platform.texture.wrapS = THREE.RepeatWrapping;
-        SIM.Platform.texture.wrapT = THREE.RepeatWrapping;
-        SIM.Platform.texture.repeat.x = 0.5;
-    }  
-
     this.material = new THREE.MeshLambertMaterial();
     this.material.map = SIM.Platform.texture.clone();
     this.material.map.needsUpdate = true;
     
     this.gridsMaterial = new THREE.MeshBasicMaterial();
     this.gridsMaterial.map = SIM.HousePart.gridsTexture.clone();
-    this.gridsMaterial.map.needsUpdate = true;
     this.gridsMaterial.transparent = true;
+    this.gridsMaterial.map.needsUpdate = true;
 };
 
 SIM.Platform.prototype = new SIM.HousePart();
@@ -140,21 +140,15 @@ SIM.Platform.prototype.canBeInsertedOn = function(parent) {
 SIM.Wall = function() {
     SIM.HousePart.call(this);
     
-    if (SIM.Wall.texture === undefined) {
-        SIM.Wall.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
-        SIM.Wall.texture.wrapS = THREE.RepeatWrapping;
-        SIM.Wall.texture.wrapT = THREE.RepeatWrapping;
-    }
-    
     this.material = new THREE.MeshLambertMaterial();
-    this.material.map = SIM.Wall.texture.clone();
-    this.material.map.needsUpdate = true;
+    this.material.map = SIM.Wall.texture;
     this.material.side = THREE.DoubleSide;
+    this.material.map.needsUpdate = true;
 
     this.gridsMaterial = new THREE.MeshBasicMaterial();
     this.gridsMaterial.map = SIM.HousePart.gridsTexture.clone();
-    this.gridsMaterial.map.needsUpdate = true;
     this.gridsMaterial.transparent = true;    
+    this.gridsMaterial.map.needsUpdate = true;
     
     this.top = 10;
 };
