@@ -3,17 +3,17 @@ var SIM = SIM || {REVISION: '1'};
 var id = 0;
 
 SIM.loadTextures = function() {
-        SIM.HousePart.gridsTexture = THREE.ImageUtils.loadTexture("resources/textures/grid.png");
-        SIM.HousePart.gridsTexture.wrapS = THREE.RepeatWrapping;
-        SIM.HousePart.gridsTexture.wrapT = THREE.RepeatWrapping;
+    SIM.HousePart.gridsTexture = THREE.ImageUtils.loadTexture("resources/textures/grid.png");
+    SIM.HousePart.gridsTexture.wrapS = THREE.RepeatWrapping;
+    SIM.HousePart.gridsTexture.wrapT = THREE.RepeatWrapping;
 
-        SIM.Platform.texture = THREE.ImageUtils.loadTexture("resources/textures/platform.jpg");
-        SIM.Platform.texture.wrapS = THREE.RepeatWrapping;
-        SIM.Platform.texture.wrapT = THREE.RepeatWrapping;
+    SIM.Platform.texture = THREE.ImageUtils.loadTexture("resources/textures/platform.jpg");
+    SIM.Platform.texture.wrapS = THREE.RepeatWrapping;
+    SIM.Platform.texture.wrapT = THREE.RepeatWrapping;
 
-        SIM.Wall.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
-        SIM.Wall.texture.wrapS = THREE.RepeatWrapping;
-        SIM.Wall.texture.wrapT = THREE.RepeatWrapping;    
+    SIM.Wall.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
+    SIM.Wall.texture.wrapS = THREE.RepeatWrapping;
+    SIM.Wall.texture.wrapT = THREE.RepeatWrapping;
 };
 
 SIM.HousePart = function() {
@@ -77,13 +77,17 @@ SIM.HousePart.prototype.drawEditPoints = function() {
     }
 };
 
+SIM.HousePart.prototype.isDrawable = function() {
+    return this.points[0].distanceTo(this.points[1]) > 0;
+};
+
 SIM.Platform = function() {
     SIM.HousePart.call(this);
-    
+
     this.material = new THREE.MeshLambertMaterial();
     this.material.map = SIM.Platform.texture.clone();
     this.material.map.needsUpdate = true;
-    
+
     this.gridsMaterial = new THREE.MeshBasicMaterial();
     this.gridsMaterial.map = SIM.HousePart.gridsTexture.clone();
     this.gridsMaterial.transparent = true;
@@ -116,11 +120,14 @@ SIM.Platform.prototype.draw = function() {
 
     this.drawEditPoints();
 
+    if (!this.isDrawable())
+        return;
+
     this.rootTG.scale.x = Math.abs(this.points[1].x - this.points[0].x);
     this.rootTG.scale.z = Math.abs(this.points[1].z - this.points[0].z);
     this.rootTG.position.x = this.points[0].x + (this.points[1].x - this.points[0].x) / 2;
     this.rootTG.position.z = this.points[0].z + (this.points[1].z - this.points[0].z) / 2;
-    
+
     var w = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[3].clone()));
     var h = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[2].clone()));
     this.gridsMaterial.map.repeat.x = 0.2 * w;
@@ -139,7 +146,7 @@ SIM.Platform.prototype.canBeInsertedOn = function(parent) {
 
 SIM.Wall = function() {
     SIM.HousePart.call(this);
-    
+
     this.material = new THREE.MeshLambertMaterial();
     this.material.map = SIM.Wall.texture;
     this.material.side = THREE.DoubleSide;
@@ -147,9 +154,9 @@ SIM.Wall = function() {
 
     this.gridsMaterial = new THREE.MeshBasicMaterial();
     this.gridsMaterial.map = SIM.HousePart.gridsTexture.clone();
-    this.gridsMaterial.transparent = true;    
+    this.gridsMaterial.transparent = true;
     this.gridsMaterial.map.needsUpdate = true;
-    
+
     this.top = 10;
 };
 
@@ -181,6 +188,9 @@ SIM.Wall.prototype.draw = function() {
 
     this.drawEditPoints();
 
+    if (!this.isDrawable())
+        return;
+
     var shape = new THREE.Shape();
     shape.moveTo(0, 0);
     shape.lineTo(1, 0);
@@ -194,12 +204,14 @@ SIM.Wall.prototype.draw = function() {
 
     this.childrenRoot.children.forEach(function(child) {
         var part = child.userData.housePart;
-        var windowHole = new THREE.Path();
-        windowHole.moveTo(part.points[0].x, part.points[0].y);
-        windowHole.lineTo(part.points[3].x, part.points[3].y);
-        windowHole.lineTo(part.points[1].x, part.points[1].y);
-        windowHole.lineTo(part.points[2].x, part.points[2].y);
-        shape.holes.push(windowHole);
+        if (part.isDrawable()) {
+            var windowHole = new THREE.Path();
+            windowHole.moveTo(part.points[0].x, part.points[0].y);
+            windowHole.lineTo(part.points[3].x, part.points[3].y);
+            windowHole.lineTo(part.points[1].x, part.points[1].y);
+            windowHole.lineTo(part.points[2].x, part.points[2].y);
+            shape.holes.push(windowHole);
+        }
     });
 
 
