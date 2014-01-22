@@ -81,6 +81,10 @@ SIM.HousePart.prototype.isDrawable = function() {
     return this.points[0].distanceTo(this.points[1]) > 0;
 };
 
+SIM.HousePart.prototype.getAbsPoint = function(index) {
+    return this.root.parent.localToWorld(this.points[index].clone());
+};
+
 SIM.Platform = function() {
     SIM.HousePart.call(this);
 
@@ -97,7 +101,7 @@ SIM.Platform = function() {
 SIM.Platform.prototype = new SIM.HousePart();
 
 SIM.Platform.prototype.moveCurrentEditPoint = function(p) {
-    this.points[this.currentEditPointIndex] = p;
+    this.points[this.currentEditPointIndex] = this.snapToGrid(p);
     if (this.initMode) {
         if (this.currentEditPointIndex === 0)
             this.points[1] = this.points[0];
@@ -130,8 +134,8 @@ SIM.Platform.prototype.draw = function() {
 
     var w = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[3].clone()));
     var h = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[2].clone()));
-    this.gridsMaterial.map.repeat.x = 0.2 * w;
-    this.gridsMaterial.map.repeat.y = 0.2 * h;
+    this.gridsMaterial.map.repeat.x = 0.25 * w;
+    this.gridsMaterial.map.repeat.y = 0.25 * h;
 
     var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.CubeGeometry(1, 1, 0.2), [this.material, this.gridsMaterial]);
     mesh.rotation.x = -Math.PI / 2;
@@ -142,6 +146,12 @@ SIM.Platform.prototype.draw = function() {
 
 SIM.Platform.prototype.canBeInsertedOn = function(parent) {
     return parent === null;
+};
+
+SIM.Platform.prototype.snapToGrid = function(p) {
+    p.x = Math.round(p.x);
+    p.z = Math.round(p.z);
+    return p;
 };
 
 SIM.Wall = function() {
@@ -163,7 +173,7 @@ SIM.Wall = function() {
 SIM.Wall.prototype = new SIM.HousePart();
 
 SIM.Wall.prototype.moveCurrentEditPoint = function(p) {
-    p = this.root.worldToLocal(p);
+    p = this.root.worldToLocal(this.snapToGrid(p));
     this.points[this.currentEditPointIndex] = p;
 
     if (this.initMode) {
@@ -214,7 +224,6 @@ SIM.Wall.prototype.draw = function() {
         }
     });
 
-
     var v01 = new THREE.Vector3().subVectors(this.points[1], this.points[0]).normalize();
     this.rootTG.rotation.y = (v01.dot(new THREE.Vector3(0, 0, 1)) > 0 ? -1 : 1) * v01.angleTo(new THREE.Vector3(1, 0, 0));
     this.rootTG.position.x = this.points[0].x;
@@ -222,6 +231,7 @@ SIM.Wall.prototype.draw = function() {
     this.rootTG.position.z = this.points[0].z;
     this.rootTG.scale.x = this.points[0].distanceTo(this.points[1]);
     this.rootTG.scale.y = this.points[0].distanceTo(this.points[2]);
+    this.rootTG.updateMatrixWorld();
 
     var w = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[1].clone()));
     var h = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[2].clone()));
@@ -242,6 +252,12 @@ SIM.Wall.prototype.isCurrentEditPointVertical = function() {
     return this.currentEditPointIndex >= 2;
 };
 
+SIM.Wall.prototype.snapToGrid = function(p) {
+    p.x = Math.round(p.x);
+    p.z = Math.round(p.z);
+    return p;
+};
+
 SIM.Window = function() {
     SIM.HousePart.call(this);
 };
@@ -249,7 +265,7 @@ SIM.Window = function() {
 SIM.Window.prototype = new SIM.HousePart();
 
 SIM.Window.prototype.moveCurrentEditPoint = function(p) {
-    p = this.root.worldToLocal(p);
+    p = this.snapToGrid(this.root.worldToLocal(p));
     this.points[this.currentEditPointIndex] = p;
     if (this.initMode) {
         if (this.currentEditPointIndex === 0)
@@ -274,4 +290,14 @@ SIM.Window.prototype.draw = function() {
 
 SIM.Window.prototype.canBeInsertedOn = function(parent) {
     return parent instanceof SIM.Wall;
+};
+
+SIM.Window.prototype.snapToGrid = function(p) {
+    var gridSize = 0.25;
+    var wall = this.root.parent.userData.housePart;
+    var scaleX = wall.getAbsPoint(0).distanceTo(wall.getAbsPoint(1)) / gridSize;
+    var scaleY = wall.getAbsPoint(0).distanceTo(wall.getAbsPoint(2)) / gridSize;
+    p.x = Math.round(p.x * scaleX) / scaleX;
+    p.y = Math.round(p.y * scaleY) / scaleY;
+    return p;
 };
