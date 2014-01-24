@@ -37,6 +37,7 @@ SIM.HousePart.prototype.complete = function() {
     this.currentEditPointIndex = null;
     this.initMode = false;
     this.completed = true;
+    this.setParentGridsVisible(false);
 };
 
 SIM.HousePart.prototype.isCompleted = function() {
@@ -85,6 +86,12 @@ SIM.HousePart.prototype.getAbsPoint = function(index) {
     return this.root.parent.localToWorld(this.points[index].clone());
 };
 
+SIM.HousePart.prototype.setParentGridsVisible = function(visible) {
+    var parent = this.root.parent.userData.housePart;
+    if (parent)
+        parent.gridsMaterial.visible = visible;
+};
+
 SIM.Platform = function() {
     SIM.HousePart.call(this);
 
@@ -96,6 +103,7 @@ SIM.Platform = function() {
     this.gridsMaterial.map = SIM.HousePart.gridsTexture.clone();
     this.gridsMaterial.transparent = true;
     this.gridsMaterial.map.needsUpdate = true;
+    this.gridsMaterial.visible = false;
 };
 
 SIM.Platform.prototype = new SIM.HousePart();
@@ -158,7 +166,7 @@ SIM.Wall = function() {
     SIM.HousePart.call(this);
 
     this.material = new THREE.MeshLambertMaterial();
-    this.material.map = SIM.Wall.texture;
+    this.material.map = SIM.Wall.texture.clone();
     this.material.side = THREE.DoubleSide;
     this.material.map.needsUpdate = true;
 
@@ -166,6 +174,7 @@ SIM.Wall = function() {
     this.gridsMaterial.map = SIM.HousePart.gridsTexture.clone();
     this.gridsMaterial.transparent = true;
     this.gridsMaterial.map.needsUpdate = true;
+    this.gridsMaterial.visible = false;
 
     this.top = 10;
 };
@@ -190,6 +199,7 @@ SIM.Wall.prototype.moveCurrentEditPoint = function(p) {
         this.points[this.currentEditPointIndex === 2 ? 3 : 2].y = p.y;
 
     this.draw();
+    this.setParentGridsVisible(true);
 };
 
 SIM.Wall.prototype.draw = function() {
@@ -278,6 +288,7 @@ SIM.Window.prototype.moveCurrentEditPoint = function(p) {
     this.points[destinationIndex + 1] = this.points[sourceIndex + 1].clone();
     this.points[destinationIndex + 1].y = this.points[sourceIndex].y;
     this.draw();
+    this.setParentGridsVisible(true);
     this.root.parent.userData.housePart.draw();
 };
 
@@ -285,7 +296,7 @@ SIM.Window.prototype.draw = function() {
     for (var i = this.meshRoot.children.length; i >= 0; i--)
         this.meshRoot.remove(this.meshRoot.children[i]);
 
-    this.drawEditPoints();
+    this.drawEditPoints();    
 };
 
 SIM.Window.prototype.canBeInsertedOn = function(parent) {
