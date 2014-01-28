@@ -225,37 +225,15 @@ SIM.Wall.prototype.draw = function() {
     this.childrenRoot.children.forEach(function(child) {
         var part = child.userData.housePart;
         if (part.isDrawable()) {
-            var windowHole = new THREE.Path();
-            console.log("var windowHole = new THREE.Path();");
-            console.log("windowHole.moveTo(" + part.points[0].x + ', ' + part.points[0].y + ")");
-            console.log("windowHole.lineTo(" + part.points[3].x + ', ' + part.points[3].y + ")");
-            console.log("windowHole.lineTo(" + part.points[1].x + ', ' + part.points[1].y + ")");
-            console.log("windowHole.lineTo(" + part.points[2].x + ', ' + part.points[2].y + ")");
-            console.log("shape.holes.push(windowHole);");
+            var windowHole = new THREE.Shape();
             windowHole.moveTo(part.points[0].x, part.points[0].y);
             windowHole.lineTo(part.points[3].x, part.points[3].y);
             windowHole.lineTo(part.points[1].x, part.points[1].y);
             windowHole.lineTo(part.points[2].x, part.points[2].y);
+            windowHole.lineTo(part.points[0].x, part.points[0].y);
             shape.holes.push(windowHole);
-            console.log("----------------------");
         }
     });
-
-
-
-//    var windowHole = new THREE.Path();
-//    windowHole.moveTo(0.14999999888241292, 0.7758620689655171)
-//    windowHole.lineTo(0.4999999962747097, 0.7758620689655171)
-//    windowHole.lineTo(0.4999999962747097, 0.3448275862068965)
-//    windowHole.lineTo(0.14999999888241292, 0.3448275862068965)
-//    shape.holes.push(windowHole);
-//
-//    windowHole = new THREE.Path();
-//    windowHole.moveTo(0.5999999955296517, 0.7758620689655171)
-//    windowHole.lineTo(0.7499999944120646, 0.7758620689655171)
-//    windowHole.lineTo(0.7499999944120646, 0.6034482758620688)
-//    windowHole.lineTo(0.5999999955296517, 0.6034482758620688)
-//    shape.holes.push(windowHole);
 
     var v01 = new THREE.Vector3().subVectors(this.points[1], this.points[0]).normalize();
     this.rootTG.rotation.y = (v01.dot(new THREE.Vector3(0, 0, 1)) > 0 ? -1 : 1) * v01.angleTo(new THREE.Vector3(1, 0, 0));
@@ -273,7 +251,17 @@ SIM.Wall.prototype.draw = function() {
     this.gridsMaterial.map.repeat.x = 1 * w;
     this.gridsMaterial.map.repeat.y = 1 * h;
 
-    var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.ShapeGeometry(shape), [this.material, this.gridsMaterial]);
+    var options = {
+        amount: -0.1,
+//        bevelThickness: 0,
+//        bevelSize: 0,
+//        bevelSegments: 10,
+        bevelEnabled: false,
+//        curveSegments: 10,
+//        steps: 10
+    };
+
+    var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.ExtrudeGeometry(shape, options), [this.material, this.gridsMaterial]);
     this.meshRoot.add(mesh);
 };
 
