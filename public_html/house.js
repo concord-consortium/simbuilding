@@ -174,9 +174,7 @@ SIM.Wall = function() {
     this.gridsMaterial.map = SIM.HousePart.gridsTexture.clone();
     this.gridsMaterial.transparent = true;
     this.gridsMaterial.map.needsUpdate = true;
-    this.gridsMaterial.visible = false;
-
-    this.top = 10;
+//    this.gridsMaterial.visible = false;
 };
 
 SIM.Wall.prototype = new SIM.HousePart();
@@ -225,7 +223,7 @@ SIM.Wall.prototype.draw = function() {
     this.childrenRoot.children.forEach(function(child) {
         var part = child.userData.housePart;
         if (part.isDrawable()) {
-            var windowHole = new THREE.Shape();
+            var windowHole = new THREE.Path();
             windowHole.moveTo(part.points[0].x, part.points[0].y);
             windowHole.lineTo(part.points[3].x, part.points[3].y);
             windowHole.lineTo(part.points[1].x, part.points[1].y);
@@ -244,24 +242,67 @@ SIM.Wall.prototype.draw = function() {
     this.rootTG.scale.y = this.points[0].distanceTo(this.points[2]);
     this.rootTG.updateMatrixWorld();
 
-    var w = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[1].clone()));
-    var h = this.root.localToWorld(this.points[0].clone()).distanceTo(this.root.localToWorld(this.points[2].clone()));
+    var p0 = this.root.localToWorld(this.points[0].clone());
+    var p1 = this.root.localToWorld(this.points[1].clone());
+    var p2 = this.root.localToWorld(this.points[2].clone());
+    var p01 = new THREE.Vector3().subVectors(p1, p0).normalize();
+    var w = p0.distanceTo(p1);
+    var h = p0.distanceTo(p2);
     this.material.map.repeat.x = 0.2 * w;
     this.material.map.repeat.y = 0.4 * h;
     this.gridsMaterial.map.repeat.x = 1 * w;
     this.gridsMaterial.map.repeat.y = 1 * h;
 
+    var normal = new THREE.Vector3(0, 1, 0).cross(p01).normalize();
+
+    var extrudePath = new THREE.Path();
+    extrudePath.moveTo(0, 0);
+    extrudePath.lineTo(1, 1);
+
+
+    var randomPoints = [];
+    randomPoints.push(new THREE.Vector3(0, 0, 0));
+//    randomPoints.push(new THREE.Vector3(normal.x, 1, normal.z));
+    randomPoints.push(new THREE.Vector3(0, 0.1, 1));
+    randomPoints.push(new THREE.Vector3(0, 1, 0));
+
+    var dot = 1 - normal.dot(new THREE.Vector3(0, 0, 1).normalize());
+
+    var diff = new THREE.Vector3(normal.x * (this.root.matrixWorld.elements[0] - 1), 0, normal.z * (this.root.matrixWorld.elements[10] - 1)).negate();
+
+    diff.x = diff.x / this.root.matrixWorld.elements[0];
+    diff.z = diff.z / this.root.matrixWorld.elements[10];
+//    normal.x = normal.x * this.root.matrixWorld.elements[0];
+//    normal.z = normal.z * this.root.matrixWorld.elements[10];
+
+//    var randomSpline = new THREE.SplineCurve3(randomPoints);
+//    var randomSpline = new THREE.LineCurve3(new THREE.Vector3(0, 1, 0), new THREE.Vector3(normal.x / this.root.matrixWorld.elements[0], 1 + normal.y, normal.z / this.root.matrixWorld.elements[10]));
+//    var randomSpline = new THREE.LineCurve3(new THREE.Vector3(0, 1, 0), new THREE.Vector3(diff.x, 1, 1 + diff.z));
+    var randomSpline = new THREE.LineCurve3(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0.1, 1, 0.1));
+//    var randomSpline = new THREE.LineCurve3(new THREE.Vector3(0, 1, 0), new THREE.Vector3(dot * (this.root.matrixWorld.elements[0] / this.root.matrixWorld.elements[10] - 1), 1, 1 / this.root.matrixWorld.elements[10]));
+    extrudePath = randomSpline;
+
+
+
+//    var extrudePath = [new THREE.Vector2(0, 0, 0), new THREE.Vector2(1, 1, 1)];
+
     var options = {
-        amount: -0.1,
+//        amount: Math.sqrt(Math.pow(p01.x / this.root.matrixWorld.elements[10], 2) + Math.pow(p01.z / this.root.matrixWorld.elements[0], 2)),
 //        bevelThickness: 0,
 //        bevelSize: 0,
 //        bevelSegments: 10,
         bevelEnabled: false,
 //        curveSegments: 10,
-//        steps: 10
+        steps: 2,
+        material: 0,
+        extrudeMaterial: 1,
+        extrudePath: extrudePath
     };
 
     var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.ExtrudeGeometry(shape, options), [this.material, this.gridsMaterial]);
+//    var mesh = new THREE.Mesh(new THREE.ExtrudeGeometry(shape, options), new THREE.MeshFaceMaterial([this.material, this.gridsMaterial]));
+//    mesh.position.z = -0.04;
+//    mesh.scale.z = -1;
     this.meshRoot.add(mesh);
 };
 
