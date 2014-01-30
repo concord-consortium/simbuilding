@@ -253,57 +253,23 @@ SIM.Wall.prototype.draw = function() {
     this.gridsMaterial.map.repeat.x = 1 * w;
     this.gridsMaterial.map.repeat.y = 1 * h;
 
-    var normal = new THREE.Vector3(0, 1, 0).cross(p01).normalize();
-
-    var extrudePath = new THREE.Path();
-    extrudePath.moveTo(0, 0);
-    extrudePath.lineTo(1, 1);
-
-
-    var randomPoints = [];
-    randomPoints.push(new THREE.Vector3(0, 0, 0));
-//    randomPoints.push(new THREE.Vector3(normal.x, 1, normal.z));
-    randomPoints.push(new THREE.Vector3(0, 0.1, 1));
-    randomPoints.push(new THREE.Vector3(0, 1, 0));
-
-    var dot = 1 - normal.dot(new THREE.Vector3(0, 0, 1).normalize());
-
-    var diff = new THREE.Vector3(normal.x * (this.root.matrixWorld.elements[0] - 1), 0, normal.z * (this.root.matrixWorld.elements[10] - 1)).negate();
-
-    diff.x = diff.x / this.root.matrixWorld.elements[0];
-    diff.z = diff.z / this.root.matrixWorld.elements[10];
-//    normal.x = normal.x * this.root.matrixWorld.elements[0];
-//    normal.z = normal.z * this.root.matrixWorld.elements[10];
-
-//    var randomSpline = new THREE.SplineCurve3(randomPoints);
-//    var randomSpline = new THREE.LineCurve3(new THREE.Vector3(0, 1, 0), new THREE.Vector3(normal.x / this.root.matrixWorld.elements[0], 1 + normal.y, normal.z / this.root.matrixWorld.elements[10]));
-//    var randomSpline = new THREE.LineCurve3(new THREE.Vector3(0, 1, 0), new THREE.Vector3(diff.x, 1, 1 + diff.z));
-    var randomSpline = new THREE.LineCurve3(new THREE.Vector3(0, 1, 0), new THREE.Vector3(0.1, 1, 0.1));
-//    var randomSpline = new THREE.LineCurve3(new THREE.Vector3(0, 1, 0), new THREE.Vector3(dot * (this.root.matrixWorld.elements[0] / this.root.matrixWorld.elements[10] - 1), 1, 1 / this.root.matrixWorld.elements[10]));
-    extrudePath = randomSpline;
-
-
-
-//    var extrudePath = [new THREE.Vector2(0, 0, 0), new THREE.Vector2(1, 1, 1)];
-
-    var options = {
-//        amount: Math.sqrt(Math.pow(p01.x / this.root.matrixWorld.elements[10], 2) + Math.pow(p01.z / this.root.matrixWorld.elements[0], 2)),
-//        bevelThickness: 0,
-//        bevelSize: 0,
-//        bevelSegments: 10,
-        bevelEnabled: false,
-//        curveSegments: 10,
-        steps: 2,
-        material: 0,
-        extrudeMaterial: 1,
-        extrudePath: extrudePath
-    };
-
-    var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.ExtrudeGeometry(shape, options), [this.material, this.gridsMaterial]);
-//    var mesh = new THREE.Mesh(new THREE.ExtrudeGeometry(shape, options), new THREE.MeshFaceMaterial([this.material, this.gridsMaterial]));
-//    mesh.position.z = -0.04;
-//    mesh.scale.z = -1;
+    var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.ShapeGeometry(shape), [this.material, this.gridsMaterial]);
     this.meshRoot.add(mesh);
+
+    var thickness = 1 / p0.distanceTo(p1);
+
+    var backShape = new THREE.Shape();
+    backShape.moveTo(thickness, 0);
+    backShape.lineTo(1, 0);
+    backShape.lineTo(1, 1);
+    backShape.lineTo(thickness, 1);
+
+    var backMaterial = new THREE.MeshBasicMaterial();
+    backMaterial.side = THREE.DoubleSide;
+    var backMesh = new THREE.Mesh(new THREE.ShapeGeometry(backShape), backMaterial);
+    backMesh.position.z = 0.01;
+    this.meshRoot.add(backMesh);
+
 };
 
 SIM.Wall.prototype.canBeInsertedOn = function(parent) {
