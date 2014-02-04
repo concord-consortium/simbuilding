@@ -67,6 +67,7 @@ function startSimBuilding() {
 
     $("#WebGL-output").append(renderer.domElement);
     render();
+
 }
 
 function render() {
@@ -217,4 +218,26 @@ function closestPoint(p1, v1, p2, v2) {
     var pa = new THREE.Vector3(p1.x + mua * v1.x, p1.y + mua * v1.y, p1.z + mua * v1.z);
 
     return pa;
+}
+
+function createDefaultScene() {
+    var platform = new SIM.Platform();
+    sceneRoot.add(platform.root);
+    platform.points[0] = new THREE.Vector3(-5, 0, -5);
+    platform.points[1] = new THREE.Vector3(5, 0, 5);
+    platform.points[2] = new THREE.Vector3(-5, 0, 5);
+    platform.points[3] = new THREE.Vector3(5, 0, -5);
+    platform.complete();
+    platform.draw();
+    houseParts.push(platform);
+
+//    var wall = new SIM.Wall();
+//    wall.setParentIfAllowed(platform);
+//    wall.points[0] = new THREE.Vector3(-0.5, 0, 0.5);
+//    wall.points[1] = new THREE.Vector3(0.5, 0, 0.5);
+//    wall.points[2] = new THREE.Vector3(-0.5, 2, 0.5);
+//    wall.points[3] = new THREE.Vector3(0.5, 2, 0.5);
+//    wall.complete();
+//    wall.draw();
+//    houseParts.push(wall);
 }

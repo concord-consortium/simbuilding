@@ -11,7 +11,7 @@ SIM.loadTextures = function() {
     SIM.Platform.texture.wrapS = THREE.RepeatWrapping;
     SIM.Platform.texture.wrapT = THREE.RepeatWrapping;
 
-    SIM.Wall.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png");
+    SIM.Wall.texture = THREE.ImageUtils.loadTexture("resources/textures/wall.png", null, createDefaultScene);
     SIM.Wall.texture.wrapS = THREE.RepeatWrapping;
     SIM.Wall.texture.wrapT = THREE.RepeatWrapping;
 };
@@ -228,7 +228,6 @@ SIM.Wall.prototype.draw = function() {
             windowHole.lineTo(part.points[3].x, part.points[3].y);
             windowHole.lineTo(part.points[1].x, part.points[1].y);
             windowHole.lineTo(part.points[2].x, part.points[2].y);
-            windowHole.lineTo(part.points[0].x, part.points[0].y);
             shape.holes.push(windowHole);
         }
     });
@@ -256,20 +255,85 @@ SIM.Wall.prototype.draw = function() {
     var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.ShapeGeometry(shape), [this.material, this.gridsMaterial]);
     this.meshRoot.add(mesh);
 
-    var thickness = 1 / p0.distanceTo(p1);
+    var thickness = 0.2;
+    var middleGlobal = new THREE.Vector3().addVectors(p0, p1).divideScalar(2);
+    var endPointGlobal = new THREE.Vector3(0, 1, 0).cross(p01).multiplyScalar(thickness).add(middleGlobal);
+    var endPointLocal = this.rootTG.worldToLocal(endPointGlobal);
+    var thicknessVector = endPointLocal.sub(this.rootTG.worldToLocal(middleGlobal));
+//    var thicknessVector = new THREE.Vector3(0, 1, 0).cross(p01);
+//    thicknessVector = this.rootTG.worldToLocal(thicknessVector);
+    var distance = p0.distanceTo(p1);
+    var thickness = 1 / distance;
+
+//    if (thickness > distance / 2)
+    thickness = 0.1;
 
     var backShape = new THREE.Shape();
     backShape.moveTo(thickness, 0);
-    backShape.lineTo(1, 0);
-    backShape.lineTo(1, 1);
+    backShape.lineTo(1 - thickness, 0);
+    backShape.lineTo(1 - thickness, 1);
     backShape.lineTo(thickness, 1);
+    backShape.holes = shape.holes;
 
     var backMaterial = new THREE.MeshBasicMaterial();
     backMaterial.side = THREE.DoubleSide;
     var backMesh = new THREE.Mesh(new THREE.ShapeGeometry(backShape), backMaterial);
-    backMesh.position.z = 0.01;
+//    backMesh.position.z = -0.01;
+    backMesh.position = thicknessVector.clone();
     this.meshRoot.add(backMesh);
 
+    var windowRoot = new THREE.Object3D();
+    this.childrenRoot.children.forEach(function(child) {
+        var part = child.userData.housePart;
+        if (part.isDrawable()) {
+            var x1, x2, y1, y2;
+            part.points.forEach(function(p) {
+                if (!x1) {
+                    x1 = x2 = p.x;
+                    y1 = y2 = p.y;
+                } else {
+                    if (p.x < x1)
+                        x1 = p.x;
+                    else if (p.x > x2)
+                        x2 = p.x;
+                    if (p.y < y1)
+                        y1 = p.y
+                    else if (p.y > y2)
+                        y2 = p.y;
+                }
+            });
+//            var thickness = this.rootTG.worldToLocal(new THREE.Vector3(0, 0, 0.2));
+            var w = x2 - x1;
+            var h = thickness;
+            var windowMesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h));
+            windowMesh.rotation.x = -Math.PI / 2;
+            windowMesh.position.x = x1 + w / 2;
+            windowMesh.position.y = y1;
+            windowMesh.position.z = -h / 2;
+            windowRoot.add(windowMesh);
+            var windowMesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h));
+            windowMesh.rotation.x = Math.PI / 2;
+            windowMesh.position.x = x1 + w / 2;
+            windowMesh.position.y = y2;
+            windowMesh.position.z = -h / 2;
+            windowRoot.add(windowMesh);
+            var w = thickness;
+            var h = y2 - y1;
+            var windowMesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h));
+            windowMesh.rotation.y = Math.PI / 2;
+            windowMesh.position.x = x1;
+            windowMesh.position.y = y1 + h / 2;
+            windowMesh.position.z = -w / 2;
+            windowRoot.add(windowMesh);
+            var windowMesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h));
+            windowMesh.rotation.y = -Math.PI / 2;
+            windowMesh.position.x = x2;
+            windowMesh.position.y = y1 + h / 2;
+            windowMesh.position.z = -w / 2;
+            windowRoot.add(windowMesh);
+        }
+    });
+    this.meshRoot.add(windowRoot);
 };
 
 SIM.Wall.prototype.canBeInsertedOn = function(parent) {
