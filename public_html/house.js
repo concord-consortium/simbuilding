@@ -260,8 +260,7 @@ SIM.Wall.prototype.draw = function() {
     var endPointGlobal = new THREE.Vector3(0, 1, 0).cross(p01).multiplyScalar(thickness).add(middleGlobal);
     var endPointLocal = this.rootTG.worldToLocal(endPointGlobal);
     var thicknessVector = endPointLocal.sub(this.rootTG.worldToLocal(middleGlobal));
-//    var thicknessVector = new THREE.Vector3(0, 1, 0).cross(p01);
-//    thicknessVector = this.rootTG.worldToLocal(thicknessVector);
+
     var distance = p0.distanceTo(p1);
     var thickness = 1 / distance;
 
@@ -278,7 +277,6 @@ SIM.Wall.prototype.draw = function() {
     var backMaterial = new THREE.MeshBasicMaterial();
     backMaterial.side = THREE.DoubleSide;
     var backMesh = new THREE.Mesh(new THREE.ShapeGeometry(backShape), backMaterial);
-//    backMesh.position.z = -0.01;
     backMesh.position = thicknessVector.clone();
     this.meshRoot.add(backMesh);
 
@@ -302,35 +300,32 @@ SIM.Wall.prototype.draw = function() {
                         y2 = p.y;
                 }
             });
-//            var thickness = this.rootTG.worldToLocal(new THREE.Vector3(0, 0, 0.2));
-            var w = x2 - x1;
-            var h = thickness;
-            var windowMesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h));
-            windowMesh.rotation.x = -Math.PI / 2;
-            windowMesh.position.x = x1 + w / 2;
-            windowMesh.position.y = y1;
-            windowMesh.position.z = -h / 2;
-            windowRoot.add(windowMesh);
-            var windowMesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h));
-            windowMesh.rotation.x = Math.PI / 2;
-            windowMesh.position.x = x1 + w / 2;
-            windowMesh.position.y = y2;
-            windowMesh.position.z = -h / 2;
-            windowRoot.add(windowMesh);
-            var w = thickness;
-            var h = y2 - y1;
-            var windowMesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h));
-            windowMesh.rotation.y = Math.PI / 2;
-            windowMesh.position.x = x1;
-            windowMesh.position.y = y1 + h / 2;
-            windowMesh.position.z = -w / 2;
-            windowRoot.add(windowMesh);
-            var windowMesh = new THREE.Mesh(new THREE.PlaneGeometry(w, h));
-            windowMesh.rotation.y = -Math.PI / 2;
-            windowMesh.position.x = x2;
-            windowMesh.position.y = y1 + h / 2;
-            windowMesh.position.z = -w / 2;
-            windowRoot.add(windowMesh);
+
+            var p0 = new THREE.Vector3(x1, y1, 0);
+            var p1 = new THREE.Vector3(x2, y1, 0);
+            var p2 = new THREE.Vector3(x2, y2, 0);
+            var p3 = new THREE.Vector3(x1, y2, 0);
+
+            var geometry = new THREE.Geometry();
+            geometry.vertices.push(p0);
+            geometry.vertices.push(p1);
+            geometry.vertices.push(p2);
+            geometry.vertices.push(p3);
+            geometry.vertices.push(p0.clone().add(thicknessVector));
+            geometry.vertices.push(p1.clone().add(thicknessVector));
+            geometry.vertices.push(p2.clone().add(thicknessVector));
+            geometry.vertices.push(p3.clone().add(thicknessVector));
+            geometry.faces.push(new THREE.Face3(0, 1, 5));
+            geometry.faces.push(new THREE.Face3(0, 5, 4));
+            geometry.faces.push(new THREE.Face3(0, 4, 7));
+            geometry.faces.push(new THREE.Face3(0, 7, 3));
+            geometry.faces.push(new THREE.Face3(1, 2, 6));
+            geometry.faces.push(new THREE.Face3(1, 6, 5));
+            geometry.faces.push(new THREE.Face3(2, 3, 7));
+            geometry.faces.push(new THREE.Face3(2, 7, 6));
+            geometry.computeBoundingSphere();
+            var windowSurroundMesh = new THREE.Mesh(geometry);
+            windowRoot.add(windowSurroundMesh);
         }
     });
     this.meshRoot.add(windowRoot);
