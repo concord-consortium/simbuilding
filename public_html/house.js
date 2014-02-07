@@ -16,6 +16,13 @@ SIM.loadTextures = function() {
     SIM.Wall.texture.wrapT = THREE.RepeatWrapping;
 };
 
+SIM.Neighbors = function(neighbor1, neighbor2, point1, point2) {
+    this.neighbor1 = neighbor1;
+    this.neighbor2 = neighbor2;
+    this.point1 = point1;
+    this.pointIndex2 = point2;
+}
+
 SIM.HousePart = function() {
     this.points = [new THREE.Vector3(), new THREE.Vector3()];
     this.root = new THREE.Object3D();
@@ -274,7 +281,7 @@ SIM.Wall.prototype.draw = function() {
     backShape.lineTo(thickness, 1);
     backShape.holes = shape.holes;
 
-    var backMaterial = new THREE.MeshBasicMaterial();
+    var backMaterial = new THREE.MeshLambertMaterial();
     backMaterial.side = THREE.DoubleSide;
     var backMesh = new THREE.Mesh(new THREE.ShapeGeometry(backShape), backMaterial);
     backMesh.position = thicknessVector.clone();
@@ -295,7 +302,7 @@ SIM.Wall.prototype.draw = function() {
                     else if (p.x > x2)
                         x2 = p.x;
                     if (p.y < y1)
-                        y1 = p.y
+                        y1 = p.y;
                     else if (p.y > y2)
                         y2 = p.y;
                 }
@@ -324,12 +331,94 @@ SIM.Wall.prototype.draw = function() {
             geometry.faces.push(new THREE.Face3(2, 3, 7));
             geometry.faces.push(new THREE.Face3(2, 7, 6));
             geometry.computeBoundingSphere();
-            var windowSurroundMesh = new THREE.Mesh(geometry);
+            var windowSurroundMesh = new THREE.Mesh(geometry, backMaterial);
             windowRoot.add(windowSurroundMesh);
         }
     });
     this.meshRoot.add(windowRoot);
 };
+
+SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighborWalls) {
+//		if (this.thicknessNormal != null)
+//			return;
+
+//		var walls;
+//		if (drawNeighborWalls)
+//			walls = [];
+//		else
+//			walls = null;
+
+    var walls = [];
+    this.root.parent.children.forEach(function(child) {
+        walls.push(child.userData.housePart);
+    });
+
+    var currentWall = this;
+    walls.splice(walls.indexOf(this), 1);
+
+    var currentWallPoint = 1;
+
+    walls.every(function(wall) {
+        for (wallPoint = 0; wallPoint < 2; wallPoint++)
+            if (currentWall.points[currentWallPoint].equals(wall.points[wallPoint])) {
+                neighbors.push(new SIM.Neighbors(currentWall, wall, currentWallPoint, wallPoint));
+                return false;
+            }
+        return true;
+    });
+
+
+
+//		var side = [0.0];
+//
+//		Wall.clearVisits();
+//		visitNeighbors(new WallVisitor() {
+//			@Override
+//			public void visit(final Wall wall, final Snap prev, final Snap next) {
+//				if (next != null) {
+//					final int indexP2 = next.getSnapPointIndexOf(wall);
+//					final ReadOnlyVector3 p1 = wall.getAbsPoint(indexP2 == 0 ? 2 : 0);
+//					final ReadOnlyVector3 p2 = wall.getAbsPoint(indexP2);
+//					final ReadOnlyVector3 p3 = next.getNeighborOf(wall).getAbsPoint(next.getSnapPointIndexOfNeighborOf(wall) == 0 ? 2 : 0);
+//					final ReadOnlyVector3 p1_p2 = p2.subtract(p1, null).normalizeLocal();
+//					final ReadOnlyVector3 p2_p3 = p3.subtract(p2, null).normalizeLocal();
+//					side[0] += Util.angleBetween(p1_p2, p2_p3, Vector3.UNIT_Z);
+//				}
+//				if (drawNeighborWalls && wall != Wall.this && !walls.contains(wall))
+//					walls.add(wall);
+//			}
+//		});
+//
+//		Wall.clearVisits();
+//		visitNeighbors(new WallVisitor() {
+//			@Override
+//			public void visit(final Wall wall, final Snap prev, final Snap next) {
+//				if (next != null) {
+//					final int indexP2 = next.getSnapPointIndexOf(wall);
+//					final Vector3 p1 = wall.getAbsPoint(indexP2 == 0 ? 2 : 0);
+//					final Vector3 p2 = wall.getAbsPoint(indexP2);
+//					final Vector3 p1_p2 = p2.subtract(p1, null);
+//					wall.thicknessNormal = p1_p2.cross(Vector3.UNIT_Z, null).normalizeLocal().multiplyLocal(wallThickness);
+//					if (side[0] > 0)
+//						wall.thicknessNormal.negateLocal();
+//				} else if (prev != null) {
+//					final int indexP2 = prev.getSnapPointIndexOf(wall);
+//					final Vector3 p2 = wall.getAbsPoint(indexP2);
+//					final Vector3 p3 = wall.getAbsPoint(indexP2 == 0 ? 2 : 0);
+//					final Vector3 p2_p3 = p3.subtract(p2, null);
+//					wall.thicknessNormal = p2_p3.cross(Vector3.UNIT_Z, null).normalizeLocal().multiplyLocal(wallThickness);
+//					if (side[0] > 0)
+//						wall.thicknessNormal.negateLocal();
+//				}
+//			}
+//		});
+//
+//		if (drawNeighborWalls)
+//			for (final HousePart wall : walls) {
+//				wall.draw();
+//				wall.drawChildren();
+//			}
+}
 
 SIM.Wall.prototype.canBeInsertedOn = function(parent) {
     return parent instanceof SIM.Platform;
