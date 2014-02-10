@@ -16,11 +16,9 @@ SIM.loadTextures = function() {
     SIM.Wall.texture.wrapT = THREE.RepeatWrapping;
 };
 
-SIM.Neighbors = function(neighbor1, neighbor2, point1, point2) {
-    this.neighbor1 = neighbor1;
-    this.neighbor2 = neighbor2;
-    this.point1 = point1;
-    this.pointIndex2 = point2;
+SIM.Neighbors = function(wall, point) {
+    this.wall = wall;
+    this.point = point;
 }
 
 SIM.HousePart = function() {
@@ -350,21 +348,89 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighbor
 
     var walls = [];
     this.root.parent.children.forEach(function(child) {
-        walls.push(child.userData.housePart);
+        var wall = child.userData.housePart;
+        wall.neighbor = [];
+        walls.push(wall);
     });
 
-    var currentWall = this;
     walls.splice(walls.indexOf(this), 1);
 
+//    var neighbors = [];
+    var currentWall = this;
     var currentWallPoint = 1;
+    var found = true;
+    while (walls.length !== 0 && found) {
+        found = !walls.every(function(wall) {
+            for (var wallPoint = 0; wallPoint < 2; wallPoint++)
+                if (currentWall.points[currentWallPoint].equals(wall.points[wallPoint])) {
+                    currentWall.neighbor[currentWallPoint] = new SIM.Neighbors(wall, wallPoint);
+                    wall.neighbor[wallPoint] = new SIM.Neighbors(currentWall, currentWallPoint);
+                    walls.splice(walls.indexOf(currentWall), 1);
+                    currentWall = wall;
+                    currentWallPoint = wallPoint === 0 ? 1 : 0;
+                    return false;
+                }
+            return true;
+        });
+    }
 
-    walls.every(function(wall) {
-        for (wallPoint = 0; wallPoint < 2; wallPoint++)
-            if (currentWall.points[currentWallPoint].equals(wall.points[wallPoint])) {
-                neighbors.push(new SIM.Neighbors(currentWall, wall, currentWallPoint, wallPoint));
-                return false;
-            }
-        return true;
+    var currentWall = this;
+    var currentWallPoint = 0;
+    var found = true;
+    while (walls.length !== 0 && found) {
+        found = !walls.every(function(wall) {
+            for (var wallPoint = 0; wallPoint < 2; wallPoint++)
+                if (currentWall.points[currentWallPoint].equals(wall.points[wallPoint])) {
+                    currentWall.neighbor[currentWallPoint] = new SIM.Neighbors(wall, wallPoint);
+                    wall.neighbor[wallPoint] = new SIM.Neighbors(currentWall, currentWallPoint);
+                    walls.splice(walls.indexOf(currentWall), 1);
+                    currentWall = wall;
+                    currentWallPoint = wallPoint === 0 ? 1 : 0;
+                    return false;
+                }
+            return true;
+        });
+    }
+
+    var side = 0;
+    var firstWall = currentWall;
+    currentWallPoint = 1;
+    do {
+        if (currentWall.neighbor[1]) {
+            var next = currentWall.neighbor[currentWallPoint];
+            var p2Index = next.point;
+            var p1 = currentWall.getAbsPoint(p2Index === 0 ? 1 : 0);
+            var p2 = currentWall.getAbsPoint(p2Index);
+            var nextWall = next.wall;
+            var prev;
+            if (nextWall.neighbor[0] && nextWall.neighbor[0].wall === currentWall)
+                prev = nextWall.neighbor[0];
+            else
+                prev = nextWall.neighbor[1];
+            var p3 = nextWall.getAbsPoint(prev.point === 0 ? 1 : 0);
+            var p1_p2 = new THREE.Vector3().subVectors(p2, p1).normalize();
+            var p2_p3 = new THREE.Vector3().subVectors(p3, p2).normalize();
+            side += angleBetween(p1_p2, p2_p3, Vector3.UNIT_Z);
+
+//            	public static double angleBetween(final ReadOnlyVector3 a, final ReadOnlyVector3 b, final ReadOnlyVector3 n) {
+//		return Math.atan2(b.dot(n.cross(a, null)), b.dot(a));
+//	}
+
+        }
+    } while (currentWall !== null && currentWall !== firstWall);
+
+
+    var side = 0;
+    neighbors.foreach(function(neighbor) {
+        if (neighbor.neighbor2) {
+            var indexP2 = next.getSnapPointIndexOf(wall);
+            var p1 = wall.getAbsPoint(indexP2 == 0 ? 2 : 0);
+            var p2 = wall.getAbsPoint(indexP2);
+            var p3 = next.getNeighborOf(wall).getAbsPoint(next.getSnapPointIndexOfNeighborOf(wall) == 0 ? 2 : 0);
+            var p1_p2 = p2.subtract(p1, null).normalizeLocal();
+            var p2_p3 = p3.subtract(p2, null).normalizeLocal();
+            side += angleBetween(p1_p2, p2_p3, Vector3.UNIT_Z);
+        }
     });
 
 
