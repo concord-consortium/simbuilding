@@ -203,6 +203,7 @@ SIM.Wall.prototype.moveCurrentEditPoint = function(p) {
 
     this.draw();
     this.setParentGridsVisible(true);
+    this.computeInsideDirectionOfAttachedWalls();
 };
 
 SIM.Wall.prototype.draw = function() {
@@ -396,42 +397,44 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighbor
     var firstWall = currentWall;
     currentWallPoint = 1;
     do {
-        if (currentWall.neighbor[1]) {
+        if (currentWall.neighbor[currentWallPoint]) {
             var next = currentWall.neighbor[currentWallPoint];
-            var p2Index = next.point;
-            var p1 = currentWall.getAbsPoint(p2Index === 0 ? 1 : 0);
-            var p2 = currentWall.getAbsPoint(p2Index);
-            var nextWall = next.wall;
-            var prev;
-            if (nextWall.neighbor[0] && nextWall.neighbor[0].wall === currentWall)
-                prev = nextWall.neighbor[0];
-            else
-                prev = nextWall.neighbor[1];
-            var p3 = nextWall.getAbsPoint(prev.point === 0 ? 1 : 0);
+//            var p2Index = currentWallPoint;
+            var p1 = currentWall.getAbsPoint(+!currentWallPoint);
+            var p2 = currentWall.getAbsPoint(currentWallPoint);
+//            var nextWall = next.wall;
+//            var prev = nextWall.neighbor[next.point];
+//            var prev;
+//            if (nextWall.neighbor[0] && nextWall.neighbor[0].wall === currentWall)
+//                prev = nextWall.neighbor[0];
+//            else
+//                prev = nextWall.neighbor[1];
+//            var p3Index = prev.point === 0 ? 1 : 0;
+            var p3 = next.wall.getAbsPoint(+!next.point);
             var p1_p2 = new THREE.Vector3().subVectors(p2, p1).normalize();
             var p2_p3 = new THREE.Vector3().subVectors(p3, p2).normalize();
-            side += angleBetween(p1_p2, p2_p3, Vector3.UNIT_Z);
+//            side += angleBetween(p1_p2, p2_p3, Vector3.UNIT_Z);
+            side += Math.atan2(p2_p3.dot(new THREE.Vector3(0, 1, 0).cross(p1_p2)), p2_p3.dot(p1_p2));
+            currentWall = next.wall;
+            currentWallPoint = +!next.point;
+        } else
+            break;
+    } while (currentWall !== firstWall);
 
-//            	public static double angleBetween(final ReadOnlyVector3 a, final ReadOnlyVector3 b, final ReadOnlyVector3 n) {
-//		return Math.atan2(b.dot(n.cross(a, null)), b.dot(a));
-//	}
+    console.log(side);
 
-        }
-    } while (currentWall !== null && currentWall !== firstWall);
-
-
-    var side = 0;
-    neighbors.foreach(function(neighbor) {
-        if (neighbor.neighbor2) {
-            var indexP2 = next.getSnapPointIndexOf(wall);
-            var p1 = wall.getAbsPoint(indexP2 == 0 ? 2 : 0);
-            var p2 = wall.getAbsPoint(indexP2);
-            var p3 = next.getNeighborOf(wall).getAbsPoint(next.getSnapPointIndexOfNeighborOf(wall) == 0 ? 2 : 0);
-            var p1_p2 = p2.subtract(p1, null).normalizeLocal();
-            var p2_p3 = p3.subtract(p2, null).normalizeLocal();
-            side += angleBetween(p1_p2, p2_p3, Vector3.UNIT_Z);
-        }
-    });
+//    var side = 0;
+//    neighbors.foreach(function(neighbor) {
+//        if (neighbor.neighbor2) {
+//            var indexP2 = next.getSnapPointIndexOf(wall);
+//            var p1 = wall.getAbsPoint(indexP2 == 0 ? 2 : 0);
+//            var p2 = wall.getAbsPoint(indexP2);
+//            var p3 = next.getNeighborOf(wall).getAbsPoint(next.getSnapPointIndexOfNeighborOf(wall) == 0 ? 2 : 0);
+//            var p1_p2 = p2.subtract(p1, null).normalizeLocal();
+//            var p2_p3 = p3.subtract(p2, null).normalizeLocal();
+//            side += angleBetween(p1_p2, p2_p3, Vector3.UNIT_Z);
+//        }
+//    });
 
 
 
