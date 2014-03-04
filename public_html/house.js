@@ -369,7 +369,7 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighbor
     while (walls.length !== 0 && found) {
         found = !walls.every(function(wall) {
             for (var wallPoint = 0; wallPoint < 2; wallPoint++)
-                if (currentWall.points[currentWallPoint].equals(wall.points[wallPoint])) {
+                if (SIM.isEqual(currentWall.points[currentWallPoint], wall.points[wallPoint])) {
                     currentWall.neighbor[currentWallPoint] = new SIM.Neighbors(wall, wallPoint);
                     wall.neighbor[wallPoint] = new SIM.Neighbors(currentWall, currentWallPoint);
                     walls.splice(walls.indexOf(currentWall), 1);
