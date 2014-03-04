@@ -201,9 +201,9 @@ SIM.Wall.prototype.moveCurrentEditPoint = function(p) {
     else
         this.points[this.currentEditPointIndex === 2 ? 3 : 2].y = p.y;
 
-    this.computeInsideDirectionOfAttachedWalls();
     this.draw();
-    this.setParentGridsVisible(true);    
+    this.setParentGridsVisible(true);
+    this.computeInsideDirectionOfAttachedWalls();
 };
 
 SIM.Wall.prototype.draw = function() {
@@ -263,7 +263,13 @@ SIM.Wall.prototype.draw = function() {
 
     var thickness = 0.2;
     var middleGlobal = new THREE.Vector3().addVectors(p0, p1).divideScalar(2);
-    var endPointGlobal = new THREE.Vector3(0, 1, 0).cross(p01).multiplyScalar(thickness).add(middleGlobal);
+//    var endPointGlobal = new THREE.Vector3(0, 1, 0).cross(p01).multiplyScalar(thickness).add(middleGlobal);
+    var thicknessDirection;
+    if (this.thicknessDirection)
+        thicknessDirection = this.thicknessDirection.clone();
+    else
+        thicknessDirection = new THREE.Vector3(0, 1, 0).cross(p01);
+    var endPointGlobal = thicknessDirection.multiplyScalar(thickness).add(middleGlobal);
     var endPointLocal = this.rootTG.worldToLocal(endPointGlobal);
     var thicknessVector = endPointLocal.sub(this.rootTG.worldToLocal(middleGlobal));
 
@@ -413,7 +419,8 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighbor
     } while (currentWall !== firstWall);
 
     console.log(side);
-    
+
+    currentWall = firstWall;
     currentWallPoint = 1;
     do {
         if (currentWall.neighbor[currentWallPoint]) {
@@ -423,21 +430,27 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighbor
             var p3 = next.wall.getAbsPoint(+!next.point);
             var p1_p2 = new THREE.Vector3().subVectors(p2, p1).normalize();
             var p2_p3 = new THREE.Vector3().subVectors(p3, p2).normalize();
-        
+
 //        wall.thicknessNormal = p1_p2.cross(Vector3.UNIT_Z, null).normalizeLocal().multiplyLocal(wallThickness);
-            var wallThickness = 0.2;
-            var thicknessVector = new THREE.Vector3().crossVectors(SIM.UNITZ, p1_p2).normalize().multiplyScalar(wallThickness);
-            if (side[0] > 0)
-                thicknessVector.negate();
-    
+            currentWall.thicknessDirection = new THREE.Vector3().crossVectors(SIM.UNITY, p1_p2).normalize();
+            if (side < 0)
+                currentWall.thicknessDirection.negate();
+            currentWall.draw();
             currentWall = next.wall;
-            currentWallPoint = + !next.point;
+            currentWallPoint = +!next.point;
+            if (!currentWall.neighbor[currentWallPoint]) {
+                currentWall.thicknessDirection = new THREE.Vector3().crossVectors(SIM.UNITY, p2_p3).normalize();
+                if (side < 0)
+                    currentWall.thicknessDirection.negate();
+                currentWall.draw();
+            }
+
         } else
             break;
     } while (currentWall !== firstWall);
 
 
-    
+
 
 //    var side = 0;
 //    neighbors.foreach(function(neighbor) {
