@@ -276,10 +276,10 @@ SIM.Wall.prototype.draw = function() {
     var thicknessVector = endPointLocal.sub(this.rootTG.worldToLocal(middleGlobal));
 
     var distance = p0.distanceTo(p1);
-    var thickness = 1 / distance;
+    var thickness = 0.2 / distance;
 
 //    if (thickness > distance / 2)
-    thickness = 0.1;
+//    thickness = 0.1;
 
     var backShape = new THREE.Shape();
     backShape.moveTo(thickness, 0);
