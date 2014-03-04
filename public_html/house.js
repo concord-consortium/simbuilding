@@ -19,7 +19,7 @@ SIM.loadTextures = function() {
 SIM.Neighbors = function(wall, point) {
     this.wall = wall;
     this.point = point;
-}
+};
 
 SIM.HousePart = function() {
     this.points = [new THREE.Vector3(), new THREE.Vector3()];
@@ -201,9 +201,9 @@ SIM.Wall.prototype.moveCurrentEditPoint = function(p) {
     else
         this.points[this.currentEditPointIndex === 2 ? 3 : 2].y = p.y;
 
-    this.draw();
-    this.setParentGridsVisible(true);
     this.computeInsideDirectionOfAttachedWalls();
+    this.draw();
+    this.setParentGridsVisible(true);    
 };
 
 SIM.Wall.prototype.draw = function() {
@@ -381,7 +381,7 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighbor
     while (walls.length !== 0 && found) {
         found = !walls.every(function(wall) {
             for (var wallPoint = 0; wallPoint < 2; wallPoint++)
-                if (currentWall.points[currentWallPoint].equals(wall.points[wallPoint])) {
+                if (SIM.isEqual(currentWall.points[currentWallPoint], wall.points[wallPoint])) {
                     currentWall.neighbor[currentWallPoint] = new SIM.Neighbors(wall, wallPoint);
                     wall.neighbor[wallPoint] = new SIM.Neighbors(currentWall, currentWallPoint);
                     walls.splice(walls.indexOf(currentWall), 1);
@@ -399,17 +399,8 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighbor
     do {
         if (currentWall.neighbor[currentWallPoint]) {
             var next = currentWall.neighbor[currentWallPoint];
-//            var p2Index = currentWallPoint;
             var p1 = currentWall.getAbsPoint(+!currentWallPoint);
             var p2 = currentWall.getAbsPoint(currentWallPoint);
-//            var nextWall = next.wall;
-//            var prev = nextWall.neighbor[next.point];
-//            var prev;
-//            if (nextWall.neighbor[0] && nextWall.neighbor[0].wall === currentWall)
-//                prev = nextWall.neighbor[0];
-//            else
-//                prev = nextWall.neighbor[1];
-//            var p3Index = prev.point === 0 ? 1 : 0;
             var p3 = next.wall.getAbsPoint(+!next.point);
             var p1_p2 = new THREE.Vector3().subVectors(p2, p1).normalize();
             var p2_p3 = new THREE.Vector3().subVectors(p3, p2).normalize();
@@ -422,6 +413,31 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighbor
     } while (currentWall !== firstWall);
 
     console.log(side);
+    
+    currentWallPoint = 1;
+    do {
+        if (currentWall.neighbor[currentWallPoint]) {
+            var next = currentWall.neighbor[currentWallPoint];
+            var p1 = currentWall.getAbsPoint(+!currentWallPoint);
+            var p2 = currentWall.getAbsPoint(currentWallPoint);
+            var p3 = next.wall.getAbsPoint(+!next.point);
+            var p1_p2 = new THREE.Vector3().subVectors(p2, p1).normalize();
+            var p2_p3 = new THREE.Vector3().subVectors(p3, p2).normalize();
+        
+//        wall.thicknessNormal = p1_p2.cross(Vector3.UNIT_Z, null).normalizeLocal().multiplyLocal(wallThickness);
+            var wallThickness = 0.2;
+            var thicknessVector = new THREE.Vector3().crossVectors(SIM.UNITZ, p1_p2).normalize().multiplyScalar(wallThickness);
+            if (side[0] > 0)
+                thicknessVector.negate();
+    
+            currentWall = next.wall;
+            currentWallPoint = + !next.point;
+        } else
+            break;
+    } while (currentWall !== firstWall);
+
+
+    
 
 //    var side = 0;
 //    neighbors.foreach(function(neighbor) {
@@ -487,7 +503,7 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighbor
 //				wall.draw();
 //				wall.drawChildren();
 //			}
-}
+};
 
 SIM.Wall.prototype.canBeInsertedOn = function(parent) {
     return parent instanceof SIM.Platform;
