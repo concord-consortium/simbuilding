@@ -345,16 +345,7 @@ SIM.Wall.prototype.draw = function() {
     this.meshRoot.add(windowRoot);
 };
 
-SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighborWalls) {
-//		if (this.thicknessNormal != null)
-//			return;
-
-//		var walls;
-//		if (drawNeighborWalls)
-//			walls = [];
-//		else
-//			walls = null;
-
+SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function() {
     var walls = [];
     this.root.parent.children.forEach(function(child) {
         var wall = child.userData.housePart;
@@ -364,7 +355,6 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighbor
 
     walls.splice(walls.indexOf(this), 1);
 
-//    var neighbors = [];
     var currentWall = this;
     var currentWallPoint = 1;
     var found = true;
@@ -420,8 +410,6 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighbor
             break;
     } while (currentWall !== firstWall);
 
-    console.log(side);
-
     currentWall = firstWall;
     currentWallPoint = 1;
     do {
@@ -433,7 +421,6 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighbor
             var p1_p2 = new THREE.Vector3().subVectors(p2, p1).normalize();
             var p2_p3 = new THREE.Vector3().subVectors(p3, p2).normalize();
 
-//        wall.thicknessNormal = p1_p2.cross(Vector3.UNIT_Z, null).normalizeLocal().multiplyLocal(wallThickness);
             currentWall.thicknessDirection = new THREE.Vector3().crossVectors(SIM.UNITY, p1_p2).normalize();
             if (side < 0)
                 currentWall.thicknessDirection.negate();
@@ -446,78 +433,9 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function(drawNeighbor
                     currentWall.thicknessDirection.negate();
                 currentWall.draw();
             }
-
         } else
             break;
     } while (currentWall !== firstWall);
-
-
-
-
-//    var side = 0;
-//    neighbors.foreach(function(neighbor) {
-//        if (neighbor.neighbor2) {
-//            var indexP2 = next.getSnapPointIndexOf(wall);
-//            var p1 = wall.getAbsPoint(indexP2 == 0 ? 2 : 0);
-//            var p2 = wall.getAbsPoint(indexP2);
-//            var p3 = next.getNeighborOf(wall).getAbsPoint(next.getSnapPointIndexOfNeighborOf(wall) == 0 ? 2 : 0);
-//            var p1_p2 = p2.subtract(p1, null).normalizeLocal();
-//            var p2_p3 = p3.subtract(p2, null).normalizeLocal();
-//            side += angleBetween(p1_p2, p2_p3, Vector3.UNIT_Z);
-//        }
-//    });
-
-
-
-//		var side = [0.0];
-//
-//		Wall.clearVisits();
-//		visitNeighbors(new WallVisitor() {
-//			@Override
-//			public void visit(final Wall wall, final Snap prev, final Snap next) {
-//				if (next != null) {
-//					final int indexP2 = next.getSnapPointIndexOf(wall);
-//					final ReadOnlyVector3 p1 = wall.getAbsPoint(indexP2 == 0 ? 2 : 0);
-//					final ReadOnlyVector3 p2 = wall.getAbsPoint(indexP2);
-//					final ReadOnlyVector3 p3 = next.getNeighborOf(wall).getAbsPoint(next.getSnapPointIndexOfNeighborOf(wall) == 0 ? 2 : 0);
-//					final ReadOnlyVector3 p1_p2 = p2.subtract(p1, null).normalizeLocal();
-//					final ReadOnlyVector3 p2_p3 = p3.subtract(p2, null).normalizeLocal();
-//					side[0] += Util.angleBetween(p1_p2, p2_p3, Vector3.UNIT_Z);
-//				}
-//				if (drawNeighborWalls && wall != Wall.this && !walls.contains(wall))
-//					walls.add(wall);
-//			}
-//		});
-//
-//		Wall.clearVisits();
-//		visitNeighbors(new WallVisitor() {
-//			@Override
-//			public void visit(final Wall wall, final Snap prev, final Snap next) {
-//				if (next != null) {
-//					final int indexP2 = next.getSnapPointIndexOf(wall);
-//					final Vector3 p1 = wall.getAbsPoint(indexP2 == 0 ? 2 : 0);
-//					final Vector3 p2 = wall.getAbsPoint(indexP2);
-//					final Vector3 p1_p2 = p2.subtract(p1, null);
-//					wall.thicknessNormal = p1_p2.cross(Vector3.UNIT_Z, null).normalizeLocal().multiplyLocal(wallThickness);
-//					if (side[0] > 0)
-//						wall.thicknessNormal.negateLocal();
-//				} else if (prev != null) {
-//					final int indexP2 = prev.getSnapPointIndexOf(wall);
-//					final Vector3 p2 = wall.getAbsPoint(indexP2);
-//					final Vector3 p3 = wall.getAbsPoint(indexP2 == 0 ? 2 : 0);
-//					final Vector3 p2_p3 = p3.subtract(p2, null);
-//					wall.thicknessNormal = p2_p3.cross(Vector3.UNIT_Z, null).normalizeLocal().multiplyLocal(wallThickness);
-//					if (side[0] > 0)
-//						wall.thicknessNormal.negateLocal();
-//				}
-//			}
-//		});
-//
-//		if (drawNeighborWalls)
-//			for (final HousePart wall : walls) {
-//				wall.draw();
-//				wall.drawChildren();
-//			}
 };
 
 SIM.Wall.prototype.canBeInsertedOn = function(parent) {
