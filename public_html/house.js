@@ -179,7 +179,8 @@ SIM.Wall = function() {
     this.gridsMaterial.map = SIM.HousePart.gridsTexture.clone();
     this.gridsMaterial.transparent = true;
     this.gridsMaterial.map.needsUpdate = true;
-//    this.gridsMaterial.visible = false;
+    this.gridsMaterial.side = THREE.DoubleSide;
+    this.gridsMaterial.visible = false;
 };
 
 SIM.Wall.prototype = new SIM.HousePart();
@@ -224,6 +225,7 @@ SIM.Wall.prototype.draw = function() {
     this.collisionMesh = new THREE.Mesh(new THREE.ShapeGeometry(shape));
     this.collisionMesh.userData.housePart = this;
     this.collisionMesh.visible = false;
+    this.collisionMesh.material.side = THREE.DoubleSide;
     this.meshRoot.add(this.collisionMesh);
 
     this.childrenRoot.children.forEach(function(child) {
