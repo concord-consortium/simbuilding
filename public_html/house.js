@@ -265,7 +265,6 @@ SIM.Wall.prototype.draw = function() {
 
     var thickness = 0.2;
     var middleGlobal = new THREE.Vector3().addVectors(p0, p1).divideScalar(2);
-//    var endPointGlobal = new THREE.Vector3(0, 1, 0).cross(p01).multiplyScalar(thickness).add(middleGlobal);
     var thicknessDirection;
     if (this.thicknessDirection)
         thicknessDirection = this.thicknessDirection.clone();
@@ -275,26 +274,20 @@ SIM.Wall.prototype.draw = function() {
     var endPointLocal = this.rootTG.worldToLocal(endPointGlobal);
     var thicknessVector = endPointLocal.sub(this.rootTG.worldToLocal(middleGlobal));
 
-    var distance = p0.distanceTo(p1);
-//    var thickness = 0.2 / distance;
-    var margin = [];
-    margin[0] = margin[1] = 0; //0.2 / distance;
-    if (this.neighbor) {
-        if (this.neighbor[0]) {
-            var otherWall = this.neighbor[0].wall;
-            var otherWallDir = new THREE.Vector3().subVectors(this.root.localToWorld(otherWall.points[+!this.neighbor[0].point].clone()), this.root.localToWorld(otherWall.points[this.neighbor[0].point].clone())).normalize();
-            var angle = p01.angleTo(otherWallDir);
-            margin[0] = 0.2 / distance * Math.tan((Math.PI - angle) / 2); // * (reverse ? -1 : 1);
-        } else if (this.neighbor[1]) {
-            var otherWall = this.neighbor[1].wall;
-            var otherWallDir = new THREE.Vector3().subVectors(this.root.localToWorld(otherWall.points[this.neighbor[1].point].clone()), this.root.localToWorld(otherWall.points[+!this.neighbor[1].point].clone())).normalize();
-            var angle = p01.angleTo(otherWallDir);
-            margin[1] = 0.2 / distance * Math.tan((Math.PI - angle) / 2); // * (reverse ? -1 : 1);
-        }
-    }
+    var wallLengthWorld = p0.distanceTo(p1);
+    var thicknessLocal = thickness / wallLengthWorld;
 
-//    if (thickness > distance / 2)
-//    thickness = 0.1;
+    var margin = [0, 0];
+    if (this.neighbor)
+        for (var i = 0; i < 2; i++)
+            if (this.neighbor[i]) {
+                var o = this.root.localToWorld(this.points[i].clone());
+                var v1 = new THREE.Vector3().subVectors(this.root.localToWorld(this.points[+!i].clone()), o).normalize();
+                var otherWall = this.neighbor[i].wall;
+                var v2 = new THREE.Vector3().subVectors(this.root.localToWorld(otherWall.points[+!this.neighbor[i].point].clone()), o).normalize();
+                var angle = SIM.angleBetween(v1, v2, v1.clone().cross(this.thicknessDirection));
+                margin[i] = thicknessLocal / Math.tan(angle / 2);
+            }
 
     var backShape = new THREE.Shape();
     backShape.moveTo(margin[0], 0);
