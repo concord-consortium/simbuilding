@@ -286,7 +286,8 @@ SIM.Wall.prototype.draw = function() {
                 var otherWall = this.neighbor[i].wall;
                 var v2 = new THREE.Vector3().subVectors(this.root.localToWorld(otherWall.points[+!this.neighbor[i].point].clone()), o).normalize();
                 var angle = SIM.angleBetween(v1, v2, v1.clone().cross(this.thicknessDirection));
-                margin[i] = thicknessLocal / Math.tan(angle / 2);
+                if (Math.abs(angle) > 0.01)
+                    margin[i] = thicknessLocal / Math.tan(angle / 2);
             }
 
     var backShape = new THREE.Shape();
@@ -354,11 +355,15 @@ SIM.Wall.prototype.draw = function() {
 };
 
 SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function() {
+    if (!this.isDrawable())
+        return;
     var walls = [];
     this.root.parent.children.forEach(function(child) {
         var wall = child.userData.housePart;
-        wall.neighbor = [];
-        walls.push(wall);
+        if (wall.isDrawable()) {
+            wall.neighbor = [];
+            walls.push(wall);
+        }
     });
 
     walls.splice(walls.indexOf(this), 1);
@@ -458,6 +463,10 @@ SIM.Wall.prototype.snapToGrid = function(p) {
     p.x = Math.round(p.x);
     p.z = Math.round(p.z);
     return p;
+};
+
+SIM.Wall.prototype.isDrawable = function() {
+    return this.getAbsPoint(0).distanceTo(this.getAbsPoint(1)) > 0.5;
 };
 
 SIM.Window = function() {
