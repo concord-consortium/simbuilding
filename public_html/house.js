@@ -276,16 +276,31 @@ SIM.Wall.prototype.draw = function() {
     var thicknessVector = endPointLocal.sub(this.rootTG.worldToLocal(middleGlobal));
 
     var distance = p0.distanceTo(p1);
-    var thickness = 0.2 / distance;
+//    var thickness = 0.2 / distance;
+    var margin = [];
+    margin[0] = margin[1] = 0; //0.2 / distance;
+    if (this.neighbor) {
+        if (this.neighbor[0]) {
+            var otherWall = this.neighbor[0].wall;
+            var otherWallDir = new THREE.Vector3().subVectors(this.root.localToWorld(otherWall.points[+!this.neighbor[0].point].clone()), this.root.localToWorld(otherWall.points[this.neighbor[0].point].clone())).normalize();
+            var angle = p01.angleTo(otherWallDir);
+            margin[0] = 0.2 / distance * Math.tan((Math.PI - angle) / 2); // * (reverse ? -1 : 1);
+        } else if (this.neighbor[1]) {
+            var otherWall = this.neighbor[1].wall;
+            var otherWallDir = new THREE.Vector3().subVectors(this.root.localToWorld(otherWall.points[this.neighbor[1].point].clone()), this.root.localToWorld(otherWall.points[+!this.neighbor[1].point].clone())).normalize();
+            var angle = p01.angleTo(otherWallDir);
+            margin[1] = 0.2 / distance * Math.tan((Math.PI - angle) / 2); // * (reverse ? -1 : 1);
+        }
+    }
 
 //    if (thickness > distance / 2)
 //    thickness = 0.1;
 
     var backShape = new THREE.Shape();
-    backShape.moveTo(thickness, 0);
-    backShape.lineTo(1 - thickness, 0);
-    backShape.lineTo(1 - thickness, 1);
-    backShape.lineTo(thickness, 1);
+    backShape.moveTo(margin[0], 0);
+    backShape.lineTo(1 - margin[1], 0);
+    backShape.lineTo(1 - margin[1], 1);
+    backShape.lineTo(margin[0], 1);
     backShape.holes = shape.holes;
 
     var backMaterial = new THREE.MeshLambertMaterial();
