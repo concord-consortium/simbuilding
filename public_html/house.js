@@ -369,22 +369,15 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function() {
     walls.forEach(function(wall) {
         walls.splice(walls.indexOf(wall), 1);
         walls.every(function(otherWall) {
-            for (var wallPoint = 0; wallPoint < 2; wallPoint++) {
-                if (!wall.neighbor[wallPoint]) {
-                    for (var otherPoint = 0; otherPoint < 2; otherPoint++) {
-                        if (!otherWall.neighbor[otherPoint]) {
-                            if (SIM.isEqual(wall.points[wallPoint], otherWall.points[otherPoint])) {
-                                wall.neighbor[wallPoint] = new SIM.Neighbors(otherWall, otherPoint);
-                                otherWall.neighbor[otherPoint] = new SIM.Neighbors(wall, wallPoint);
-//                                walls.splice(walls.indexOf(otherWall), 1);
-//                                return false;
-                                if (wall.neighbor[0] && wall.neighbor[1])
-                                    return false;
-                            }
+            for (var wallPoint = 0; wallPoint < 2; wallPoint++)
+                if (!wall.neighbor[wallPoint])
+                    for (var otherPoint = 0; otherPoint < 2; otherPoint++)
+                        if (!otherWall.neighbor[otherPoint] && SIM.isEqual(wall.points[wallPoint], otherWall.points[otherPoint])) {
+                            wall.neighbor[wallPoint] = new SIM.Neighbors(otherWall, otherPoint);
+                            otherWall.neighbor[otherPoint] = new SIM.Neighbors(wall, wallPoint);
+                            if (wall.neighbor[0] && wall.neighbor[1])
+                                return false;
                         }
-                    }
-                }
-            }
             return true;
         });
     });
