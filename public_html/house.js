@@ -366,46 +366,39 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function() {
         }
     });
 
-    walls.splice(walls.indexOf(this), 1);
-
-    var currentWall = this;
-    var currentWallPoint = 1;
-    var found = true;
-    while (walls.length !== 0 && found) {
-        found = !walls.every(function(wall) {
-            for (var wallPoint = 0; wallPoint < 2; wallPoint++)
-                if (SIM.isEqual(currentWall.points[currentWallPoint], wall.points[wallPoint])) {
-                    currentWall.neighbor[currentWallPoint] = new SIM.Neighbors(wall, wallPoint);
-                    wall.neighbor[wallPoint] = new SIM.Neighbors(currentWall, currentWallPoint);
-                    walls.splice(walls.indexOf(currentWall), 1);
-                    currentWall = wall;
-                    currentWallPoint = wallPoint === 0 ? 1 : 0;
-                    return false;
+    walls.forEach(function(wall) {
+        walls.splice(walls.indexOf(wall), 1);
+        walls.every(function(otherWall) {
+            for (var wallPoint = 0; wallPoint < 2; wallPoint++) {
+                if (!wall.neighbor[wallPoint]) {
+                    for (var otherPoint = 0; otherPoint < 2; otherPoint++) {
+                        if (!otherWall.neighbor[otherPoint]) {
+                            if (SIM.isEqual(wall.points[wallPoint], otherWall.points[otherPoint])) {
+                                wall.neighbor[wallPoint] = new SIM.Neighbors(otherWall, otherPoint);
+                                otherWall.neighbor[otherPoint] = new SIM.Neighbors(wall, wallPoint);
+//                                walls.splice(walls.indexOf(otherWall), 1);
+//                                return false;
+                                if (wall.neighbor[0] && wall.neighbor[1])
+                                    return false;
+                            }
+                        }
+                    }
                 }
+            }
             return true;
         });
-    }
+    });
 
     var currentWall = this;
     var currentWallPoint = 0;
-    var found = true;
-    while (walls.length !== 0 && found) {
-        found = !walls.every(function(wall) {
-            for (var wallPoint = 0; wallPoint < 2; wallPoint++)
-                if (SIM.isEqual(currentWall.points[currentWallPoint], wall.points[wallPoint])) {
-                    currentWall.neighbor[currentWallPoint] = new SIM.Neighbors(wall, wallPoint);
-                    wall.neighbor[wallPoint] = new SIM.Neighbors(currentWall, currentWallPoint);
-                    walls.splice(walls.indexOf(currentWall), 1);
-                    currentWall = wall;
-                    currentWallPoint = wallPoint === 0 ? 1 : 0;
-                    return false;
-                }
-            return true;
-        });
+    while (currentWall.neighbor[currentWallPoint] && currentWall.neighbor[0].wall !== this) {
+        var tmp = currentWall;
+        currentWall = currentWall.neighbor[currentWallPoint].wall;
+        currentWallPoint = +!tmp.neighbor[currentWallPoint].point;
     }
+    var firstWall = currentWall;
 
     var side = 0;
-    var firstWall = currentWall;
     currentWallPoint = 1;
     do {
         if (currentWall.neighbor[currentWallPoint]) {
