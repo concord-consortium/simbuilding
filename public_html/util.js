@@ -7,3 +7,7 @@ SIM.isEqual = function(a, b) {
     else
         return false;
 };
+
+SIM.angleBetween = function(a, b, n) {
+    return Math.atan2(b.dot(n.cross(a)), b.dot(a));
+};
