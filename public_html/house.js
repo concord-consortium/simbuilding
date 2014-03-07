@@ -408,8 +408,7 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function() {
             var p3 = next.wall.getAbsPoint(+!next.point);
             var p1_p2 = new THREE.Vector3().subVectors(p2, p1).normalize();
             var p2_p3 = new THREE.Vector3().subVectors(p3, p2).normalize();
-//            side += angleBetween(p1_p2, p2_p3, Vector3.UNIT_Z);
-            side += Math.atan2(p2_p3.dot(new THREE.Vector3(0, 1, 0).cross(p1_p2)), p2_p3.dot(p1_p2));
+            side += SIM.angleBetween(p1_p2, p2_p3, SIM.UNIT_Y);
             currentWall = next.wall;
             currentWallPoint = +!next.point;
         } else
@@ -427,14 +426,14 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function() {
             var p1_p2 = new THREE.Vector3().subVectors(p2, p1).normalize();
             var p2_p3 = new THREE.Vector3().subVectors(p3, p2).normalize();
 
-            currentWall.thicknessDirection = new THREE.Vector3().crossVectors(SIM.UNITY, p1_p2).normalize();
+            currentWall.thicknessDirection = new THREE.Vector3().crossVectors(SIM.UNIT_Y, p1_p2).normalize();
             if (side < 0)
                 currentWall.thicknessDirection.negate();
             currentWall.draw();
             currentWall = next.wall;
             currentWallPoint = +!next.point;
             if (!currentWall.neighbor[currentWallPoint]) {
-                currentWall.thicknessDirection = new THREE.Vector3().crossVectors(SIM.UNITY, p2_p3).normalize();
+                currentWall.thicknessDirection = new THREE.Vector3().crossVectors(SIM.UNIT_Y, p2_p3).normalize();
                 if (side < 0)
                     currentWall.thicknessDirection.negate();
                 currentWall.draw();
