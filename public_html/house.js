@@ -270,7 +270,7 @@ SIM.Wall.prototype.draw = function() {
         thicknessDirection = this.thicknessDirection.clone();
     else
         thicknessDirection = new THREE.Vector3(0, 1, 0).cross(p01);
-    var endPointGlobal = thicknessDirection.multiplyScalar(thickness).add(middleGlobal);
+    var endPointGlobal = thicknessDirection.clone().multiplyScalar(thickness).add(middleGlobal);
     var endPointLocal = this.rootTG.worldToLocal(endPointGlobal);
     var thicknessVector = endPointLocal.sub(this.rootTG.worldToLocal(middleGlobal));
 
@@ -285,7 +285,7 @@ SIM.Wall.prototype.draw = function() {
                 var v1 = new THREE.Vector3().subVectors(this.root.localToWorld(this.points[+!i].clone()), o).normalize();
                 var otherWall = this.neighbor[i].wall;
                 var v2 = new THREE.Vector3().subVectors(this.root.localToWorld(otherWall.points[+!this.neighbor[i].point].clone()), o).normalize();
-                var angle = SIM.angleBetween(v1, v2, v1.clone().cross(this.thicknessDirection));
+                var angle = SIM.angleBetween(v1, v2, v1.clone().cross(thicknessDirection));
                 if (Math.abs(angle) > 0.01)
                     margin[i] = thicknessLocal / Math.tan(angle / 2);
             }
@@ -357,6 +357,7 @@ SIM.Wall.prototype.draw = function() {
 SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function() {
     if (!this.isDrawable())
         return;
+
     var walls = [];
     this.root.parent.children.forEach(function(child) {
         var wall = child.userData.housePart;
@@ -383,16 +384,22 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function() {
     });
 
     var currentWall = this;
-    var currentWallPoint = 0;
-    while (currentWall.neighbor[currentWallPoint] && currentWall.neighbor[0].wall !== this) {
+    var currentWallPoint;
+    if (currentWall.neighbor[0])
+        currentWallPoint = 0;
+    else
+        currentWallPoint = 1;
+    while (currentWall.neighbor[currentWallPoint] && currentWall.neighbor[currentWallPoint].wall !== this) {
         var tmp = currentWall;
         currentWall = currentWall.neighbor[currentWallPoint].wall;
         currentWallPoint = +!tmp.neighbor[currentWallPoint].point;
     }
     var firstWall = currentWall;
+    var firstWallPoint = +!currentWallPoint;
 
     var side = 0;
-    currentWallPoint = 1;
+    currentWall = firstWall;
+    currentWallPoint = firstWallPoint;
     do {
         if (currentWall.neighbor[currentWallPoint]) {
             var next = currentWall.neighbor[currentWallPoint];
@@ -409,7 +416,7 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function() {
     } while (currentWall !== firstWall);
 
     currentWall = firstWall;
-    currentWallPoint = 1;
+    currentWallPoint = firstWallPoint;
     do {
         if (currentWall.neighbor[currentWallPoint]) {
             var next = currentWall.neighbor[currentWallPoint];
