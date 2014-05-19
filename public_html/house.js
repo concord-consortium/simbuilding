@@ -543,11 +543,11 @@ SIM.Roof.prototype.setParentIfAllowed = function(parent) {
 SIM.Roof.prototype.moveCurrentEditPoint = function(p) {
 //    p = this.snapToGrid(this.root.worldToLocal(p));
     p = this.root.worldToLocal(p);
-    this.points[this.currentEditPointIndex] = p;
-//    if (this.initMode) {
+    if (this.initMode) {
 //        if (this.currentEditPointIndex === 0)
 //            this.points[1] = this.points[0];
-//    }
+    }
+    this.points[this.currentEditPointIndex] = p;
     this.draw();
 //    this.setParentGridsVisible(true);
 //    this.root.parent.userData.housePart.draw();
@@ -557,14 +557,14 @@ SIM.Roof.prototype.draw = function() {
     for (var i = this.meshRoot.children.length; i >= 0; i--)
         this.meshRoot.remove(this.meshRoot.children[i]);
 
-    this.drawEditPoints();
-
     var first = this.wall.findFirstWall();
     var currentWall = first.wall;
     var currentWallPoint = first.point;
     var p = currentWall.points[+!currentWallPoint];
     var shape = new THREE.Shape();
     shape.moveTo(p.x, p.z);
+    var min = p.clone();
+    var max = p.clone();
     do {
         if (currentWall.neighbor[currentWallPoint]) {
             var next = currentWall.neighbor[currentWallPoint];
@@ -572,15 +572,24 @@ SIM.Roof.prototype.draw = function() {
 
             shape.lineTo(p.x, p.z);
             currentWall = next.wall;
+            min.x = Math.min(min.x, p.x);
+            min.z = Math.min(min.z, p.z);
+            max.x = Math.max(max.x, p.x);
+            max.z = Math.max(max.z, p.z);
 
             currentWallPoint = +!next.point;
         } else
             break;
     } while (currentWall !== first.wall);
+
+    this.points[0] = min.add(max).multiplyScalar(0.5);
+    this.points[0].y = this.wall.points[2].y;
     var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.ShapeGeometry(shape), [this.material, this.gridsMaterial]);
     mesh.rotation.x = Math.PI / 2;
     mesh.position.y = 3;
     this.meshRoot.add(mesh);
+
+    this.drawEditPoints();
 };
 
 SIM.Roof.prototype.canBeInsertedOn = function(parent) {
