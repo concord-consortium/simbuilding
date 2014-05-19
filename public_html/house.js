@@ -383,23 +383,13 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function() {
         });
     });
 
-    var currentWall = this;
-    var currentWallPoint;
-    if (currentWall.neighbor[0])
-        currentWallPoint = 0;
-    else
-        currentWallPoint = 1;
-    while (currentWall.neighbor[currentWallPoint] && currentWall.neighbor[currentWallPoint].wall !== this) {
-        var tmp = currentWall;
-        currentWall = currentWall.neighbor[currentWallPoint].wall;
-        currentWallPoint = +!tmp.neighbor[currentWallPoint].point;
-    }
-    var firstWall = currentWall;
-    var firstWallPoint = +!currentWallPoint;
+    var first = this.findFirstWall();
+    var firstWall = first.wall;
+    var firstWallPoint = first.point;
 
     var side = 0;
-    currentWall = firstWall;
-    currentWallPoint = firstWallPoint;
+    var currentWall = firstWall;
+    var currentWallPoint = firstWallPoint;
     do {
         if (currentWall.neighbor[currentWallPoint]) {
             var next = currentWall.neighbor[currentWallPoint];
@@ -441,6 +431,24 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function() {
         } else
             break;
     } while (currentWall !== firstWall);
+};
+
+SIM.Wall.prototype.findFirstWall = function() {
+    var currentWall = this;
+    var currentWallPoint;
+    if (currentWall.neighbor[0])
+        currentWallPoint = 0;
+    else
+        currentWallPoint = 1;
+    while (currentWall.neighbor[currentWallPoint] && currentWall.neighbor[currentWallPoint].wall !== this) {
+        var tmp = currentWall;
+        currentWall = currentWall.neighbor[currentWallPoint].wall;
+        currentWallPoint = +!tmp.neighbor[currentWallPoint].point;
+    }
+    var result = new Object();
+    result.wall = currentWall;
+    result.point = +!currentWallPoint;
+    return result;
 };
 
 SIM.Wall.prototype.canBeInsertedOn = function(parent) {
