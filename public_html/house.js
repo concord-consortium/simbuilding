@@ -384,42 +384,42 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function() {
     });
 
     var first = this.findFirstWall();
-    var firstWall = first.wall;
-    var firstWallPoint = first.point;
-
+    var currentWall = first.wall;
+    var currentWallPoint = first.point;
     var side = 0;
-    var currentWall = firstWall;
-    var currentWallPoint = firstWallPoint;
     do {
         if (currentWall.neighbor[currentWallPoint]) {
             var next = currentWall.neighbor[currentWallPoint];
+
             var p1 = currentWall.getAbsPoint(+!currentWallPoint);
             var p2 = currentWall.getAbsPoint(currentWallPoint);
             var p3 = next.wall.getAbsPoint(+!next.point);
             var p1_p2 = new THREE.Vector3().subVectors(p2, p1).normalize();
             var p2_p3 = new THREE.Vector3().subVectors(p3, p2).normalize();
             side += SIM.angleBetween(p1_p2, p2_p3, SIM.UNIT_Y);
+
             currentWall = next.wall;
             currentWallPoint = +!next.point;
         } else
             break;
-    } while (currentWall !== firstWall);
+    } while (currentWall !== first.wall);
 
-    currentWall = firstWall;
-    currentWallPoint = firstWallPoint;
+    currentWall = first.wall;
+    currentWallPoint = first.point;
     do {
         if (currentWall.neighbor[currentWallPoint]) {
             var next = currentWall.neighbor[currentWallPoint];
+
             var p1 = currentWall.getAbsPoint(+!currentWallPoint);
             var p2 = currentWall.getAbsPoint(currentWallPoint);
             var p3 = next.wall.getAbsPoint(+!next.point);
             var p1_p2 = new THREE.Vector3().subVectors(p2, p1).normalize();
             var p2_p3 = new THREE.Vector3().subVectors(p3, p2).normalize();
-
             currentWall.thicknessDirection = new THREE.Vector3().crossVectors(SIM.UNIT_Y, p1_p2).normalize();
             if (side < 0)
                 currentWall.thicknessDirection.negate();
             currentWall.draw();
+
             currentWall = next.wall;
             currentWallPoint = +!next.point;
             if (!currentWall.neighbor[currentWallPoint]) {
@@ -430,7 +430,7 @@ SIM.Wall.prototype.computeInsideDirectionOfAttachedWalls = function() {
             }
         } else
             break;
-    } while (currentWall !== firstWall);
+    } while (currentWall !== first.wall);
 };
 
 SIM.Wall.prototype.findFirstWall = function() {
@@ -512,4 +512,77 @@ SIM.Window.prototype.snapToGrid = function(p) {
     p.x = Math.round(p.x * scaleX) / scaleX;
     p.y = Math.round(p.y * scaleY) / scaleY;
     return p;
+};
+
+SIM.Roof = function() {
+    SIM.HousePart.call(this);
+
+    this.material = new THREE.MeshLambertMaterial();
+    this.material.map = SIM.Wall.texture.clone();
+    this.material.side = THREE.DoubleSide;
+    this.material.map.needsUpdate = true;
+
+    this.gridsMaterial = new THREE.MeshBasicMaterial();
+    this.gridsMaterial.map = SIM.HousePart.gridsTexture.clone();
+    this.gridsMaterial.transparent = true;
+    this.gridsMaterial.map.needsUpdate = true;
+    this.gridsMaterial.side = THREE.DoubleSide;
+    this.gridsMaterial.visible = false;
+};
+
+SIM.Roof.prototype = new SIM.HousePart();
+
+SIM.Roof.prototype.setParentIfAllowed = function(parent) {
+    if (parent && this.initMode && this.currentEditPointIndex === 0) {
+//        parent.childrenRoot.add(this.root);
+        this.wall = parent;
+        parent.root.parent.add(this.root);
+    }
+};
+
+SIM.Roof.prototype.moveCurrentEditPoint = function(p) {
+//    p = this.snapToGrid(this.root.worldToLocal(p));
+    p = this.root.worldToLocal(p);
+    this.points[this.currentEditPointIndex] = p;
+//    if (this.initMode) {
+//        if (this.currentEditPointIndex === 0)
+//            this.points[1] = this.points[0];
+//    }
+    this.draw();
+//    this.setParentGridsVisible(true);
+//    this.root.parent.userData.housePart.draw();
+};
+
+SIM.Roof.prototype.draw = function() {
+    for (var i = this.meshRoot.children.length; i >= 0; i--)
+        this.meshRoot.remove(this.meshRoot.children[i]);
+
+    this.drawEditPoints();
+
+    var first = this.wall.findFirstWall();
+    var currentWall = first.wall;
+    var currentWallPoint = first.point;
+    var p = currentWall.points[+!currentWallPoint];
+    var shape = new THREE.Shape();
+    shape.moveTo(p.x, p.z);
+    do {
+        if (currentWall.neighbor[currentWallPoint]) {
+            var next = currentWall.neighbor[currentWallPoint];
+            p = currentWall.points[currentWallPoint];
+
+            shape.lineTo(p.x, p.z);
+            currentWall = next.wall;
+
+            currentWallPoint = +!next.point;
+        } else
+            break;
+    } while (currentWall !== first.wall);
+    var mesh = THREE.SceneUtils.createMultiMaterialObject(new THREE.ShapeGeometry(shape), [this.material, this.gridsMaterial]);
+    mesh.rotation.x = Math.PI / 2;
+    mesh.position.y = 3;
+    this.meshRoot.add(mesh);
+};
+
+SIM.Roof.prototype.canBeInsertedOn = function(parent) {
+    return parent instanceof SIM.Wall;
 };

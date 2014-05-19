@@ -120,11 +120,16 @@ function initGui() {
             currentHousePart = new SIM.Window();
             insertNewHousePart = true;
         };
+        this.roof = function() {
+            currentHousePart = new SIM.Roof();
+            insertNewHousePart = true;
+        };
     };
     var gui = new dat.GUI();
     gui.add(controls, 'platform');
     gui.add(controls, 'wall');
     gui.add(controls, 'window');
+    gui.add(controls, 'roof');
 }
 
 function handleMouseMove(event) {
