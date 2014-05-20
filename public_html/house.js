@@ -532,6 +532,15 @@ SIM.Roof = function() {
 
 SIM.Roof.prototype = new SIM.HousePart();
 
+SIM.Roof.prototype.setCurrentEditPointIndex = function(i) {
+    if (i > 0)
+        this.complete();
+    else {
+        this.currentEditPointIndex = i;
+        this.completed = false;
+    }
+};
+
 SIM.Roof.prototype.setParentIfAllowed = function(parent) {
     if (parent && this.initMode && this.currentEditPointIndex === 0) {
 //        parent.childrenRoot.add(this.root);
@@ -566,17 +575,15 @@ SIM.Roof.prototype.draw = function() {
     var min = p.clone();
     var max = p.clone();
     do {
+        p = currentWall.points[currentWallPoint];
+        shape.lineTo(p.x, p.z);
+        min.x = Math.min(min.x, p.x);
+        min.z = Math.min(min.z, p.z);
+        max.x = Math.max(max.x, p.x);
+        max.z = Math.max(max.z, p.z);
         if (currentWall.neighbor[currentWallPoint]) {
             var next = currentWall.neighbor[currentWallPoint];
-            p = currentWall.points[currentWallPoint];
-
-            shape.lineTo(p.x, p.z);
             currentWall = next.wall;
-            min.x = Math.min(min.x, p.x);
-            min.z = Math.min(min.z, p.z);
-            max.x = Math.max(max.x, p.x);
-            max.z = Math.max(max.z, p.z);
-
             currentWallPoint = +!next.point;
         } else
             break;
