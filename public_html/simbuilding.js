@@ -160,7 +160,8 @@ function handleMouseDown() {
 function handleMouseUp() {
 	if (currentHousePart && !currentHousePart.isCompleted()) {
 		currentHousePart.complete();
-		houseParts.push(currentHousePart);
+		if (insertNewHousePart)
+			houseParts.push(currentHousePart);
 	}
 	insertNewHousePart = false;
 	camControl.enabled = true;
