@@ -43,6 +43,7 @@ SIM.HousePart.prototype.complete = function() {
     this.initMode = false;
     this.completed = true;
     this.setParentGridsVisible(false);
+    this.setEditPointsVisible(false);
 };
 
 SIM.HousePart.prototype.isCompleted = function() {
@@ -66,6 +67,14 @@ SIM.HousePart.prototype.setParentIfAllowed = function(parent) {
     if (parent && this.initMode && this.currentEditPointIndex === 0) {
         parent.childrenRoot.add(this.root);
     }
+};
+
+SIM.HousePart.prototype.setEditPointsVisible = function(visible) {
+    if (visible) {
+        if (this.root.children.indexOf(this.editPointsRoot) === -1)
+            this.root.add(this.editPointsRoot);
+    } else
+        this.root.remove(this.editPointsRoot);
 };
 
 SIM.HousePart.prototype.drawEditPoints = function() {
