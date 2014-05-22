@@ -25,6 +25,7 @@ function startSimBuilding() {
 	document.addEventListener('mousemove', handleMouseMove, false);
 	document.addEventListener('mousedown', handleMouseDown, false);
 	document.addEventListener('mouseup', handleMouseUp, false);
+	document.addEventListener('keyup', handleKeyUp, false);
 
 	scene = new THREE.Scene();
 
@@ -132,9 +133,13 @@ function initGui() {
 	gui.add(controls, 'roof');
 }
 
-function handleMouseMove(event) {
-	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+function handleKeyUp(event) {
+	console.log("keyCode=" + event.keyCode);
+	if (event.keyCode === 46 && currentHousePart) {
+		currentHousePart.root.parent.remove(currentHousePart.root);
+		houseParts.splice(houseParts.indexOf(currentHousePart), 1);
+		currentHousePart = null;
+	}
 }
 
 function handleMouseDown() {
@@ -165,6 +170,11 @@ function handleMouseUp() {
 	}
 	insertNewHousePart = false;
 	camControl.enabled = true;
+}
+
+function handleMouseMove(event) {
+	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
 }
 
 function hover() {
