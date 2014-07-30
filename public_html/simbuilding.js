@@ -2,20 +2,24 @@ var clock;
 var stats;
 var camControl;
 var renderer;
-var scene;
 var camera;
+var scene;
+var sceneRoot;
+var hotSpotsRoot;
+var land;
 var mouse;
 var projector;
 var raycaster;
-var land;
 var insertNewHousePart;
-var sceneRoot;
 var houseParts = [];
 var currentHousePart;
 var hoveredUserData;
+var viewerHeight = 1.7;
+var hoveredObject;
+var UNIT_Y = new THREE.Vector3(0, 1, 0);
+var NEG_UNIT_Y = new THREE.Vector3(0, -1, 0);
 
 function startSimBuilding() {
-	SIM.loadTextures();
 	clock = new THREE.Clock();
 	mouse = new THREE.Vector2();
 	projector = new THREE.Projector();
@@ -30,45 +34,34 @@ function startSimBuilding() {
 	scene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-	camera.position.x = 2;
-	camera.position.y = 6;
-	camera.position.z = -10;
-	camera.lookAt(new THREE.Vector3(0, 0, 0));
+	camera.position.x = 8.5;
+	camera.position.y = viewerHeight;
+	camera.position.z = 10;
 
-//    camControls = new THREE.FirstPersonControls(camera);
-//    camControls.lookSpeed = 0.4;
-//    camControls.movementSpeed = 20;
-//    camControls.noFly = true;
-//    camControls.lookVertical = true;
-//    camControls.constrainVertical = true;
-//    camControls.verticalMin = 1.0;
-//    camControls.verticalMax = 2.0;
-//    camControls.lon = -150;
-//    camControls.lat = 120;
+	camControl = new THREE.FirstPersonControls(camera);
+	camControl.lookSpeed = 0.1;
+	camControl.movementSpeed = 4;
+	camControl.noFly = true;
+	camControl.lookVertical = true;
+	camControl.constrainVertical = true;
+//	camControl.verticalMin = 1.25;
+//	camControl.verticalMax = 2.5;
+	camControl.lon = -90;
+	camControl.lat = 0;
 
-	camControl = new THREE.OrbitControls(camera);
-	camControl.userPanSpeed = 0.05;
+//	camControl = new THREE.OrbitControls(camera);
+//	camControl.lookSpeed = 0.1;
+//	camControl.userPanSpeed = 0.05;
 
-	renderer = new THREE.WebGLRenderer();
-	renderer.setClearColor(0xEEEEEE);
+	renderer = new THREE.WebGLRenderer({antialias: true});
+	renderer.setClearColor(0x00FFFF);
 	renderer.setSize(window.innerWidth, window.innerHeight);
 
-	land = new THREE.Mesh(new THREE.PlaneGeometry(100, 100));
-	land.rotation.x = -Math.PI / 2;
-	land.geometry.computeBoundingBox();
-	scene.add(land);
-
-	var axis = new THREE.AxisHelper(20);
-	scene.add(axis);
-
-	sceneRoot = new THREE.Object3D();
-	scene.add(sceneRoot);
-
 	initLights();
+	initScene();
 
 	$("#WebGL-output").append(renderer.domElement);
 	render();
-
 }
 
 function render() {
@@ -81,17 +74,66 @@ function render() {
 	renderer.clear();
 	requestAnimationFrame(render);
 	renderer.render(scene, camera);
+
+	enforceCameraGravity();
+}
+
+function initScene() {
+//	var axis = new THREE.AxisHelper(20);
+//	scene.add(axis);
+
+	sceneRoot = new THREE.Object3D();
+	scene.add(sceneRoot);
+
+	land = new THREE.Mesh(new THREE.PlaneGeometry(100, 100));
+	land.rotation.x = -Math.PI / 2;
+	land.position.y = -0.1;
+	land.geometry.computeBoundingBox();
+	land.material.color.setHex(0x00FF00);
+	sceneRoot.add(land);
+
+	var loader = new THREE.ColladaLoader();
+	loader.options.convertUpAxis = true;
+	loader.load('./resources/models/Yorktown.dae', function(collada) {
+		sceneRoot.add(collada.scene);
+	});
+
+	hotSpotsRoot = new THREE.Object3D();
+	scene.add(hotSpotsRoot);
+
+	var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.5));
+	hotSpot.position.x = 4;
+	hotSpot.position.y = 6;
+	hotSpot.position.z = -5.3;
+	hotSpot.visible = false;
+	hotSpotsRoot.add(hotSpot);
 }
 
 function initLights() {
-	var ambientLight = new THREE.AmbientLight();
-	scene.add(ambientLight);
+	var directionalLight = new THREE.DirectionalLight(0xffffff);
+	directionalLight.position.set(1, 1, 0).normalize();
+	directionalLight.intensity = 1;
+	scene.add(directionalLight);
 
-	var spotLight = new THREE.SpotLight();
-	spotLight.position.x = 2;
-	spotLight.position.y = 6;
-	spotLight.position.z = 5;
-	scene.add(spotLight);
+	var directionalLight = new THREE.DirectionalLight(0xffffff);
+	directionalLight.position.set(-1, 1, 0).normalize();
+	directionalLight.intensity = 1;
+	scene.add(directionalLight);
+
+	var directionalLight = new THREE.DirectionalLight(0xffffff);
+	directionalLight.position.set(0, 0, 1).normalize();
+	directionalLight.intensity = 0.9;
+	scene.add(directionalLight);
+
+	var directionalLight = new THREE.DirectionalLight(0xffffff);
+	directionalLight.position.set(0, 0, -1).normalize();
+	directionalLight.intensity = 0.9;
+	scene.add(directionalLight);
+
+	var directionalLight = new THREE.DirectionalLight(0xffffff);
+	directionalLight.position.set(0, -1, 0).normalize();
+	directionalLight.intensity = 0.5;
+	scene.add(directionalLight);
 }
 
 function initStats() {
@@ -139,26 +181,23 @@ function handleKeyUp(event) {
 		currentHousePart.root.parent.remove(currentHousePart.root);
 		houseParts.splice(houseParts.indexOf(currentHousePart), 1);
 		currentHousePart = null;
+	} else if (event.keyCode === 73) { // 'i'
+		var div = $("#ircamera");
+		if (div.css("display") === "none")
+			div.fadeIn();
+		else
+			div.fadeOut();
 	}
 }
 
 function handleMouseDown() {
-	if (insertNewHousePart) {
-		currentHousePart.setCurrentEditPointIndex(currentHousePart.getCurrentEditPointIndex() + 1);
-		camControl.enabled = false;
-	} else if (hoveredUserData && hoveredUserData.housePart) {
-		if (currentHousePart)
-			currentHousePart.setEditPointsVisible(false);
-		currentHousePart = hoveredUserData.housePart;
-		currentHousePart.setEditPointsVisible(true);
-		if (hoveredUserData.editPointIndex !== undefined) {
-			currentHousePart.setCurrentEditPointIndex(hoveredUserData.editPointIndex);
-			camControl.enabled = false;
-		}
-	} else {
-		if (currentHousePart)
-			currentHousePart.setEditPointsVisible(false);
-		currentHousePart = null;
+	if (hoveredObject !== null) {
+		console.log("collision");
+		var div = $("#applet");
+		if (div.css("display") === "none")
+			div.fadeIn();
+		else
+			div.fadeOut();
 	}
 }
 
@@ -182,35 +221,17 @@ function hover() {
 	projector.unprojectVector(vector, camera);
 	var pickDirection = vector.sub(camera.position).normalize();
 	raycaster.set(camera.position, pickDirection);
-	var editing = currentHousePart && !currentHousePart.isCompleted();
-	if (currentHousePart && currentHousePart.isCurrentEditPointVertical()) {
-		currentHousePart.moveCurrentEditPoint(closestPoint(currentHousePart.root.localToWorld(currentHousePart.points[currentHousePart.getCurrentEditPointIndex()]), new THREE.Vector3(0, 1, 0), camera.position, pickDirection));
-	} else {
-		var collidables = [];
-		if (editing && currentHousePart.canBeInsertedOn(null))
-			collidables.push(land);
+	var collidables = [];
+	hotSpotsRoot.children.forEach(function(sphere) {
+		collidables.push(sphere);
+	});
 
-		houseParts.forEach(function(part) {
-			if (!editing || currentHousePart.canBeInsertedOn(part))
-				collidables.push(part.collisionMesh);
-		});
-
-		if (currentHousePart && !editing)
-			currentHousePart.editPointsRoot.children.forEach(function(sphere) {
-				collidables.push(sphere);
-			});
-
-		hoveredUserData = null;
-		var intersects = raycaster.intersectObjects(collidables);
-		if (intersects.length > 0) {
-			hoveredUserData = intersects[0].object.userData;
-			if (editing) {
-				currentHousePart.setParentIfAllowed(hoveredUserData.housePart);
-				scene.updateMatrixWorld();
-				currentHousePart.moveCurrentEditPoint(intersects[0].point);
-			}
-		}
-	}
+	hoveredUserData = null;
+	var intersects = raycaster.intersectObjects(collidables);
+	if (intersects.length > 0)
+		hoveredObject = intersects[0].object;
+	else
+		hoveredObject = null;
 }
 
 function closestPoint(p1, v1, p2, v2) {
@@ -242,24 +263,9 @@ function closestPoint(p1, v1, p2, v2) {
 	return pa;
 }
 
-function createDefaultScene() {
-	var platform = new SIM.Platform();
-	sceneRoot.add(platform.root);
-	platform.points[0] = new THREE.Vector3(-5, 0, -5);
-	platform.points[1] = new THREE.Vector3(5, 0, 5);
-	platform.points[2] = new THREE.Vector3(-5, 0, 5);
-	platform.points[3] = new THREE.Vector3(5, 0, -5);
-	platform.complete();
-	platform.draw();
-	houseParts.push(platform);
-
-//    var wall = new SIM.Wall();
-//    wall.setParentIfAllowed(platform);
-//    wall.points[0] = new THREE.Vector3(-0.5, 0, 0.5);
-//    wall.points[1] = new THREE.Vector3(0.5, 0, 0.5);
-//    wall.points[2] = new THREE.Vector3(-0.5, 2, 0.5);
-//    wall.points[3] = new THREE.Vector3(0.5, 2, 0.5);
-//    wall.complete();
-//    wall.draw();
-//    houseParts.push(wall);
+function enforceCameraGravity() {
+	raycaster.set(camera.position, NEG_UNIT_Y);
+	var intersects = raycaster.intersectObjects(sceneRoot.children, true);
+	if (intersects.length > 0)
+		camera.position.y = intersects[0].point.y + viewerHeight;
 }

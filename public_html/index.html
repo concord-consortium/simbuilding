@@ -8,10 +8,9 @@
         <script type="text/javascript" src="libs/stats.js"></script>
         <script type="text/javascript" src="libs/dat.gui.js"></script>
         <script type="text/javascript" src="libs/FirstPersonControls.js"></script>
-        <script type="text/javascript" src="libs/OrbitControls.js"></script>        
+        <script type="text/javascript" src="libs/OrbitControls.js"></script>
+        <script type="text/javascript" src="libs/ColladaLoader.js"></script>
         <script type="text/javascript" src="simbuilding.js"></script>
-        <script type="text/javascript" src="house.js"></script>
-        <script type="text/javascript" src="util.js"></script>
 
         <style>
             body{
@@ -23,8 +22,24 @@
     <body>
         <div id="Stats-output">
         </div>
+
         <div id="WebGL-output">
+            <div id="ircamera" style="position: absolute; right: 0; bottom: 0; display: none">
+                <img src="resources/textures/ircamera.png" width="300" height="400"/>
+            </div>
+            <div id="applet" style="position: absolute;
+                 left: 50%;
+                 top: 50%;
+                 text-align: center;
+                 background-image: url('resources/textures/platform.jpg');
+                 width:800px;
+                 height:600px;
+                 margin-left: -400px; /*half width*/
+                 margin-top: -300px; /*half height*/
+                 display: none">
+            </div>
         </div>
+
         <script type="text/javascript">
             $(function() {
                 startSimBuilding();
