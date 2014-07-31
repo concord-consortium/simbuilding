@@ -3,6 +3,7 @@
 <html>
     <head>
         <title>SimBuilding</title>
+        <script type="text/javascript" src="resources/e2d/energy2d.js"></script>
         <script type="text/javascript" src="libs/three.js"></script>
         <script type="text/javascript" src="libs/jquery-1.9.0.js"></script>
         <script type="text/javascript" src="libs/stats.js"></script>
@@ -31,12 +32,29 @@
                  left: 50%;
                  top: 50%;
                  text-align: center;
-                 background-image: url('resources/textures/platform.jpg');
-                 width:800px;
+                 width:500px;
                  height:600px;
-                 margin-left: -400px; /*half width*/
+                 margin-left: -250px; /*half width*/
                  margin-top: -300px; /*half height*/
                  display: none">
+                <applet id="applet1" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="500" height="500">
+                    <param name="script" value="load resources/e2d/thermal-bridge.e2d;"/>
+                    <param name="permissions" value="sandbox"/>
+                    <param name="MAYSCRIPT" value="true"/>
+                </applet>
+                <br>
+                <div style="text-align: center; width: 500px; background-color: #ccc; margin: 0px 0px 0px -5px; border: 5px solid #ccc;">
+                    <form>
+                        <input id="run_button" type="button" value="Run" onclick="run('applet1')">
+                        <input id="stop_button" type="button" value="Stop" onclick="stop('applet1')">
+                        <input id="reset_button" type="button" value="Reset" onclick="jsReset('applet1')"> 
+                        <select onChange="runScript('applet1', 'set color_palette_type ' + this.options[this.selectedIndex].value)">
+                            <option value="RAINBOW">Rainbow</option>
+                            <option value="IRON" selected>Iron</option>
+                            <option value="GRAY">Gray</option>
+                        </select>
+                    </form>
+                </div>
             </div>
         </div>
 

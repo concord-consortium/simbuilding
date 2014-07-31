@@ -191,14 +191,14 @@ function handleKeyUp(event) {
 }
 
 function handleMouseDown() {
-	if (hoveredObject !== null) {
+	//if (hoveredObject !== null) {
 		console.log("collision");
 		var div = $("#applet");
 		if (div.css("display") === "none")
 			div.fadeIn();
 		else
 			div.fadeOut();
-	}
+	//}
 }
 
 function handleMouseUp() {
