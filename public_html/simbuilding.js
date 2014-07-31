@@ -192,12 +192,15 @@ function handleKeyUp(event) {
 
 function handleMouseDown() {
 	//if (hoveredObject !== null) {
-		console.log("collision");
-		var div = $("#applet");
-		if (div.css("display") === "none")
-			div.fadeIn();
-		else
-			div.fadeOut();
+	console.log("collision");
+	var div = $("#applet");
+	if (div.css("display") === "none") {
+		div.fadeIn();
+		camControl.freeze = true;
+	} else {
+		div.fadeOut();
+		camControl.freeze = false;
+	}
 	//}
 }
 

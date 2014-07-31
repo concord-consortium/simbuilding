@@ -25,36 +25,48 @@
         </div>
 
         <div id="WebGL-output">
+            <div id="applet" style="
+                 position: absolute;
+                 left: 50%;
+                 bottom: 0;
+                 text-align: center;
+                 background-image: url('resources/textures/ir-camera.png');
+                 width:624px;
+                 height:712px;
+                 margin-left: -312px;
+                 margin-top: -361px;
+                 ">
+                <div style="
+                     position: absolute;
+                     left: 50%;
+                     bottom: 205px;
+                     text-align: center;
+                     width: 480px;
+                     background-color: #ccc;
+                     margin-left: -240px;
+                     ">
+                    <applet id="applet1" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="480" height="360">
+                        <param name="script" value="load resources/e2d/thermal-bridge.e2d;"/>
+                        <param name="permissions" value="sandbox"/>
+                        <param name="MAYSCRIPT" value="true"/>
+                    </applet>
+                    <br>
+                    <div>
+                        <form>
+                            <input id="run_button" type="button" value="Run" onclick="run('applet1')">
+                            <input id="stop_button" type="button" value="Stop" onclick="stop('applet1')">
+                            <input id="reset_button" type="button" value="Reset" onclick="jsReset('applet1')">
+                            <select onChange="runScript('applet1', 'set color_palette_type ' + this.options[this.selectedIndex].value)">
+                                <option value="RAINBOW">Rainbow</option>
+                                <option value="IRON" selected>Iron</option>
+                                <option value="GRAY">Gray</option>
+                            </select>
+                        </form>
+                    </div>
+                </div>
+            </div>
             <div id="ircamera" style="position: absolute; right: 0; bottom: 0; display: none">
                 <img src="resources/textures/ircamera.png" width="300" height="400"/>
-            </div>
-            <div id="applet" style="position: absolute;
-                 left: 50%;
-                 top: 50%;
-                 text-align: center;
-                 width:500px;
-                 height:600px;
-                 margin-left: -250px; /*half width*/
-                 margin-top: -300px; /*half height*/
-                 display: none">
-                <applet id="applet1" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="500" height="500">
-                    <param name="script" value="load resources/e2d/thermal-bridge.e2d;"/>
-                    <param name="permissions" value="sandbox"/>
-                    <param name="MAYSCRIPT" value="true"/>
-                </applet>
-                <br>
-                <div style="text-align: center; width: 500px; background-color: #ccc; margin: 0px 0px 0px -5px; border: 5px solid #ccc;">
-                    <form>
-                        <input id="run_button" type="button" value="Run" onclick="run('applet1')">
-                        <input id="stop_button" type="button" value="Stop" onclick="stop('applet1')">
-                        <input id="reset_button" type="button" value="Reset" onclick="jsReset('applet1')"> 
-                        <select onChange="runScript('applet1', 'set color_palette_type ' + this.options[this.selectedIndex].value)">
-                            <option value="RAINBOW">Rainbow</option>
-                            <option value="IRON" selected>Iron</option>
-                            <option value="GRAY">Gray</option>
-                        </select>
-                    </form>
-                </div>
             </div>
         </div>
 
