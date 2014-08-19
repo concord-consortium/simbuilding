@@ -1,3 +1,6 @@
+var UNIT_Y = new THREE.Vector3(0, 1, 0);
+var NEG_UNIT_Y = new THREE.Vector3(0, -1, 0);
+
 var clock;
 var stats;
 var camControl;
@@ -16,8 +19,7 @@ var currentHousePart;
 var hoveredUserData;
 var viewerHeight = 1.7;
 var hoveredObject;
-var UNIT_Y = new THREE.Vector3(0, 1, 0);
-var NEG_UNIT_Y = new THREE.Vector3(0, -1, 0);
+var doRender;
 
 function startSimBuilding() {
 	clock = new THREE.Clock();
@@ -34,20 +36,25 @@ function startSimBuilding() {
 	scene = new THREE.Scene();
 
 	camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-	camera.position.x = 8.5;
-	camera.position.y = viewerHeight;
-	camera.position.z = 10;
+//	camera.position.x = 8.5;
+//	camera.position.y = viewerHeight;
+//	camera.position.z = 10;
 
-	camControl = new THREE.FirstPersonControls(camera);
-	camControl.lookSpeed = 0.1;
-	camControl.movementSpeed = 4;
-	camControl.noFly = true;
-	camControl.lookVertical = true;
-	camControl.constrainVertical = true;
+//	camControl = new THREE.FirstPersonControls(camera);
+//	camControl.lookSpeed = 0.1;
+//	camControl.movementSpeed = 4;
+//	camControl.noFly = true;
+//	camControl.lookVertical = true;
+//	camControl.constrainVertical = true;
 //	camControl.verticalMin = 1.25;
 //	camControl.verticalMax = 2.5;
-	camControl.lon = -90;
-	camControl.lat = 0;
+//	camControl.lon = -90;
+//	camControl.lat = 0;
+//	camControl.heighSpeed = true;
+
+	camControl = new THREE.PointerLockControls(camera);
+	scene.add(camControl.getObject());
+
 
 //	camControl = new THREE.OrbitControls(camera);
 //	camControl.lookSpeed = 0.1;
@@ -61,21 +68,26 @@ function startSimBuilding() {
 	initScene();
 
 	$("#WebGL-output").append(renderer.domElement);
+	doRender = true;
 	render();
 }
 
 function render() {
+	var doRenderVal = doRender || camControl.needsUpdate();
+	doRender = false;
+
 	var delta = clock.getDelta();
 	stats.update();
 
+	camControl.update(delta);
 	hover();
 
-	camControl.update(delta);
-	renderer.clear();
 	requestAnimationFrame(render);
-	renderer.render(scene, camera);
-
-	enforceCameraGravity();
+	if (doRenderVal) {
+		renderer.clear();
+		renderer.render(scene, camera);
+		enforceCameraGravity();
+	}
 }
 
 function initScene() {
@@ -176,7 +188,6 @@ function initGui() {
 }
 
 function handleKeyUp(event) {
-	console.log("keyCode=" + event.keyCode);
 	if (event.keyCode === 46 && currentHousePart) {
 		currentHousePart.root.parent.remove(currentHousePart.root);
 		houseParts.splice(houseParts.indexOf(currentHousePart), 1);
@@ -192,15 +203,15 @@ function handleKeyUp(event) {
 
 function handleMouseDown() {
 	//if (hoveredObject !== null) {
-	console.log("collision");
-	var div = $("#applet");
-	if (div.css("display") === "none") {
-		div.fadeIn();
-		camControl.freeze = true;
-	} else {
-		div.fadeOut();
-		camControl.freeze = false;
-	}
+//	console.log("collision");
+//	var div = $("#applet");
+//	if (div.css("display") === "none") {
+//		div.fadeIn();
+//		camControl.freeze = true;
+//	} else {
+//		div.fadeOut();
+//		camControl.freeze = false;
+//	}
 	//}
 }
 
@@ -217,6 +228,7 @@ function handleMouseUp() {
 function handleMouseMove(event) {
 	mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
 	mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
+	doRender = true;
 }
 
 function hover() {
@@ -267,6 +279,7 @@ function closestPoint(p1, v1, p2, v2) {
 }
 
 function enforceCameraGravity() {
+	var camera = camControl.getObject();
 	raycaster.set(camera.position, NEG_UNIT_Y);
 	var intersects = raycaster.intersectObjects(sceneRoot.children, true);
 	if (intersects.length > 0)
