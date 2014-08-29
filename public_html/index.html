@@ -12,6 +12,14 @@
         <script type="text/javascript" src="libs/PointerLockControls.js"></script>
         <script type="text/javascript" src="libs/OrbitControls.js"></script>
         <script type="text/javascript" src="libs/ColladaLoader.js"></script>
+        <script type="text/javascript" src="libs/EffectComposer.js"></script>
+        <script type="text/javascript" src="libs/RenderPass.js"></script>
+        <script type="text/javascript" src="libs/ShaderPass.js"></script>
+        <script type="text/javascript" src="libs/MaskPass.js"></script>
+        <script type="text/javascript" src="libs/CopyShader.js"></script>
+        <script type="text/javascript" src="libs/DotScreenShader.js"></script>
+        <script type="text/javascript" src="libs/RGBShiftShader.js"></script>
+        <script type="text/javascript" src="libs/ColorifyShader.js"></script>
         <script type="text/javascript" src="simbuilding.js"></script>
 
         <style>
@@ -22,6 +30,50 @@
         </style>
     </head>
     <body>
+        <script id="vertexShader" type="x-shader/x-vertex">
+            precision mediump float;
+            precision mediump int;
+
+            uniform mat4 modelViewMatrix; // optional
+            uniform mat4 projectionMatrix; // optional
+
+            attribute vec3 position;
+            attribute vec4 color;
+
+            varying vec3 vPosition;
+            varying vec4 vColor;
+
+            void main()	{
+
+            vPosition = position;
+            vColor = color;
+
+            gl_Position = projectionMatrix * modelViewMatrix * vec4( position, 1.0 );
+
+            }
+        </script>
+
+        <script id="fragmentShader" type="x-shader/x-fragment">
+            precision mediump float;
+            precision mediump int;
+
+            uniform float time;
+
+            varying vec3 vPosition;
+            varying vec4 vColor;
+
+            void main()	{
+
+            vec4 color = vec4( vColor );
+            color.r = 0.1;
+            color.b = 0.1;
+            color.g = 0.99;
+
+            gl_FragColor = color;
+
+            }
+        </script>
+
         <div id="Stats-output">
         </div>
 
@@ -47,7 +99,7 @@
                      background-color: #ccc;
                      margin-left: -240px;
                      ">
-                    <applet id="applet1" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="480" height="360">
+                    <applet id="applet1" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="480" height="360" style="display: none">
                         <param name="script" value="load resources/e2d/thermal-bridge.e2d;"/>
                         <param name="permissions" value="sandbox"/>
                         <param name="MAYSCRIPT" value="true"/>

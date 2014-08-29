@@ -5,6 +5,7 @@ var clock;
 var stats;
 var camControl;
 var renderer;
+var composer;
 var camera;
 var scene;
 var sceneRoot;
@@ -66,6 +67,7 @@ function startSimBuilding() {
 
 	initLights();
 	initScene();
+	initShaders();
 
 	$("#WebGL-output").append(renderer.domElement);
 	doRender = true;
@@ -83,11 +85,17 @@ function render() {
 	hover();
 
 	requestAnimationFrame(render);
-	if (doRenderVal) {
-		renderer.clear();
-		renderer.render(scene, camera);
-		enforceCameraGravity();
-	}
+//	if (doRenderVal) {
+//		renderer.clear();
+//	object.material.uniforms.time.value = performance.now() * 0.005;
+//	renderer.render(scene, camera);
+
+//	renderer.setSize(100, 100);
+	composer.render(0.1);
+
+//	composer.render();
+	enforceCameraGravity();
+//	}
 }
 
 function initScene() {
@@ -113,11 +121,11 @@ function initScene() {
 	hotSpotsRoot = new THREE.Object3D();
 	scene.add(hotSpotsRoot);
 
-	var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.5));
+	var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.5), new THREE.MeshBasicMaterial());
 	hotSpot.position.x = 4;
 	hotSpot.position.y = 6;
 	hotSpot.position.z = -5.3;
-	hotSpot.visible = false;
+//	hotSpot.visible = false;
 	hotSpotsRoot.add(hotSpot);
 }
 
@@ -146,6 +154,80 @@ function initLights() {
 	directionalLight.position.set(0, -1, 0).normalize();
 	directionalLight.intensity = 0.5;
 	scene.add(directionalLight);
+}
+
+function initShaders() {
+//	composer = new THREE.EffectComposer(renderer);
+//	composer.addPass(new THREE.RenderPass(scene, camera));
+
+//	var effect = new THREE.ShaderPass(THREE.DotScreenShader);
+//	effect.uniforms[ 'scale' ].value = 4;
+//	composer.addPass(effect);
+//
+//	var effect = new THREE.ShaderPass(THREE.RGBShiftShader);
+//	effect.uniforms[ 'amount' ].value = 0.0015;
+//	effect.renderToScreen = true;
+//	composer.addPass(effect);
+
+//	var triangles = 2;
+//
+//	var geometry = new THREE.BufferGeometry();
+//
+//	var vertices = new THREE.BufferAttribute(new Float32Array(triangles * 3 * 3), 3);
+//
+//	vertices.setXYZ(0, -1, -1, 0);
+//	vertices.setXYZ(1, 1, -1, 0);
+//	vertices.setXYZ(2, -1, 1, 0);
+//	vertices.setXYZ(3, -1, 1, 0);
+//	vertices.setXYZ(4, 1, -1, 0);
+//	vertices.setXYZ(5, 1, 1, 0);
+//
+//	geometry.addAttribute('position', vertices);
+//
+//	var colors = new THREE.BufferAttribute(new Float32Array(triangles * 3 * 4), 4);
+//
+//	for (var i = 0; i < colors.length; i++) {
+//
+//		colors.setXYZW(i, 0, 0, 0, 0.5);
+//
+//	}
+//
+//	geometry.addAttribute('color', colors);
+//
+//	// material
+//
+//	var material = new THREE.RawShaderMaterial({
+//		uniforms: {
+//			time: {type: "f", value: 1.0}
+//		},
+//		vertexShader: document.getElementById('vertexShader').textContent,
+//		fragmentShader: document.getElementById('fragmentShader').textContent,
+//		side: THREE.DoubleSide,
+//		transparent: true
+//
+//	});
+//
+//	var mesh = new THREE.Mesh(geometry, material);
+//	mesh.position.z = 7;
+//	mesh.position.y = 1;
+//	scene.add(mesh);
+//
+//	object = mesh;
+
+
+	renderPass = new THREE.RenderPass(scene, camera);
+	copyPass = new THREE.ShaderPass(THREE.CopyShader);
+
+	colorifyPass = new THREE.ShaderPass(THREE.ColorifyShader);
+	colorifyPass.uniforms[ "color" ].value = new THREE.Color(0x00ff00);
+	composer = new THREE.EffectComposer(renderer);
+	composer.addPass(renderPass);
+	composer.addPass(colorifyPass);
+	composer.addPass(copyPass);
+	copyPass.renderToScreen = true;
+
+
+
 }
 
 function initStats() {
@@ -193,7 +275,7 @@ function handleKeyUp(event) {
 		houseParts.splice(houseParts.indexOf(currentHousePart), 1);
 		currentHousePart = null;
 	} else if (event.keyCode === 73) { // 'i'
-		var div = $("#ircamera");
+		var div = $("#applet");
 		if (div.css("display") === "none")
 			div.fadeIn();
 		else
