@@ -21,6 +21,9 @@ var hoveredUserData;
 var viewerHeight = 1.7;
 var hoveredObject;
 var doRender;
+var width = window.innerWidth || 2;
+var height = window.innerHeight || 2;
+var irMode = false;
 
 function startSimBuilding() {
 	clock = new THREE.Clock();
@@ -36,38 +39,18 @@ function startSimBuilding() {
 
 	scene = new THREE.Scene();
 
-	camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
-//	camera.position.x = 8.5;
-//	camera.position.y = viewerHeight;
-//	camera.position.z = 10;
-
-//	camControl = new THREE.FirstPersonControls(camera);
-//	camControl.lookSpeed = 0.1;
-//	camControl.movementSpeed = 4;
-//	camControl.noFly = true;
-//	camControl.lookVertical = true;
-//	camControl.constrainVertical = true;
-//	camControl.verticalMin = 1.25;
-//	camControl.verticalMax = 2.5;
-//	camControl.lon = -90;
-//	camControl.lat = 0;
-//	camControl.heighSpeed = true;
-
+	camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
 	camControl = new THREE.PointerLockControls(camera);
 	scene.add(camControl.getObject());
-
-
-//	camControl = new THREE.OrbitControls(camera);
-//	camControl.lookSpeed = 0.1;
-//	camControl.userPanSpeed = 0.05;
 
 	renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.setClearColor(0x00FFFF);
 	renderer.setSize(window.innerWidth, window.innerHeight);
+	renderer.autoClear = false;
 
+	initShaders();
 	initLights();
 	initScene();
-	initShaders();
 
 	$("#WebGL-output").append(renderer.domElement);
 	doRender = true;
@@ -85,17 +68,47 @@ function render() {
 	hover();
 
 	requestAnimationFrame(render);
-//	if (doRenderVal) {
-//		renderer.clear();
-//	object.material.uniforms.time.value = performance.now() * 0.005;
-//	renderer.render(scene, camera);
+	if (doRenderVal) {
+		renderer.setViewport(0, 0, width, height);
+		camera.fov = 45;
+		camera.aspect = window.innerWidth / window.innerHeight;
+		camera.updateProjectionMatrix();
+		hotSpotsRoot.visible = false;
 
-//	renderer.setSize(100, 100);
-	composer.render(0.1);
+		renderer.clear();
+		composer.render(delta);
 
-//	composer.render();
-	enforceCameraGravity();
-//	}
+		if (irMode) {
+			var irWidth = 450;
+			renderer.setViewport(width / 2 - irWidth / 2 + 10, 200, irWidth, irWidth);
+			camera.fov = 25;
+			camera.aspect = 1;
+			camera.updateProjectionMatrix();
+			hotSpotsRoot.visible = true;
+
+			composerIR.render(delta);
+		}
+
+		enforceCameraGravity();
+	}
+}
+
+function initShaders() {
+	renderPass = new THREE.RenderPass(scene, camera);
+	copyPass = new THREE.ShaderPass(THREE.CopyShader);
+
+	composer = new THREE.EffectComposer(renderer);
+	composer.addPass(renderPass);
+	composer.addPass(copyPass);
+	copyPass.renderToScreen = true;
+
+	colorifyPass = new THREE.ShaderPass(THREE.ColorifyShader);
+	colorifyPass.uniforms[ "color" ].value = new THREE.Color(0x00ff00);
+	composerIR = new THREE.EffectComposer(renderer);
+	composerIR.addPass(renderPass);
+	composerIR.addPass(colorifyPass);
+	composerIR.addPass(copyPass);
+	copyPass.renderToScreen = true;
 }
 
 function initScene() {
@@ -125,7 +138,6 @@ function initScene() {
 	hotSpot.position.x = 4;
 	hotSpot.position.y = 6;
 	hotSpot.position.z = -5.3;
-//	hotSpot.visible = false;
 	hotSpotsRoot.add(hotSpot);
 }
 
@@ -154,80 +166,6 @@ function initLights() {
 	directionalLight.position.set(0, -1, 0).normalize();
 	directionalLight.intensity = 0.5;
 	scene.add(directionalLight);
-}
-
-function initShaders() {
-//	composer = new THREE.EffectComposer(renderer);
-//	composer.addPass(new THREE.RenderPass(scene, camera));
-
-//	var effect = new THREE.ShaderPass(THREE.DotScreenShader);
-//	effect.uniforms[ 'scale' ].value = 4;
-//	composer.addPass(effect);
-//
-//	var effect = new THREE.ShaderPass(THREE.RGBShiftShader);
-//	effect.uniforms[ 'amount' ].value = 0.0015;
-//	effect.renderToScreen = true;
-//	composer.addPass(effect);
-
-//	var triangles = 2;
-//
-//	var geometry = new THREE.BufferGeometry();
-//
-//	var vertices = new THREE.BufferAttribute(new Float32Array(triangles * 3 * 3), 3);
-//
-//	vertices.setXYZ(0, -1, -1, 0);
-//	vertices.setXYZ(1, 1, -1, 0);
-//	vertices.setXYZ(2, -1, 1, 0);
-//	vertices.setXYZ(3, -1, 1, 0);
-//	vertices.setXYZ(4, 1, -1, 0);
-//	vertices.setXYZ(5, 1, 1, 0);
-//
-//	geometry.addAttribute('position', vertices);
-//
-//	var colors = new THREE.BufferAttribute(new Float32Array(triangles * 3 * 4), 4);
-//
-//	for (var i = 0; i < colors.length; i++) {
-//
-//		colors.setXYZW(i, 0, 0, 0, 0.5);
-//
-//	}
-//
-//	geometry.addAttribute('color', colors);
-//
-//	// material
-//
-//	var material = new THREE.RawShaderMaterial({
-//		uniforms: {
-//			time: {type: "f", value: 1.0}
-//		},
-//		vertexShader: document.getElementById('vertexShader').textContent,
-//		fragmentShader: document.getElementById('fragmentShader').textContent,
-//		side: THREE.DoubleSide,
-//		transparent: true
-//
-//	});
-//
-//	var mesh = new THREE.Mesh(geometry, material);
-//	mesh.position.z = 7;
-//	mesh.position.y = 1;
-//	scene.add(mesh);
-//
-//	object = mesh;
-
-
-	renderPass = new THREE.RenderPass(scene, camera);
-	copyPass = new THREE.ShaderPass(THREE.CopyShader);
-
-	colorifyPass = new THREE.ShaderPass(THREE.ColorifyShader);
-	colorifyPass.uniforms[ "color" ].value = new THREE.Color(0x00ff00);
-	composer = new THREE.EffectComposer(renderer);
-	composer.addPass(renderPass);
-	composer.addPass(colorifyPass);
-	composer.addPass(copyPass);
-	copyPass.renderToScreen = true;
-
-
-
 }
 
 function initStats() {
@@ -276,10 +214,14 @@ function handleKeyUp(event) {
 		currentHousePart = null;
 	} else if (event.keyCode === 73) { // 'i'
 		var div = $("#applet");
-		if (div.css("display") === "none")
+		if (div.css("display") === "none") {
 			div.fadeIn();
-		else
+			irMode = true;
+		} else {
 			div.fadeOut();
+			irMode = false;
+		}
+		doRender = true;
 	}
 }
 
