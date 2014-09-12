@@ -42,6 +42,8 @@ function startSimBuilding() {
 	camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
 	camControl = new THREE.PointerLockControls(camera);
 	scene.add(camControl.getObject());
+	camControl.getObject().position.x = 8.5;
+	camControl.getObject().position.z = 10;
 
 	renderer = new THREE.WebGLRenderer({antialias: true});
 	renderer.setClearColor(0x00FFFF);
@@ -65,7 +67,7 @@ function render() {
 	stats.update();
 
 	camControl.update(delta);
-	hover();
+//	hover();
 
 	requestAnimationFrame(render);
 	if (doRenderVal) {
@@ -237,6 +239,24 @@ function handleMouseDown() {
 //		camControl.freeze = false;
 //	}
 	//}
+
+	var vector = new THREE.Vector3(mouse.x, mouse.y, 0);
+	projector.unprojectVector(vector, camera);
+	var position = camera.localToWorld(camera.position.clone());
+	var pickDirection = vector.sub(position).normalize();
+	raycaster.set(position, pickDirection);
+
+	var collidables = [];
+	sceneRoot.children[1].children[0].children.forEach(function(group) {
+		if (group.name === "Door") {
+			collidables.push(group);
+			group.rotation.y = 1;
+		}
+	});
+
+	var intersects = raycaster.intersectObjects(collidables, true);
+	if (intersects.length > 0)
+		console.log(intersects[0].object.name);
 }
 
 function handleMouseUp() {

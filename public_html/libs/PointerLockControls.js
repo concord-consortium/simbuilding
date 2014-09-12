@@ -158,8 +158,37 @@ THREE.PointerLockControls = function(camera) {
 
 		yawObject.translateX(velocity.x * delta);
 		yawObject.translateZ(velocity.z * delta);
+		this.adjustCameraPositionForCollision();
 
 		prevTime = time;
+	};
+
+	this.adjustCameraPositionForCollision = function() {
+		if (velocity.length() === 0)
+			return;
+		var raycaster = new THREE.Raycaster();
+		var direction = yawObject.localToWorld(velocity.clone());
+		direction.y = 0;
+		direction.normalize();
+		raycaster.set(yawObject.position, direction);
+
+//		var collidables = [];
+//		sceneRoot.children[1].children[0].children.forEach(function(group) {
+//			if (group.name === "Door") {
+//				collidables.push(group);
+//				group.rotation.y = 1;
+//			}
+//		});
+
+		var intersects = raycaster.intersectObject(sceneRoot, true);
+		if (intersects.length > 0) {
+			var MIN_DISTANCE_TO_WALL = 0.5;
+			if (yawObject.position.distanceTo(intersects[0].point) < MIN_DISTANCE_TO_WALL) {
+				var collisionPosition = intersects[0].point.clone().sub(direction.multiplyScalar(MIN_DISTANCE_TO_WALL));
+				yawObject.position.x = collisionPosition.x;
+				yawObject.position.z = collisionPosition.z;
+			}
+		}
 	};
 
 	this.needsUpdate = function() {
