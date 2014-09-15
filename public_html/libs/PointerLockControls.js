@@ -166,11 +166,13 @@ THREE.PointerLockControls = function(camera) {
 	this.adjustCameraPositionForCollision = function() {
 		if (velocity.length() === 0)
 			return;
-		var raycaster = new THREE.Raycaster();
-		var direction = yawObject.localToWorld(velocity.clone());
+		var m = yawObject.matrixWorld.clone().setPosition(new THREE.Vector3());
+		var direction = velocity.clone().applyMatrix4(m);
 		direction.y = 0;
 		direction.normalize();
-		raycaster.set(yawObject.position, direction);
+		var position = yawObject.position.clone();
+		position.y -= 0.8;
+		var raycaster = new THREE.Raycaster(position, direction);
 
 //		var collidables = [];
 //		sceneRoot.children[1].children[0].children.forEach(function(group) {
@@ -182,8 +184,8 @@ THREE.PointerLockControls = function(camera) {
 
 		var intersects = raycaster.intersectObject(sceneRoot, true);
 		if (intersects.length > 0) {
-			var MIN_DISTANCE_TO_WALL = 0.5;
-			if (yawObject.position.distanceTo(intersects[0].point) < MIN_DISTANCE_TO_WALL) {
+			var MIN_DISTANCE_TO_WALL = 0.2;
+			if (intersects[0].distance < MIN_DISTANCE_TO_WALL) {
 				var collisionPosition = intersects[0].point.clone().sub(direction.multiplyScalar(MIN_DISTANCE_TO_WALL));
 				yawObject.position.x = collisionPosition.x;
 				yawObject.position.z = collisionPosition.z;
