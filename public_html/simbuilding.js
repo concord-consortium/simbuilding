@@ -24,6 +24,7 @@ var doRender;
 var width = window.innerWidth || 2;
 var height = window.innerHeight || 2;
 var irMode = false;
+var animatedDoor = null;
 
 function startSimBuilding() {
 	clock = new THREE.Clock();
@@ -71,6 +72,9 @@ function render() {
 
 	requestAnimationFrame(render);
 	if (doRenderVal) {
+		if (animatedDoor !== null)
+			animateDoor(animatedDoor);
+
 		renderer.setViewport(0, 0, width, height);
 		camera.fov = 45;
 		camera.aspect = window.innerWidth / window.innerHeight;
@@ -131,6 +135,33 @@ function initScene() {
 	loader.options.convertUpAxis = true;
 	loader.load('./resources/models/Yorktown.dae', function(collada) {
 		sceneRoot.add(collada.scene);
+
+		var doors = [];
+		collada.scene.children[0].children.forEach(function(door) {
+			if (door.name === "Door") {
+				var OFFSET = 36;
+				door.position.x += OFFSET;
+				door.children.forEach(function(doorMesh) {
+					if (doorMesh instanceof THREE.Mesh)
+						doorMesh.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(-OFFSET, 0, 0));
+					else
+						doorMesh.position.x += -OFFSET;
+				});
+//				door.rotation.y = -1;
+			}
+		});
+
+		doors.forEach(function(door) {
+			var topParent = new THREE.Object3D();
+			var rotParent = new THREE.Object3D();
+
+			var root = door.parent;
+			root.remove(door);
+			root.add(topParent);
+			topParent.add(rotParent);
+			rotParent.add(door);
+			rotParent.rotation.y = 0.1;
+		});
 	});
 
 	hotSpotsRoot = new THREE.Object3D();
@@ -250,7 +281,7 @@ function handleMouseDown() {
 	sceneRoot.children[1].children[0].children.forEach(function(group) {
 		if (group.name === "Door") {
 			collidables.push(group);
-			group.rotation.y = 1;
+//			group.rotation.y = 1;
 		}
 	});
 
@@ -328,4 +359,9 @@ function enforceCameraGravity() {
 	var intersects = raycaster.intersectObjects(sceneRoot.children, true);
 	if (intersects.length > 0)
 		camera.position.y = intersects[0].point.y + viewerHeight;
+}
+
+function animateDoor(door) {
+	if (door.rotation.y < 1.5)
+		door.rotation.y += 0.01;
 }
