@@ -189,7 +189,8 @@ THREE.PointerLockControls = function(camera) {
 				var collisionPosition = intersects[0].point.clone().sub(direction.multiplyScalar(MIN_DISTANCE_TO_WALL));
 				yawObject.position.x = collisionPosition.x;
 				yawObject.position.z = collisionPosition.z;
-			}
+			} else if (intersects[0].distance < 2.0 && intersects[0].object.parent.name === "Door")
+				doorToBeOpened = intersects[0].object.parent;
 		}
 	};
 

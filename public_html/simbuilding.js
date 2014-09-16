@@ -24,7 +24,8 @@ var doRender;
 var width = window.innerWidth || 2;
 var height = window.innerHeight || 2;
 var irMode = false;
-var animatedDoor = null;
+var doorToBeOpened = null;
+var doorToBeClosed = null;
 
 function startSimBuilding() {
 	clock = new THREE.Clock();
@@ -61,7 +62,7 @@ function startSimBuilding() {
 }
 
 function render() {
-	var doRenderVal = doRender || camControl.needsUpdate();
+	var doRenderVal = doRender || camControl.needsUpdate() || doorToBeOpened !== null || doorToBeClosed !== null;
 	doRender = false;
 
 	var delta = clock.getDelta();
@@ -72,8 +73,7 @@ function render() {
 
 	requestAnimationFrame(render);
 	if (doRenderVal) {
-		if (animatedDoor !== null)
-			animateDoor(animatedDoor);
+		animateDoor();
 
 		renderer.setViewport(0, 0, width, height);
 		camera.fov = 45;
@@ -139,7 +139,7 @@ function initScene() {
 		var doors = [];
 		collada.scene.children[0].children.forEach(function(door) {
 			if (door.name === "Door") {
-				var OFFSET = 36;
+				var OFFSET = 38;
 				door.position.x += OFFSET;
 				door.children.forEach(function(doorMesh) {
 					if (doorMesh instanceof THREE.Mesh)
@@ -361,7 +361,27 @@ function enforceCameraGravity() {
 		camera.position.y = intersects[0].point.y + viewerHeight;
 }
 
-function animateDoor(door) {
-	if (door.rotation.y < 1.5)
-		door.rotation.y += 0.01;
+function animateDoor() {
+	if (doorToBeOpened !== null) {
+		if (doorToBeOpened.rotation.y < 1.5) {
+			doorToBeOpened.rotation.y += 0.1;
+			if (doorToBeClosed === doorToBeOpened)
+				doorToBeClosed = null;
+		} else {
+			doorToBeClosed = doorToBeOpened;
+			doorTimeout = 100;
+			doorToBeOpened = null;
+		}
+	}
+
+	if (doorToBeClosed !== null)
+		if (doorTimeout > 0)
+			doorTimeout--;
+		else {
+			if (doorToBeClosed.rotation.y > 0)
+				doorToBeClosed.rotation.y = Math.max(0, doorToBeClosed.rotation.y - 0.1);
+			else {
+				doorToBeClosed = null;
+			}
+		}
 }
