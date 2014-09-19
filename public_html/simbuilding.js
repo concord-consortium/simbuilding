@@ -139,7 +139,8 @@ function initScene() {
 		var doors = [];
 		collada.scene.children[0].children.forEach(function(door) {
 			if (door.name === "Door") {
-				var OFFSET = 38;
+//				var OFFSET = 38;
+				var OFFSET = -2;
 				door.position.x += OFFSET;
 				door.children.forEach(function(doorMesh) {
 					if (doorMesh instanceof THREE.Mesh)
@@ -363,8 +364,8 @@ function enforceCameraGravity() {
 
 function animateDoor() {
 	if (doorToBeOpened !== null) {
-		if (doorToBeOpened.rotation.y < 1.5) {
-			doorToBeOpened.rotation.y += 0.1;
+		if (doorToBeOpened.rotation.y > -1.5) {
+			doorToBeOpened.rotation.y -= 0.1;
 			if (doorToBeClosed === doorToBeOpened)
 				doorToBeClosed = null;
 		} else {
@@ -378,8 +379,8 @@ function animateDoor() {
 		if (doorTimeout > 0)
 			doorTimeout--;
 		else {
-			if (doorToBeClosed.rotation.y > 0)
-				doorToBeClosed.rotation.y = Math.max(0, doorToBeClosed.rotation.y - 0.1);
+			if (doorToBeClosed.rotation.y < 0)
+				doorToBeClosed.rotation.y = Math.min(0, doorToBeClosed.rotation.y + 0.1);
 			else {
 				doorToBeClosed = null;
 			}
