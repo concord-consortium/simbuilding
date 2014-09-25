@@ -123,39 +123,62 @@ function initScene() {
 
 	sceneRoot = new THREE.Object3D();
 	scene.add(sceneRoot);
-
 	land = new THREE.Mesh(new THREE.PlaneGeometry(100, 100));
 	land.rotation.x = -Math.PI / 2;
 	land.position.y = -0.1;
 	land.geometry.computeBoundingBox();
 	land.material.color.setHex(0x00FF00);
 	sceneRoot.add(land);
-
 	var loader = new THREE.ColladaLoader();
 	loader.options.convertUpAxis = true;
-	loader.load('./resources/models/Yorktown.dae', function(collada) {
+	loader.load('./resources/models/Yorktown.dae', function (collada) {
 		sceneRoot.add(collada.scene);
-
 		var doors = [];
-		collada.scene.children[0].children.forEach(function(door) {
-			if (door.name === "Door") {
+		collada.scene.children[0].children.forEach(function (door) {
+			if (door.children[0]) {
+				var doorComponentName = door.children[0].name;
+				var OFFSET = -1000;
+				if (doorComponentName === "Door")
+					OFFSET = 0;
+				else if (doorComponentName === "DoorOut")
+					OFFSET = 38;
+				else if (doorComponentName === "DoorGlass")
+					OFFSET = 1;
+				if (OFFSET !== -1000) {
+//					door = door.children[0];
 //				var OFFSET = 38;
-				var OFFSET = -2;
-				door.position.x += OFFSET;
-				door.children.forEach(function(doorMesh) {
-					if (doorMesh instanceof THREE.Mesh)
-						doorMesh.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(-OFFSET, 0, 0));
-					else
-						doorMesh.position.x += -OFFSET;
-				});
-//				door.rotation.y = -1;
+					var offsetVector = new THREE.Vector3(OFFSET, 0, -2);
+//					door.rotation.applyEuler(offsetVector);
+//					door.position.x += OFFSET;
+//					offsetVector.applyEuler(door.rotation);
+					door.position.add(offsetVector.clone().applyEuler(door.rotation));
+					door.children.forEach(function (doorMesh) {
+//						if (doorMesh instanceof THREE.Mesh)
+//							doorMesh.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(-OFFSET, 0, 0));
+//						else
+//							doorMesh.position.x += -OFFSET;
+						doorMesh.position.add(offsetVector.negate());
+					});
+					if (Math.abs(door.rotation.y) < 0.0001) {
+						door.userData.startAngle = 0;
+						door.userData.endAngle = Math.PI / 2;
+					} else {
+						door.userData.startAngle = -Math.PI / 2;
+						door.userData.endAngle = -Math.PI;
+					}
+
+					var reverse = false; //doorComponentName === "DoorOut";
+					if (reverse) {
+						door.userData.endAngle = door.userData.startAngle - (door.userData.endAngle - door.userData.startAngle);
+					}
+
+					// door.rotation.y = -1;
+				}
 			}
 		});
-
-		doors.forEach(function(door) {
+		doors.forEach(function (door) {
 			var topParent = new THREE.Object3D();
 			var rotParent = new THREE.Object3D();
-
 			var root = door.parent;
 			root.remove(door);
 			root.add(topParent);
@@ -164,10 +187,8 @@ function initScene() {
 			rotParent.rotation.y = 0.1;
 		});
 	});
-
 	hotSpotsRoot = new THREE.Object3D();
 	scene.add(hotSpotsRoot);
-
 	var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.5), new THREE.MeshBasicMaterial());
 	hotSpot.position.x = 4;
 	hotSpot.position.y = 6;
@@ -180,22 +201,18 @@ function initLights() {
 	directionalLight.position.set(1, 1, 0).normalize();
 	directionalLight.intensity = 1;
 	scene.add(directionalLight);
-
 	var directionalLight = new THREE.DirectionalLight(0xffffff);
 	directionalLight.position.set(-1, 1, 0).normalize();
 	directionalLight.intensity = 1;
 	scene.add(directionalLight);
-
 	var directionalLight = new THREE.DirectionalLight(0xffffff);
 	directionalLight.position.set(0, 0, 1).normalize();
 	directionalLight.intensity = 0.9;
 	scene.add(directionalLight);
-
 	var directionalLight = new THREE.DirectionalLight(0xffffff);
 	directionalLight.position.set(0, 0, -1).normalize();
 	directionalLight.intensity = 0.9;
 	scene.add(directionalLight);
-
 	var directionalLight = new THREE.DirectionalLight(0xffffff);
 	directionalLight.position.set(0, -1, 0).normalize();
 	directionalLight.intensity = 0.5;
@@ -205,31 +222,29 @@ function initLights() {
 function initStats() {
 	var stats = new Stats();
 	stats.setMode(0);
-
 	stats.domElement.style.position = 'absolute';
 	stats.domElement.style.left = '0px';
 	stats.domElement.style.top = '0px';
-
 	$("#Stats-output").append(stats.domElement);
 	return stats;
 }
 
 function initGui() {
-	var controls = new function() {
-		this.platform = function() {
+	var controls = new function () {
+		this.platform = function () {
 			currentHousePart = new SIM.Platform();
 			sceneRoot.add(currentHousePart.root);
 			insertNewHousePart = true;
 		};
-		this.wall = function() {
+		this.wall = function () {
 			currentHousePart = new SIM.Wall();
 			insertNewHousePart = true;
 		};
-		this.window = function() {
+		this.window = function () {
 			currentHousePart = new SIM.Window();
 			insertNewHousePart = true;
 		};
-		this.roof = function() {
+		this.roof = function () {
 			currentHousePart = new SIM.Roof();
 			insertNewHousePart = true;
 		};
@@ -277,15 +292,13 @@ function handleMouseDown() {
 	var position = camera.localToWorld(camera.position.clone());
 	var pickDirection = vector.sub(position).normalize();
 	raycaster.set(position, pickDirection);
-
 	var collidables = [];
-	sceneRoot.children[1].children[0].children.forEach(function(group) {
+	sceneRoot.children[1].children[0].children.forEach(function (group) {
 		if (group.name === "Door") {
 			collidables.push(group);
 //			group.rotation.y = 1;
 		}
 	});
-
 	var intersects = raycaster.intersectObjects(collidables, true);
 	if (intersects.length > 0)
 		console.log(intersects[0].object.name);
@@ -313,10 +326,9 @@ function hover() {
 	var pickDirection = vector.sub(camera.position).normalize();
 	raycaster.set(camera.position, pickDirection);
 	var collidables = [];
-	hotSpotsRoot.children.forEach(function(sphere) {
+	hotSpotsRoot.children.forEach(function (sphere) {
 		collidables.push(sphere);
 	});
-
 	hoveredUserData = null;
 	var intersects = raycaster.intersectObjects(collidables);
 	if (intersects.length > 0)
@@ -330,27 +342,22 @@ function closestPoint(p1, v1, p2, v2) {
 	var p13;
 	var d1343, d4321, d1321, d4343, d2121;
 	var numer, denom;
-
 	p13 = new THREE.Vector3().subVectors(p1, p2);
 	if (Math.abs(v2.x) < EPS && Math.abs(v2.y) < EPS && Math.abs(v2.z) < EPS)
 		return null;
 	if (Math.abs(v1.length()) < EPS)
 		return null;
-
 	d1343 = p13.x * v2.x + p13.y * v2.y + p13.z * v2.z;
 	d4321 = v2.x * v1.x + v2.y * v1.y + v2.z * v1.z;
 	d1321 = p13.x * v1.x + p13.y * v1.y + p13.z * v1.z;
 	d4343 = v2.x * v2.x + v2.y * v2.y + v2.z * v2.z;
 	d2121 = v1.x * v1.x + v1.y * v1.y + v1.z * v1.z;
-
 	denom = d2121 * d4343 - d4321 * d4321;
 	if (Math.abs(denom) < EPS)
 		return null;
 	numer = d1343 * d4321 - d1321 * d4343;
-
 	var mua = numer / denom;
 	var pa = new THREE.Vector3(p1.x + mua * v1.x, p1.y + mua * v1.y, p1.z + mua * v1.z);
-
 	return pa;
 }
 
@@ -364,8 +371,15 @@ function enforceCameraGravity() {
 
 function animateDoor() {
 	if (doorToBeOpened !== null) {
-		if (doorToBeOpened.rotation.y > -1.5) {
-			doorToBeOpened.rotation.y -= 0.1;
+		var startAngle = doorToBeOpened.userData.startAngle;
+		var endAngle = doorToBeOpened.userData.endAngle;
+		if (doorToBeOpened.rotation.y !== endAngle) {
+			console.log("Door opening");
+			var isIncreasing = endAngle > startAngle;
+			if (isIncreasing)
+				doorToBeOpened.rotation.y = Math.min(endAngle, doorToBeOpened.rotation.y + 0.1);
+			else
+				doorToBeOpened.rotation.y = Math.max(endAngle, doorToBeOpened.rotation.y - 0.1);
 			if (doorToBeClosed === doorToBeOpened)
 				doorToBeClosed = null;
 		} else {
@@ -379,9 +393,18 @@ function animateDoor() {
 		if (doorTimeout > 0)
 			doorTimeout--;
 		else {
-			if (doorToBeClosed.rotation.y < 0)
-				doorToBeClosed.rotation.y = Math.min(0, doorToBeClosed.rotation.y + 0.1);
-			else {
+			var startAngle = doorToBeClosed.userData.endAngle;
+			var endAngle = doorToBeClosed.userData.startAngle;
+			if (doorToBeClosed.rotation.y !== endAngle) {
+				console.log("Door closing");
+//				doorToBeClosed.rotation.y = Math.min(0, doorToBeClosed.rotation.y + 0.1);
+//				doorToBeClosed.rotation.y += increment;
+				var isIncreasing = endAngle > startAngle;
+				if (isIncreasing)
+					doorToBeClosed.rotation.y = Math.min(endAngle, doorToBeClosed.rotation.y + 0.1);
+				else
+					doorToBeClosed.rotation.y = Math.max(endAngle, doorToBeClosed.rotation.y - 0.1);
+			} else {
 				doorToBeClosed = null;
 			}
 		}

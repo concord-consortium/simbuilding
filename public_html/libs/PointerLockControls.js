@@ -1,5 +1,5 @@
 
-THREE.PointerLockControls = function(camera) {
+THREE.PointerLockControls = function (camera) {
 
 	var scope = this;
 
@@ -26,15 +26,15 @@ THREE.PointerLockControls = function(camera) {
 
 	var PI_2 = Math.PI / 2;
 
-	var onMouseDown = function() {
+	var onMouseDown = function () {
 		scope.isMouseDown = true;
 	};
 
-	var onMouseUp = function() {
+	var onMouseUp = function () {
 		scope.isMouseDown = false;
 	};
 
-	var onMouseMove = function(event) {
+	var onMouseMove = function (event) {
 		if (scope.enabled === false || !scope.isMouseDown)
 			return;
 
@@ -47,7 +47,7 @@ THREE.PointerLockControls = function(camera) {
 		pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
 	};
 
-	var onKeyDown = function(event) {
+	var onKeyDown = function (event) {
 		scope.isKeyDown = true;
 		switch (event.keyCode) {
 
@@ -79,7 +79,7 @@ THREE.PointerLockControls = function(camera) {
 		}
 	};
 
-	var onKeyUp = function(event) {
+	var onKeyUp = function (event) {
 		scope.isKeyDown = false;
 		switch (event.keyCode) {
 			case 38: // up
@@ -114,28 +114,28 @@ THREE.PointerLockControls = function(camera) {
 	this.isMouseDown = false;
 	this.isKeyDown = false;
 
-	this.getObject = function() {
+	this.getObject = function () {
 		return yawObject;
 	};
 
-	this.isOnObject = function(boolean) {
+	this.isOnObject = function (boolean) {
 		isOnObject = boolean;
 		canJump = boolean;
 	};
 
-	this.getDirection = function() {
+	this.getDirection = function () {
 		// assumes the camera itself is not rotated
 		var direction = new THREE.Vector3(0, 0, -1);
 		var rotation = new THREE.Euler(0, 0, 0, "YXZ");
 
-		return function(v) {
+		return function (v) {
 			rotation.set(pitchObject.rotation.x, yawObject.rotation.y, 0);
 			v.copy(direction).applyEuler(rotation);
 			return v;
 		};
 	}();
 
-	this.update = function() {
+	this.update = function () {
 		if (scope.enabled === false)
 			return;
 
@@ -163,11 +163,39 @@ THREE.PointerLockControls = function(camera) {
 		prevTime = time;
 	};
 
-	this.adjustCameraPositionForCollision = function() {
+	this.adjustCameraPositionForCollision = function () {
+		var p = new THREE.Vector3(mouse.x, mouse.y, 0);
+		projector.unprojectVector(p, camera);
+
+		var position = yawObject.position.clone();
+		var direction = p.sub(position).normalize();
+
+//		var m = yawObject.matrixWorld.clone().setPosition(new THREE.Vector3());
+//		var direction = velocity.clone().normalize().applyMatrix4(m);
+//		direction.y = 0;
+//		direction.normalize();
+//		position.y -= 0.8;
+		var raycaster = new THREE.Raycaster(position, direction);
+
+//		var collidables = [];
+//		sceneRoot.children[1].children[0].children.forEach(function(group) {
+//			if (group.name === "Door") {
+//				collidables.push(group);
+//				group.rotation.y = 1;
+//			}
+//		});
+
+		var intersects = raycaster.intersectObject(sceneRoot, true);
+		if (intersects.length > 0) {
+			if (intersects[0].distance < 2.0 && intersects[0].object.parent.name.indexOf("Door") === 0)
+				doorToBeOpened = intersects[0].object.parent.parent;
+		}
+
+
 		if (velocity.length() === 0)
 			return;
 		var m = yawObject.matrixWorld.clone().setPosition(new THREE.Vector3());
-		var direction = velocity.clone().applyMatrix4(m);
+		var direction = velocity.clone().normalize().applyMatrix4(m);
 		direction.y = 0;
 		direction.normalize();
 		var position = yawObject.position.clone();
@@ -189,12 +217,13 @@ THREE.PointerLockControls = function(camera) {
 				var collisionPosition = intersects[0].point.clone().sub(direction.multiplyScalar(MIN_DISTANCE_TO_WALL));
 				yawObject.position.x = collisionPosition.x;
 				yawObject.position.z = collisionPosition.z;
-			} else if (intersects[0].distance < 2.0 && intersects[0].object.parent.name === "Door")
-				doorToBeOpened = intersects[0].object.parent;
+			}
+//			else if (intersects[0].distance < 2.0 && intersects[0].object.parent.name.indexOf("Door") === 0)
+//				doorToBeOpened = intersects[0].object.parent.parent;
 		}
 	};
 
-	this.needsUpdate = function() {
+	this.needsUpdate = function () {
 		if (this.isMouseDown || Math.abs(velocity.x) > 0.001 || Math.abs(velocity.z) > 0.001)
 			return true;
 		else
