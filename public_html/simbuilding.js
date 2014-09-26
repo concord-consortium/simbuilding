@@ -26,6 +26,7 @@ var height = window.innerHeight || 2;
 var irMode = false;
 var doorToBeOpened = null;
 var doorToBeClosed = null;
+var doors;
 
 function startSimBuilding() {
 	clock = new THREE.Clock();
@@ -133,32 +134,26 @@ function initScene() {
 	loader.options.convertUpAxis = true;
 	loader.load('./resources/models/Yorktown.dae', function (collada) {
 		sceneRoot.add(collada.scene);
-		var doors = [];
+		doors = [];
 		collada.scene.children[0].children.forEach(function (door) {
 			if (door.children[0]) {
 				var doorComponentName = door.children[0].name;
-				var OFFSET = -1000;
+				var offset;
 				if (doorComponentName === "Door")
-					OFFSET = 0;
+					offset = new THREE.Vector3(0, 0, -2);
 				else if (doorComponentName === "DoorOut")
-					OFFSET = 38;
+					offset = new THREE.Vector3(38, 0, -2);
 				else if (doorComponentName === "DoorGlass")
-					OFFSET = 1;
-				if (OFFSET !== -1000) {
-//					door = door.children[0];
-//				var OFFSET = 38;
-					var offsetVector = new THREE.Vector3(OFFSET, 0, -2);
-//					door.rotation.applyEuler(offsetVector);
-//					door.position.x += OFFSET;
-//					offsetVector.applyEuler(door.rotation);
-					door.position.add(offsetVector.clone().applyEuler(door.rotation));
-					door.children.forEach(function (doorMesh) {
-//						if (doorMesh instanceof THREE.Mesh)
-//							doorMesh.geometry.applyMatrix(new THREE.Matrix4().makeTranslation(-OFFSET, 0, 0));
-//						else
-//							doorMesh.position.x += -OFFSET;
-						doorMesh.position.add(offsetVector.negate());
+					offset = new THREE.Vector3(25, 0, -25);
+
+				if (offset) {
+					doors.push(door);
+					door.position.add(offset.clone().applyEuler(door.rotation));
+
+					door.children.forEach(function (doorChild) {
+						doorChild.position.add(offset.negate());
 					});
+
 					if (Math.abs(door.rotation.y) < 0.0001) {
 						door.userData.startAngle = 0;
 						door.userData.endAngle = Math.PI / 2;
@@ -167,24 +162,12 @@ function initScene() {
 						door.userData.endAngle = -Math.PI;
 					}
 
-					var reverse = false; //doorComponentName === "DoorOut";
+					var reverse = door.name === "R";
 					if (reverse) {
 						door.userData.endAngle = door.userData.startAngle - (door.userData.endAngle - door.userData.startAngle);
 					}
-
-					// door.rotation.y = -1;
 				}
 			}
-		});
-		doors.forEach(function (door) {
-			var topParent = new THREE.Object3D();
-			var rotParent = new THREE.Object3D();
-			var root = door.parent;
-			root.remove(door);
-			root.add(topParent);
-			topParent.add(rotParent);
-			rotParent.add(door);
-			rotParent.rotation.y = 0.1;
 		});
 	});
 	hotSpotsRoot = new THREE.Object3D();
@@ -397,15 +380,12 @@ function animateDoor() {
 			var endAngle = doorToBeClosed.userData.startAngle;
 			if (doorToBeClosed.rotation.y !== endAngle) {
 				console.log("Door closing");
-//				doorToBeClosed.rotation.y = Math.min(0, doorToBeClosed.rotation.y + 0.1);
-//				doorToBeClosed.rotation.y += increment;
 				var isIncreasing = endAngle > startAngle;
 				if (isIncreasing)
 					doorToBeClosed.rotation.y = Math.min(endAngle, doorToBeClosed.rotation.y + 0.1);
 				else
 					doorToBeClosed.rotation.y = Math.max(endAngle, doorToBeClosed.rotation.y - 0.1);
-			} else {
+			} else
 				doorToBeClosed = null;
-			}
 		}
 }

@@ -164,62 +164,38 @@ THREE.PointerLockControls = function (camera) {
 	};
 
 	this.adjustCameraPositionForCollision = function () {
+		// detect door to be opened
 		var p = new THREE.Vector3(mouse.x, mouse.y, 0);
 		projector.unprojectVector(p, camera);
-
 		var position = yawObject.position.clone();
 		var direction = p.sub(position).normalize();
-
-//		var m = yawObject.matrixWorld.clone().setPosition(new THREE.Vector3());
-//		var direction = velocity.clone().normalize().applyMatrix4(m);
-//		direction.y = 0;
-//		direction.normalize();
-//		position.y -= 0.8;
 		var raycaster = new THREE.Raycaster(position, direction);
 
-//		var collidables = [];
-//		sceneRoot.children[1].children[0].children.forEach(function(group) {
-//			if (group.name === "Door") {
-//				collidables.push(group);
-//				group.rotation.y = 1;
-//			}
-//		});
-
-		var intersects = raycaster.intersectObject(sceneRoot, true);
+		var intersects = raycaster.intersectObjects(doors, true);
 		if (intersects.length > 0) {
 			if (intersects[0].distance < 2.0 && intersects[0].object.parent.name.indexOf("Door") === 0)
 				doorToBeOpened = intersects[0].object.parent.parent;
 		}
 
+		// detect collision and adjust position accordingly
+		if (velocity.length() !== 0) {
+			var m = yawObject.matrixWorld.clone().setPosition(new THREE.Vector3());
+			var direction = velocity.clone().normalize().applyMatrix4(m);
+			direction.y = 0;
+			direction.normalize();
+			var position = yawObject.position.clone();
+			position.y -= 0.8;
+			var raycaster = new THREE.Raycaster(position, direction);
 
-		if (velocity.length() === 0)
-			return;
-		var m = yawObject.matrixWorld.clone().setPosition(new THREE.Vector3());
-		var direction = velocity.clone().normalize().applyMatrix4(m);
-		direction.y = 0;
-		direction.normalize();
-		var position = yawObject.position.clone();
-		position.y -= 0.8;
-		var raycaster = new THREE.Raycaster(position, direction);
-
-//		var collidables = [];
-//		sceneRoot.children[1].children[0].children.forEach(function(group) {
-//			if (group.name === "Door") {
-//				collidables.push(group);
-//				group.rotation.y = 1;
-//			}
-//		});
-
-		var intersects = raycaster.intersectObject(sceneRoot, true);
-		if (intersects.length > 0) {
-			var MIN_DISTANCE_TO_WALL = 0.2;
-			if (intersects[0].distance < MIN_DISTANCE_TO_WALL) {
-				var collisionPosition = intersects[0].point.clone().sub(direction.multiplyScalar(MIN_DISTANCE_TO_WALL));
-				yawObject.position.x = collisionPosition.x;
-				yawObject.position.z = collisionPosition.z;
+			var intersects = raycaster.intersectObject(sceneRoot, true);
+			if (intersects.length > 0) {
+				var MIN_DISTANCE_TO_WALL = 0.2;
+				if (intersects[0].distance < MIN_DISTANCE_TO_WALL) {
+					var collisionPosition = intersects[0].point.clone().sub(direction.multiplyScalar(MIN_DISTANCE_TO_WALL));
+					yawObject.position.x = collisionPosition.x;
+					yawObject.position.z = collisionPosition.z;
+				}
 			}
-//			else if (intersects[0].distance < 2.0 && intersects[0].object.parent.name.indexOf("Door") === 0)
-//				doorToBeOpened = intersects[0].object.parent.parent;
 		}
 	};
 
