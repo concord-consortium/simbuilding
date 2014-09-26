@@ -26,7 +26,8 @@ var height = window.innerHeight || 2;
 var irMode = false;
 var doorToBeOpened = null;
 var doorToBeClosed = null;
-var doors;
+var doors = [];
+var collisionPartsWithoutDoors = [];
 
 function startSimBuilding() {
 	clock = new THREE.Clock();
@@ -130,14 +131,14 @@ function initScene() {
 	land.geometry.computeBoundingBox();
 	land.material.color.setHex(0x00FF00);
 	sceneRoot.add(land);
+	collisionPartsWithoutDoors.push(land);
 	var loader = new THREE.ColladaLoader();
 	loader.options.convertUpAxis = true;
 	loader.load('./resources/models/Yorktown.dae', function (collada) {
 		sceneRoot.add(collada.scene);
-		doors = [];
-		collada.scene.children[0].children.forEach(function (door) {
-			if (door.children[0]) {
-				var doorComponentName = door.children[0].name;
+		collada.scene.children[0].children.forEach(function (child) {
+			if (child.children[0]) {
+				var doorComponentName = child.children[0].name;
 				var offset;
 				if (doorComponentName === "Door")
 					offset = new THREE.Vector3(0, 0, -2);
@@ -147,6 +148,7 @@ function initScene() {
 					offset = new THREE.Vector3(25, 0, -25);
 
 				if (offset) {
+					var door = child;
 					doors.push(door);
 					door.position.add(offset.clone().applyEuler(door.rotation));
 
@@ -166,8 +168,10 @@ function initScene() {
 					if (reverse) {
 						door.userData.endAngle = door.userData.startAngle - (door.userData.endAngle - door.userData.startAngle);
 					}
-				}
-			}
+				} else
+					collisionPartsWithoutDoors.push(child);
+			} else
+				collisionPartsWithoutDoors.push(child);
 		});
 	});
 	hotSpotsRoot = new THREE.Object3D();
@@ -347,7 +351,7 @@ function closestPoint(p1, v1, p2, v2) {
 function enforceCameraGravity() {
 	var camera = camControl.getObject();
 	raycaster.set(camera.position, NEG_UNIT_Y);
-	var intersects = raycaster.intersectObjects(sceneRoot.children, true);
+	var intersects = raycaster.intersectObjects(collisionPartsWithoutDoors, true);
 	if (intersects.length > 0)
 		camera.position.y = intersects[0].point.y + viewerHeight;
 }
