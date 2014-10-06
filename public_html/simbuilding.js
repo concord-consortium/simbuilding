@@ -55,17 +55,21 @@ function startSimBuilding() {
 	renderer.autoClear = false;
 
 	initShaders();
-	initLights();
-	initScene();
-
 	$("#WebGL-output").append(renderer.domElement);
-	doRender = true;
-	render();
+
+	var loader = new THREE.ColladaLoader();
+	loader.options.convertUpAxis = true;
+	loader.load('./resources/models/Yorktown.dae', function (houseModel) {
+		initScene(houseModel.scene);
+		initLights();
+		doRender = true;
+		setTimeout(render, 100);
+	});
 }
 
 function render() {
 	var doRenderVal = doRender || camControl.needsUpdate() || doorToBeOpened !== null || doorToBeClosed !== null;
-	doRender = false;
+//	doRender = false;
 
 	var delta = clock.getDelta();
 	stats.update();
@@ -119,7 +123,7 @@ function initShaders() {
 	copyPass.renderToScreen = true;
 }
 
-function initScene() {
+function initScene(houseModel) {
 //	var axis = new THREE.AxisHelper(20);
 //	scene.add(axis);
 
@@ -132,51 +136,48 @@ function initScene() {
 //	land.material.color.setHex(0x00FF00);
 	sceneRoot.add(land);
 	collisionPartsWithoutDoors.push(land);
-	var loader = new THREE.ColladaLoader();
-	loader.options.convertUpAxis = true;
-	loader.load('./resources/models/Yorktown.dae', function (collada) {
-		sceneRoot.add(collada.scene);
-		collada.scene.children[0].children.forEach(function (child) {
-			if (child.children[0]) {
-				var doorComponentName = child.children[0].name;
-				var offset;
-				if (doorComponentName === "Door")
-					offset = new THREE.Vector3(0, 0, -2);
-				else if (doorComponentName === "DoorOut")
-					offset = new THREE.Vector3(38, 0, -2);
-				else if (doorComponentName === "DoorGlass")
-					offset = new THREE.Vector3(25, 0, -25);
 
-				if (offset) {
-					var door = child;
-					doors.push(door);
-					door.position.add(offset.clone().applyEuler(door.rotation));
+	sceneRoot.add(houseModel);
+	houseModel.children[0].children.forEach(function (child) {
+		if (child.children[0]) {
+			var doorComponentName = child.children[0].name;
+			var offset;
+			if (doorComponentName === "Door")
+				offset = new THREE.Vector3(0, 0, -2);
+			else if (doorComponentName === "DoorOut")
+				offset = new THREE.Vector3(38, 0, -2);
+			else if (doorComponentName === "DoorGlass")
+				offset = new THREE.Vector3(25, 0, -25);
 
-					door.children.forEach(function (doorChild) {
-						doorChild.position.add(offset.negate());
-					});
+			if (offset) {
+				var door = child;
+				doors.push(door);
+				door.position.add(offset.clone().applyEuler(door.rotation));
 
-					if (Math.abs(door.rotation.y) < 0.0001) {
-						door.userData.startAngle = 0;
-						door.userData.endAngle = Math.PI / 2;
-					} else {
-						door.userData.startAngle = -Math.PI / 2;
-						door.userData.endAngle = -Math.PI;
-					}
+				door.children.forEach(function (doorChild) {
+					doorChild.position.add(offset.negate());
+				});
 
-					var reverse = door.name === "R";
-					if (reverse) {
-						door.userData.endAngle = door.userData.startAngle - (door.userData.endAngle - door.userData.startAngle);
-					}
-				} else
-					collisionPartsWithoutDoors.push(child);
+				if (Math.abs(door.rotation.y) < 0.0001) {
+					door.userData.startAngle = 0;
+					door.userData.endAngle = Math.PI / 2;
+				} else {
+					door.userData.startAngle = -Math.PI / 2;
+					door.userData.endAngle = -Math.PI;
+				}
+
+				var reverse = door.name === "R";
+				if (reverse) {
+					door.userData.endAngle = door.userData.startAngle - (door.userData.endAngle - door.userData.startAngle);
+				}
 			} else
 				collisionPartsWithoutDoors.push(child);
-		});
+		} else
+			collisionPartsWithoutDoors.push(child);
 	});
 	hotSpotsRoot = new THREE.Object3D();
 	scene.add(hotSpotsRoot);
-	var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.5), new THREE.MeshBasicMaterial());
+	var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.5, 20, 20), new THREE.MeshBasicMaterial());
 	hotSpot.position.x = 4;
 	hotSpot.position.y = 6;
 	hotSpot.position.z = -5.3;
