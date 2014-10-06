@@ -169,6 +169,7 @@ THREE.PointerLockControls = function (camera) {
 		projector.unprojectVector(p, camera);
 		var position = yawObject.position.clone();
 		var direction = p.sub(position).normalize();
+//		directionalLight.target.position.copy(direction.clone());
 		var raycaster = new THREE.Raycaster(position, direction);
 
 		var intersects = raycaster.intersectObjects(doors, true);

@@ -125,11 +125,11 @@ function initScene() {
 
 	sceneRoot = new THREE.Object3D();
 	scene.add(sceneRoot);
-	land = new THREE.Mesh(new THREE.PlaneGeometry(100, 100));
+	land = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshPhongMaterial());
 	land.rotation.x = -Math.PI / 2;
 	land.position.y = -0.1;
 	land.geometry.computeBoundingBox();
-	land.material.color.setHex(0x00FF00);
+//	land.material.color.setHex(0x00FF00);
 	sceneRoot.add(land);
 	collisionPartsWithoutDoors.push(land);
 	var loader = new THREE.ColladaLoader();
@@ -184,26 +184,244 @@ function initScene() {
 }
 
 function initLights() {
-	var directionalLight = new THREE.DirectionalLight(0xffffff);
-	directionalLight.position.set(1, 1, 0).normalize();
-	directionalLight.intensity = 1;
-	scene.add(directionalLight);
-	var directionalLight = new THREE.DirectionalLight(0xffffff);
-	directionalLight.position.set(-1, 1, 0).normalize();
-	directionalLight.intensity = 1;
-	scene.add(directionalLight);
-	var directionalLight = new THREE.DirectionalLight(0xffffff);
-	directionalLight.position.set(0, 0, 1).normalize();
-	directionalLight.intensity = 0.9;
-	scene.add(directionalLight);
-	var directionalLight = new THREE.DirectionalLight(0xffffff);
-	directionalLight.position.set(0, 0, -1).normalize();
-	directionalLight.intensity = 0.9;
-	scene.add(directionalLight);
-	var directionalLight = new THREE.DirectionalLight(0xffffff);
-	directionalLight.position.set(0, -1, 0).normalize();
-	directionalLight.intensity = 0.5;
-	scene.add(directionalLight);
+//	var directionalLight = new THREE.DirectionalLight(0xffffff);
+//	directionalLight.position.set(1, 1, 0).normalize();
+//	directionalLight.intensity = 1;
+//	scene.add(directionalLight);
+//	var directionalLight = new THREE.DirectionalLight(0xffffff);
+//	directionalLight.position.set(-1, 1, 0).normalize();
+//	directionalLight.intensity = 1;
+//	scene.add(directionalLight);
+//	var directionalLight = new THREE.DirectionalLight(0xffffff);
+//	directionalLight.position.set(0, 0, 1).normalize();
+//	directionalLight.intensity = 0.9;
+//	scene.add(directionalLight);
+//	var directionalLight = new THREE.DirectionalLight(0xffffff);
+//	directionalLight.position.set(0, 0, -1).normalize();
+//	directionalLight.intensity = 0.9;
+//	scene.add(directionalLight);
+//	var directionalLight = new THREE.DirectionalLight(0xffffff);
+//	directionalLight.position.set(0, -1, 0).normalize();
+//	directionalLight.intensity = 0.5;
+//	scene.add(directionalLight);
+
+//	var light = new THREE.HemisphereLight(new THREE.Color(1, 1, 1), new THREE.Color(0.8, 0.8, 0.8), 0.2);
+////	light.position.set(0, -1, 0).normalize();
+////	light.intensity = 0.5;
+//	scene.add(light);
+//
+//	var light = new THREE.PointLight();
+//	light.distance = 8;
+//	light.intensity = 1.5;
+//	light.position.set(5, 2.6, 2);
+//	scene.add(light);
+//
+//	var light = new THREE.SpotLight();
+//	light.distance = 8;
+//	light.intensity = 1.5;
+//	light.exponent = 0;
+//	light.angle = Math.PI / 2;
+//	light.position.set(5, 3, 2);
+//	light.target.position.set(5, 0, 2);
+//	light.target.updateMatrixWorld();
+//	scene.add(light);
+//
+//	var h = new THREE.SpotLightHelper(light);
+////	light.distance = 8;
+////	light.intensity = 20;
+////	light.position.set(5, 2.5, 2);
+////	light.target.position.set(5, 0, 2);
+//	scene.add(h);
+
+//
+//	var light = new THREE.PointLight();
+//	light.distance = 8;
+//	light.position.set(9, 6, -1);
+//	scene.add(light);
+//
+//	var light = new THREE.PointLight();
+//	light.distance = 8;
+//	light.position.set(11, 3, -3);
+//	scene.add(light);
+//
+//	var light = new THREE.PointLight();
+//	light.distance = 8;
+//	light.position.set(4, 3, -4);
+//	scene.add(light);
+//
+//	var light = new THREE.PointLight();
+//	light.distance = 8;
+//	light.position.set(7, 7, -4);
+//	scene.add(light);
+//
+//	var light = new THREE.PointLight();
+//	light.distance = 8;
+//	light.position.set(12, 7, -4);
+//	scene.add(light);
+//
+//	var light = new THREE.PointLight();
+//	light.distance = 8;
+//	light.position.set(12, 2, 2);
+//	scene.add(light);
+
+
+	var light = new THREE.SpotLight();
+	light.distance = 8;
+	light.intensity = 1.5;
+	light.exponent = 0.4;
+	light.angle = Math.PI / 2;
+	light.position.set(5, 3, 2);
+	light.target.position.set(light.position.x, 0, light.position.z);
+	light.target.updateMatrixWorld();
+	scene.add(light);
+
+	var light = new THREE.SpotLight();
+	light.distance = 8;
+	light.intensity = 1.5;
+	light.exponent = 0;
+	light.angle = Math.PI / 2;
+	light.position.set(5, 5.8, 2);
+	light.target.position.set(light.position.x, 0, light.position.z);
+	light.target.updateMatrixWorld();
+	scene.add(light);
+
+	var light = new THREE.SpotLight();
+	light.distance = 8;
+	light.intensity = 1.5;
+	light.exponent = 0.4;
+	light.angle = Math.PI / 2;
+	light.position.set(12, 3, 2);
+	light.target.position.set(light.position.x, 0, light.position.z);
+	light.target.updateMatrixWorld();
+	scene.add(light);
+
+	var light = new THREE.SpotLight();
+	light.distance = 8;
+	light.intensity = 1.5;
+	light.exponent = 0;
+	light.angle = Math.PI / 2;
+	light.position.set(12, 5.8, 2);
+	light.target.position.set(light.position.x, 0, light.position.z);
+	light.target.updateMatrixWorld();
+	scene.add(light);
+
+	var light = new THREE.SpotLight();
+	light.distance = 8;
+	light.intensity = 1.5;
+	light.exponent = 0.4;
+	light.angle = Math.PI / 2;
+	light.position.set(11, 3, -3);
+	light.target.position.set(light.position.x, 0, light.position.z);
+	light.target.updateMatrixWorld();
+	scene.add(light);
+
+	var light = new THREE.SpotLight();
+	light.distance = 8;
+	light.intensity = 1.5;
+	light.exponent = 0.4;
+	light.angle = Math.PI / 2;
+	light.position.set(4, 3, -4);
+	light.target.position.set(light.position.x, 0, light.position.z);
+	light.target.updateMatrixWorld();
+	scene.add(light);
+
+	var light = new THREE.SpotLight();
+	light.distance = 8;
+	light.intensity = 1.5;
+	light.exponent = 0.2;
+	light.angle = Math.PI / 2;
+	light.position.set(12, 5.8, -4);
+	light.target.position.set(light.position.x, 0, light.position.z);
+	light.target.updateMatrixWorld();
+	scene.add(light);
+
+	var light = new THREE.SpotLight();
+	light.distance = 8;
+	light.intensity = 1.5;
+	light.exponent = 0.2;
+	light.angle = Math.PI / 2;
+	light.position.set(8, 5.8, -3.5);
+	light.target.position.set(light.position.x, 0, light.position.z);
+	light.target.updateMatrixWorld();
+	scene.add(light);
+
+	var light = new THREE.SpotLight();
+	light.distance = 8;
+	light.intensity = 1;
+	light.exponent = 0;
+	light.angle = Math.PI / 2;
+	light.position.set(2.5, 5.8, -4.5);
+	light.target.position.set(light.position.x, 0, light.position.z);
+	light.target.updateMatrixWorld();
+	scene.add(light);
+
+	var light = new THREE.SpotLight();
+	light.distance = 8;
+	light.intensity = 1.5;
+	light.exponent = 0;
+	light.angle = Math.PI / 2;
+	light.position.set(-2, 3, 1);
+	light.target.position.set(light.position.x, 0, light.position.z);
+	light.target.updateMatrixWorld();
+	scene.add(light);
+
+	var light = new THREE.SpotLight();
+	light.distance = 8;
+	light.intensity = 1.5;
+	light.exponent = 0.4;
+	light.angle = Math.PI / 2.5;
+	light.position.set(8.5, 4, 7);
+	light.target.position.set(light.position.x, 0, light.position.z);
+	light.target.updateMatrixWorld();
+	scene.add(light);
+
+
+//	var light = new THREE.SpotLight();
+//	light.distance = 8;
+//	light.intensity = 1.5;
+//	light.exponent = 2;
+//	light.angle = Math.PI / 2;
+//	light.position.set(9.3, 6, -1);
+//	light.target.position.set(light.position.x, 0, light.position.z);
+//	light.target.updateMatrixWorld();
+//	scene.add(light);
+
+//	var light = new THREE.SpotLight();
+//	light.distance = 8;
+//	light.intensity = 1.5;
+//	light.exponent = 0.1;
+//	light.angle = Math.PI / 2;
+//	light.position.set(7, 7, -4);
+//	light.target.position.set(light.position.x, 0, light.position.z);
+//	light.target.updateMatrixWorld();
+//	scene.add(light);
+//
+//	var light = new THREE.SpotLight();
+//	light.distance = 8;
+//	light.intensity = 1.5;
+//	light.exponent = 0.1;
+//	light.angle = Math.PI / 2;
+//	light.position.set(12, 7, -4);
+//	light.target.position.set(light.position.x, 0, light.position.z);
+//	light.target.updateMatrixWorld();
+//	scene.add(light);
+
+
+
+
+//	var sphere = new THREE.Mesh(new THREE.SphereGeometry(0.2), new THREE.MeshBasicMaterial());
+//	sphere.position.copy(light.position);
+//	sphere.updateMatrixWorld();
+//	scene.add(sphere);
+
+//	directionalLight = new THREE.DirectionalLight(0xffffff);
+//	directionalLight.position.set(0, 0, 0);
+////	directionalLight.intensity = 0.5;
+////	camControl.getObject().add(directionalLight);
+//	scene.add(directionalLight);
+
+//	scene.add(new THREE.SpotLightHelper(light));
+
 }
 
 function initStats() {
