@@ -26,7 +26,7 @@
         </div>
 
         <div id="WebGL-output">
-            <div id="applet" style="
+            <div id="ircamera" style="
                  position: absolute;
                  left: 50%;
                  bottom: 0;
@@ -46,7 +46,7 @@
                      width: 480px;
                      margin-left: -240px;
                      ">
-                    <applet id="applet1" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="480" height="360" style="display: none">
+                    <applet id="applet" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="480" height="360" style="display: none">
                         <param name="script" value="load resources/e2d/thermal-bridge.e2d;"/>
                         <param name="permissions" value="sandbox"/>
                         <param name="MAYSCRIPT" value="true"/>
@@ -60,6 +60,7 @@
                      text-align: center;
                      width: 480px;
                      margin-left: -240px;
+                     display: none;
                      ">
                     <form>
                         <input id="run_button" type="button" value="Run" onclick="run('applet1')" style="width: 100px"> <br/> <br/>
@@ -73,15 +74,15 @@
                     </form>
                 </div>
             </div>
-            <div id="ircamera" style="position: absolute; right: 0; bottom: 0; display: none;">
+            <div id="ircamera-small" style="position: absolute; right: 0; bottom: 0;">
                 <img src="resources/textures/ircamera.png" width="300" height="400" alt="IR Camera Simulator"/>
             </div>
         </div>
 
         <script type="text/javascript">
-                        $(function () {
-                                startSimBuilding();
-                        });
+            $(function () {
+                startSimBuilding();
+            });
         </script>
     </body>
 </html>
