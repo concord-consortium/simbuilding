@@ -354,19 +354,18 @@ function handleKeyUp(event) {
 function handleMouseDown() {
     var vector = new THREE.Vector3(mouse.x, mouse.y, 0);
     projector.unprojectVector(vector, camera);
-    var position = camera.localToWorld(camera.position.clone());
+    var position = camControl.getObject().position.clone();
     var pickDirection = vector.sub(position).normalize();
     raycaster.set(position, pickDirection);
     var intersects = raycaster.intersectObject(hotSpotsRoot, true);
     var div = $("#applet");
     if (intersects.length > 0) {
         console.log("collision");
-//        if (div.css("display") === "none") {
         div.fadeIn();
         camControl.freeze = true;
     } else {
-//        div.fadeOut();
-//        camControl.freeze = false;
+        div.fadeOut();
+        camControl.freeze = false;
     }
 }
 

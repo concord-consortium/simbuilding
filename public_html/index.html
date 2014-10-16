@@ -38,11 +38,13 @@
                  ">
                 <div style="position: absolute; left: -50%; width: 624px; height: 712px">
                     <img src="resources/textures/ir-camera.png" width="624" height="712" alt="IR Camera Simulator" />
-                    <applet id="applet" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="450" height="360" style="position: absolute; left: 100px; top: 123px; display: none">
-                        <param name="script" value="load resources/e2d/thermal-bridge.e2d;"/>
-                        <param name="permissions" value="sandbox"/>
-                        <param name="MAYSCRIPT" value="true"/>
-                    </applet>
+                    <div id="applet" style="position: absolute; left: 100px; top: 123px; display: none">
+                        <applet archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="450" height="360">
+                            <param name="script" value="load resources/e2d/thermal-bridge.e2d;"/>
+                            <param name="permissions" value="sandbox"/>
+                            <param name="MAYSCRIPT" value="true"/>
+                        </applet>
+                    </div>
                     <br>
                     <div id="menu" style="
                          position: absolute;
@@ -73,6 +75,9 @@
                 document.body.onselectstart = function () {
                     return false;
                 }
+                document.body.ondragstart = function () {
+                    return false;
+                };
                 startSimBuilding();
             });
         </script>
