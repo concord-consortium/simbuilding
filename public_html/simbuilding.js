@@ -13,7 +13,6 @@ var hotSpotsRoot;
 var land;
 var mouse;
 var projector;
-var raycaster;
 var insertNewHousePart;
 var houseParts = [];
 var currentHousePart;
@@ -32,7 +31,6 @@ function startSimBuilding() {
     clock = new THREE.Clock();
     mouse = new THREE.Vector2();
     projector = new THREE.Projector();
-    raycaster = new THREE.Raycaster();
     stats = initStats();
     initGui();
     document.addEventListener('mousemove', handleMouseMove, false);
@@ -352,11 +350,11 @@ function handleKeyUp(event) {
 }
 
 function handleMouseDown() {
-    var vector = new THREE.Vector3(mouse.x, mouse.y, 0);
-    projector.unprojectVector(vector, camera);
+    var p = new THREE.Vector3(mouse.x, mouse.y, 0);
+    projector.unprojectVector(p, camera);
     var position = camControl.getObject().position.clone();
-    var pickDirection = vector.sub(position).normalize();
-    raycaster.set(position, pickDirection);
+    var direction = p.sub(position).normalize();
+    var raycaster = new THREE.Raycaster(position, direction);
     var intersects = raycaster.intersectObject(hotSpotsRoot, true);
     var div = $("#applet");
     if (intersects.length > 0) {
@@ -414,7 +412,7 @@ function closestPoint(p1, v1, p2, v2) {
 
 function enforceCameraGravity() {
     var camera = camControl.getObject();
-    raycaster.set(camera.position, NEG_UNIT_Y);
+    var raycaster = new THREE.Raycaster(camera.position, NEG_UNIT_Y);
     var intersects = raycaster.intersectObjects(collisionPartsWithoutDoors, true);
     if (intersects.length > 0)
         camera.position.y = intersects[0].point.y + viewerHeight;
