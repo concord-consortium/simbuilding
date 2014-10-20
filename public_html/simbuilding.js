@@ -26,6 +26,7 @@ var doorToBeOpened = null;
 var doorToBeClosed = null;
 var doors = [];
 var collisionPartsWithoutDoors = [];
+var appletTarget = "applet1";
 
 function startSimBuilding() {
     clock = new THREE.Clock();
@@ -42,6 +43,7 @@ function startSimBuilding() {
 
     camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
     camControl = new THREE.PointerLockControls(camera);
+    camControl.enabled = true;
     scene.add(camControl.getObject());
     camControl.getObject().position.x = 8.5;
     camControl.getObject().position.z = 10;
@@ -177,9 +179,12 @@ function initScene(houseModel) {
     hotSpotsRoot = new THREE.Object3D();
     scene.add(hotSpotsRoot);
     var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.5, 20, 20), new THREE.MeshBasicMaterial());
-    hotSpot.position.x = 4;
-    hotSpot.position.y = 6;
-    hotSpot.position.z = -5.3;
+    hotSpot.userData.id = 0;
+    hotSpot.position.set(4, 6, -5.3);
+    hotSpotsRoot.add(hotSpot);
+    var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.5, 20, 20), new THREE.MeshBasicMaterial());
+    hotSpot.userData.id = 1;
+    hotSpot.position.set(14.5, 0.8, -2.8);
     hotSpotsRoot.add(hotSpot);
 }
 
@@ -360,23 +365,30 @@ function handleMouseDown() {
     var intersects = raycaster.intersectObject(hotSpotsRoot, true);
     var div = $("#applet");
     if (intersects.length > 0) {
-        console.log("collision");
+        var id = intersects[0].object.userData.id;
+        for (i = 0; i < 2; i++)
+            if (i === id) {
+                $("#applet" + (i + 1)).show();
+                appletTarget = "applet" + (i + 1);
+            } else
+                $("#applet" + (i + 1)).hide();
         div.fadeIn();
-        camControl.freeze = true;
-    } else {
-        div.fadeOut();
-        camControl.freeze = false;
+//        camControl.enabled = false;
     }
+//    else {
+//        div.fadeOut();
+//        camControl.freeze = false;
+//    }
 }
 
 function handleMouseUp() {
-    if (currentHousePart && !currentHousePart.isCompleted()) {
-        currentHousePart.complete();
-        if (insertNewHousePart)
-            houseParts.push(currentHousePart);
-    }
-    insertNewHousePart = false;
-    camControl.enabled = true;
+//    if (currentHousePart && !currentHousePart.isCompleted()) {
+//        currentHousePart.complete();
+//        if (insertNewHousePart)
+//            houseParts.push(currentHousePart);
+//    }
+//    insertNewHousePart = false;
+//    camControl.enabled = true;
 }
 
 function handleMouseMove(event) {
