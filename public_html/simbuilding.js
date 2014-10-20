@@ -66,7 +66,7 @@ function startSimBuilding() {
 
 function render() {
     var doRenderVal = doRender || camControl.needsUpdate() || doorToBeOpened !== null || doorToBeClosed !== null;
-//	doRender = false;
+    doRender = false;
 
     var delta = clock.getDelta();
     stats.update();
@@ -76,6 +76,7 @@ function render() {
 
     requestAnimationFrame(render);
     if (doRenderVal) {
+        enforceCameraGravity();
         animateDoor();
 
         renderer.setViewport(0, 0, width, height);
@@ -87,18 +88,19 @@ function render() {
         renderer.clear();
         composer.render(delta);
 
-        if (irMode && $("#ircamera").css("opacity") === "1") {
-            var irWidth = 450;
-            renderer.setViewport(width / 2 - irWidth / 2 + 10, 200, irWidth, irWidth);
-            camera.fov = 25;
-            camera.aspect = 1;
-            camera.updateProjectionMatrix();
-            hotSpotsRoot.visible = true;
+        if (irMode) {
+            if ($("#ircamera").css("opacity") === "1") {
+                var irWidth = 450;
+                renderer.setViewport(width / 2 - irWidth / 2 + 10, 200, irWidth, irWidth);
+                camera.fov = 25;
+                camera.aspect = 1;
+                camera.updateProjectionMatrix();
+                hotSpotsRoot.visible = true;
 
-            composerIR.render(delta);
+                composerIR.render(delta);
+            } else
+                doRender = true;
         }
-
-        enforceCameraGravity();
     }
 }
 
@@ -380,7 +382,7 @@ function handleMouseUp() {
 function handleMouseMove(event) {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    doRender = true;
+//    doRender = true;
 }
 
 function hover() {
