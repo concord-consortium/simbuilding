@@ -186,6 +186,10 @@ function initScene(houseModel) {
     hotSpot.userData.id = 1;
     hotSpot.position.set(14.5, 0.8, -2.8);
     hotSpotsRoot.add(hotSpot);
+    var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.1, 20, 20), new THREE.MeshBasicMaterial());
+    hotSpot.userData.id = 2;
+    hotSpot.position.set(1.5, 1.2, -3.61);
+    hotSpotsRoot.add(hotSpot);
 }
 
 function initLights() {
@@ -366,14 +370,14 @@ function handleMouseDown() {
     var div = $("#applet");
     if (intersects.length > 0) {
         var id = intersects[0].object.userData.id;
-        for (i = 0; i < 2; i++)
+        for (i = 0; i < 3; i++)
             if (i === id) {
-                $("#applet" + (i + 1)).show();
-                appletTarget = "applet" + (i + 1);
+                $("#applet" + i).show();
+                appletTarget = "applet" + i;
             } else
-                $("#applet" + (i + 1)).hide();
+                $("#applet" + i).hide();
         div.fadeIn();
-//        camControl.enabled = false;
+        camControl.enabled = false;
     }
 //    else {
 //        div.fadeOut();

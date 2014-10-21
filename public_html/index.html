@@ -26,7 +26,11 @@
         </div>
 
         <div id="WebGL-output">
-            <img id="ircamera-small" src="resources/textures/ircamera.png" width="300" height="400" alt="IR Camera Simulator" style="position: absolute; right: 0; bottom: 0;" />
+            <img id="ircamera-small" src="resources/textures/ircamera.png" width="300" height="400" alt="IR Camera Simulator" style="position: absolute; right: 0; bottom: 0;"
+                 onclick ='$("#ircamera").fadeIn();
+                         $("#ircamera-small").fadeOut();
+                         irMode = true;
+                         doRender = true;' />
             <div id="ircamera" style="
                  position: absolute;
                  left: 50%;
@@ -42,16 +46,30 @@
                         <area shape="rect" coords="120,540,210,600" alt="Play" href="javascript: if (running) {running = false; stop(appletTarget)} else {running = true; run(appletTarget)}" />
                         <area shape="rect" coords="420,540,510,600" alt="Reset" href="javascript: jsReset(appletTarget)" />
                         <area shape="rect" coords="260,565,360,665" alt="Chart" href="javascript: if (chart) {chart = false; runScript(appletTarget, 'set graph false;')} else {chart = true; runScript(appletTarget, 'set graph true;')}" />
-                        <area shape="circle" coords="432,647,20" alt="Off" href="javascript: $('#applet').fadeOut(); camControl.enabled = true;" />
+                        <area shape="circle" coords="432,647,20" alt="Off" href='javascript:
+                              if (camControl.enabled) {
+                              $("#ircamera").fadeOut();
+                              $("#ircamera-small").fadeIn();
+                              irMode = false;
+                              } else {
+                              $("#applet").fadeOut();
+                              camControl.enabled = true;
+                              }
+                              doRender = true;' />
                     </map>
                     <div id="applet" style="position: absolute; left: 100px; top: 123px; display: none">
-                        <applet id="applet1" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="450" height="360" style="display: none">
+                        <applet id="applet0" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="450" height="360" style="display: none">
                             <param name="script" value="load resources/e2d/thermal-bridge.e2d;" />
                             <param name="permissions" value="sandbox" />
                             <param name="MAYSCRIPT" value="true" />
                         </applet>
-                        <applet id="applet2" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="450" height="360" style="display: none">
+                        <applet id="applet1" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="450" height="360" style="display: none">
                             <param name="script" value="load resources/e2d/fireplace-on.e2d;" />
+                            <param name="permissions" value="sandbox" />
+                            <param name="MAYSCRIPT" value="true" />
+                        </applet>
+                        <applet id="applet2" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="450" height="360" style="display: none">
+                            <param name="script" value="load resources/e2d/natural-convection1.e2d;" />
                             <param name="permissions" value="sandbox" />
                             <param name="MAYSCRIPT" value="true" />
                         </applet>
