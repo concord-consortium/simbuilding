@@ -41,6 +41,15 @@
                  margin: 0 auto;
                  ">
                 <div style="position: absolute; left: -50%; width: 624px; height: 712px">
+                    <div id="Quiz" style="position: absolute; left: 100px; top: 123px; width: 425px; height: 360px; background: aqua; padding: 10px">
+                        <img src="resources/textures/quiz.jpg" alt="" />
+                        <h3>Investigate</h3>
+                        <p>Do you see a problem here?</p>
+                        <form>
+                            <input id="problem_yes_button" type="button" value="Yes" onclick="run('applet1')" style="width: 50px">
+                            <input id="problem_no_button" type="button" value="No" onclick="stop('applet1')" style="width: 50px">
+                        </form>
+                    </div>
                     <img src="resources/textures/ir-camera.png" width="624" height="712" alt="IR Camera Simulator" usemap="#IRCameraButtons" />
                     <map name="IRCameraButtons">
                         <area shape="rect" coords="120,540,210,600" alt="Play" href="javascript: if (running) {running = false; stop(appletTarget)} else {running = true; run(appletTarget)}" />
@@ -105,7 +114,7 @@
             $(function () {
                 document.body.onselectstart = function () {
                     return false;
-                }
+                };
                 document.body.ondragstart = function () {
                     return false;
                 };
