@@ -361,47 +361,49 @@ function handleKeyUp(event) {
 }
 
 function handleMouseDown() {
-    var p = new THREE.Vector3(mouse.x, mouse.y, 0);
-    projector.unprojectVector(p, camera);
-    var position = camControl.getObject().position.clone();
-    var direction = p.sub(position).normalize();
-    var raycaster = new THREE.Raycaster(position, direction);
-    var intersects = raycaster.intersectObject(hotSpotsRoot, true);
-    var div = $("#applet");
-    if (intersects.length > 0) {
-        var id = intersects[0].object.userData.id;
-        for (i = 0; i < 3; i++)
-            if (i === id) {
-                $("#applet" + i).show();
-                appletTarget = "applet" + i;
-            } else
-                $("#applet" + i).hide();
-        div.fadeIn();
-        camControl.enabled = false;
-    }
-//    else {
-//        div.fadeOut();
-//        camControl.freeze = false;
+//    var p = new THREE.Vector3(mouse.x, mouse.y, 0);
+//    projector.unprojectVector(p, camera);
+//    var position = camControl.getObject().position.clone();
+//    var direction = p.sub(position).normalize();
+//    var raycaster = new THREE.Raycaster(position, direction);
+//    var intersects = raycaster.intersectObject(hotSpotsRoot, true);
+//    var div = $("#applet");
+//    if (intersects.length > 0) {
+//        var id = intersects[0].object.userData.id;
+//        for (i = 0; i < 3; i++)
+//            if (i === id) {
+//                $("#applet" + i).show();
+//                appletTarget = "applet" + i;
+//            } else
+//                $("#applet" + i).hide();
+//        div.fadeIn();
+//        camControl.enabled = false;
 //    }
 }
 
 function handleMouseUp() {
-//    if (currentHousePart && !currentHousePart.isCompleted()) {
-//        currentHousePart.complete();
-//        if (insertNewHousePart)
-//            houseParts.push(currentHousePart);
-//    }
-//    insertNewHousePart = false;
-//    camControl.enabled = true;
 }
 
 function handleMouseMove(event) {
     mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
     mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-//    doRender = true;
+    updateQuiz();
 }
 
 function hover() {
+}
+
+function pickHotspot(x, y) {
+    var p = new THREE.Vector3(x, y, 0);
+    projector.unprojectVector(p, camera);
+    var position = camControl.getObject().position.clone();
+    var direction = p.sub(position).normalize();
+    var raycaster = new THREE.Raycaster(position, direction);
+    var intersects = raycaster.intersectObject(hotSpotsRoot, true);
+    if (intersects.length > 0)
+        return intersects[0].object.userData.id;
+    else
+        return -1;
 }
 
 function closestPoint(p1, v1, p2, v2) {
