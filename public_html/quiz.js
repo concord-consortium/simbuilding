@@ -16,9 +16,9 @@ function updateQuiz() {
             div.fadeOut();
         else {
             if (newHotspot === 1)
-                div.css("background-image", "url(resources/textures/fireplace.jpg)")
+                div.css("background-image", "url(resources/textures/fireplace.jpg)");
             else if (newHotspot === 2)
-                div.css("background-image", "url(resources/textures/stove.jpg)")
+                div.css("background-image", "url(resources/textures/stove.jpg)");
             div.fadeIn();
         }
         hotspot = newHotspot;

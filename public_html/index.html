@@ -31,7 +31,7 @@
         </div>
 
         <div id="WebGL-output">
-            <img id="ircamera-small" src="resources/textures/ircamera.png" width="300" height="400" alt="IR Camera Simulator" style="position: absolute; right: 0; bottom: 0;"
+            <img id="ircamera-small" src="resources/textures/ircamera.png" width="300" height="400" alt="" style="position: absolute; right: 0; bottom: 0;"
                  onclick ='$("#ircamera").fadeIn();
                          $("#ircamera-small").fadeOut();
                          irMode = true;
@@ -46,6 +46,7 @@
                  margin: 0 auto;
                  ">
                 <div style="position: absolute; left: -50%; width: 624px; height: 712px">
+                    <img id="target" src="resources/textures/target.png" alt="" style="position: absolute; left: 250px; top: 220px"/>
                     <div id="quiz" style="position: absolute; left: 100px; top: 123px; width: 425px; height: 360px; background-size: 100% 100%; padding: 10px; display: none"
                          onClick="toggleQuizQuestion();">
                         <div id="quizQuestion" style="display: none">
