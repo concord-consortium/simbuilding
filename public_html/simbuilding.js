@@ -10,6 +10,7 @@ var camera;
 var scene;
 var sceneRoot;
 var hotSpotsRoot;
+var hotSpotsHidden;
 var land;
 var mouse;
 var projector;
@@ -85,7 +86,7 @@ function render() {
         camera.fov = 45;
         camera.aspect = window.innerWidth / window.innerHeight;
         camera.updateProjectionMatrix();
-        hotSpotsRoot.visible = false;
+        hotSpotsHidden.visible = false;
 
         renderer.clear();
         composer.render(delta);
@@ -97,7 +98,7 @@ function render() {
                 camera.fov = 25;
                 camera.aspect = 1;
                 camera.updateProjectionMatrix();
-                hotSpotsRoot.visible = true;
+                hotSpotsHidden.visible = true;
 
                 composerIR.render(delta);
             } else
@@ -176,20 +177,38 @@ function initScene(houseModel) {
         } else
             collisionPartsWithoutDoors.push(child);
     });
+
     hotSpotsRoot = new THREE.Object3D();
     scene.add(hotSpotsRoot);
-    var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.5, 20, 20), new THREE.MeshBasicMaterial());
+    var hotSpotsVisible = new THREE.Object3D();
+    hotSpotsRoot.add(hotSpotsVisible);
+    hotSpotsHidden = new THREE.Object3D();
+    hotSpotsRoot.add(hotSpotsHidden);
+
+    var whiteMaterial = new THREE.MeshBasicMaterial();
+    var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.5, 20, 20), whiteMaterial);
     hotSpot.userData.id = 0;
     hotSpot.position.set(4, 6, -5.3);
-    hotSpotsRoot.add(hotSpot);
-    var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.5, 20, 20), new THREE.MeshBasicMaterial());
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.5, 20, 20), whiteMaterial);
     hotSpot.userData.id = 1;
     hotSpot.position.set(14.5, 0.8, -2.8);
-    hotSpotsRoot.add(hotSpot);
-    var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.1, 20, 20), new THREE.MeshBasicMaterial());
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.1, 20, 20), whiteMaterial);
     hotSpot.userData.id = 2;
     hotSpot.position.set(1.5, 1.2, -3.61);
-    hotSpotsRoot.add(hotSpot);
+    hotSpotsHidden.add(hotSpot);
+
+    var shadeMaterial = new THREE.MeshPhongMaterial();
+    shadeMaterial.emissive = new THREE.Color(0x555555);
+    var hotSpot = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.03, 20, 1), shadeMaterial);
+    hotSpot.userData.id = 3;
+    hotSpot.position.set(8.2, 3, 1);
+    hotSpotsVisible.add(hotSpot);
+    var hotSpot = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.03, 20, 1), shadeMaterial);
+    hotSpot.userData.id = 4;
+    hotSpot.position.set(10, 3, -2.8);
+    hotSpotsVisible.add(hotSpot);
 }
 
 function initLights() {
