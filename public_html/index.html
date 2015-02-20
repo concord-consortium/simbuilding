@@ -50,19 +50,23 @@
                     <div id="quiz" style="position: absolute; left: 100px; top: 123px; width: 425px; height: 360px; background-size: 100% 100%; padding: 10px; display: none"
                          onClick="toggleQuizQuestion();">
                         <form id="quizYesNo" style="display: none">
-                            <h3>Investigate</h3>
-                            <p>Do you see a problem here?</p>
+                            <h1>Investigate</h1>
+                            <p style="font-size: large">Do you see a problem here?</p>
                             <input id="problem_yes_button" type="button" value="Yes" onclick="answer(true)" style="width: 50px">
                             <input id="problem_no_button" type="button" value="No" onclick="answer(false)" style="width: 50px">
                         </form>
                         <form id="quizMulti" style="display: none">
-                            <h3>Investigate</h3>
-                            <p>Do you see a problem here?</p>
-                            <input type="radio" name="quiz0">
-                            <input type="radio" name="quiz1">
-                            <input type="radio" name="quiz2">
-                            <input type="radio" name="quiz3">
-                            <input type="button" value="Submit" onclick="answerMulti()" style="width: 50px">
+                            <h1>Investigate</h1>
+                            <p style="font-size: large">Do you see a problem here?</p>
+                            <input type="radio" name = "answer" id="quiz0">
+                            <label for="quiz0" style="font-size: large"></label><br/>
+                            <input type="radio" name = "answer" id="quiz1">
+                            <label for="quiz1" style="font-size: large"></label><br/>
+                            <input type="radio" name = "answer" id="quiz2">
+                            <label for="quiz2" style="font-size: large"></label><br/>
+                            <input type="radio" name = "answer" id="quiz3">
+                            <label for="quiz3" style="font-size: large"></label><br/>
+                            <input type="button" value="Submit" onclick="answerMulti()">
                         </form>
                     </div>
                     <img src="resources/textures/ir-camera.png" width="624" height="712" alt="IR Camera Simulator" usemap="#IRCameraButtons" />

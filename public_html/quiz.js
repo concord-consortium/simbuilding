@@ -1,59 +1,101 @@
 var score = 0;
-var expectedAnswer = true;
 var hotspot = -1;
+var quizInProgress = false;
 
 function answer(userAnswer) {
-    if (expectedAnswer === userAnswer)
+    var expectedAnswer;
+    switch (hotspot) {
+        case 3:
+            expectedAnswer = false;
+            break;
+        case 4:
+            expectedAnswer = true;
+            break;
+    }
+
+    quizInProgress = true;
+
+    if (expectedAnswer === userAnswer) {
         score++;
-    $("#score").text(score);
+        $("#score").text(score);
+    }
+
+    $("#quizYesNo").hide();
+    if (expectedAnswer === false)
+        return;
+
+    $("#quizMulti").fadeIn();
+    $("input[name=answer]").hide();
+    $("label").hide();
 
     var question;
     var answers = [];
-    if (newHotspot === 4) {
+    if (hotspot === 3) {
         question = "What did the builder do wrong?";
-        anwers.push("Forgot to air seal the recessed");
-        anwers.push("Forgot to air seal the attic correctly");
+        answers.push("Forgot to air seal the recessed");
+        answers.push("Forgot to air seal the attic correctly");
+    } else if (hotspot === 4) {
+        question = "What did the builder do wrong?";
+        answers.push("Forgot to air seal the recessed");
+        answers.push("Forgot to air seal the attic correctly");
     }
-    var div = $("#quizMulti");
-    div.children()
-    for (var i = 0; i < 4; i++)
-        $("input[name=quiz" + i + "]").css("display: none");
+
+    $("#quizMulti p").text(question);
 
     for (var i = 0; i < answers.length; i++) {
-        var radio = $("input[name=quiz" + i + "]");
-        radio.val(answers[i]);
-        radio.fadeIn();
+        var radio = $("input[id=quiz" + i + "]");
+        radio.show();
+        var label = $("input[id=quiz" + i + "] + label");
+        label.text(answers[i]);
+        label.show();
     }
 }
 
-function answer() {
+function answerMulti() {
+    var expectedAnswer;
+    if (hotspot === 3)
+        expectedAnswer = 0;
 
+    if ($("input[id=quiz" + expectedAnswer + "]").is(':checked')) {
+        score++;
+        $("#score").text(score);
+    }
+
+    $("#quizMulti").fadeOut();
 }
 
 function updateQuiz() {
-    var newHotspot = pickHotspot(0, 0);
-    if (hotspot !== newHotspot) {
+    var selectedHotspot = pickHotspot(0, 0);
+    if (hotspot !== selectedHotspot) {
         var div = $("#quiz");
-        if (newHotspot === -1)
+        if (selectedHotspot === -1)
             div.fadeOut();
         else {
             var filename;
-            if (newHotspot === 1)
+            if (selectedHotspot === 1)
                 filename = "fireplace.jpg";
-            else if (newHotspot === 2)
+            else if (selectedHotspot === 2)
                 filename = "stove.jpg";
-            else if (newHotspot === 3)
+            else if (selectedHotspot === 3)
                 filename = "light-good.png";
-            else if (newHotspot === 4)
+            else if (selectedHotspot === 4)
                 filename = "light-bad.png";
             div.css("background-image", "url(resources/textures/" + filename + ")");
             div.fadeIn();
         }
-        hotspot = newHotspot;
+
+        hotspot = selectedHotspot;
+
+        if (hotspot === -1) {
+            $("[id^=quiz]").fadeOut();
+            quizInProgress = false;
+        }
     }
 }
 
 function toggleQuizQuestion() {
+    if (quizInProgress)
+        return;
     var div = $("#quizYesNo");
     if (div.css("display") === "none")
         div.fadeIn();
