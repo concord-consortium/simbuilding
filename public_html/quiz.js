@@ -15,14 +15,19 @@ function answer(userAnswer) {
 
     quizInProgress = true;
 
+    $("#quizYesNo").hide();
+
     if (expectedAnswer === userAnswer) {
         score++;
         $("#score").text(score);
-    }
-
-    $("#quizYesNo").hide();
-    if (expectedAnswer === false)
+        if (expectedAnswer === false) {
+            $("#quizCorrect").fadeIn();
+            return;
+        }
+    } else {
+        $("#quizIncorrect").fadeIn();
         return;
+    }
 
     $("#quizMulti").fadeIn();
     $("input[name=answer]").hide();
@@ -53,15 +58,20 @@ function answer(userAnswer) {
 
 function answerMulti() {
     var expectedAnswer;
-    if (hotspot === 3)
-        expectedAnswer = 0;
+    switch (hotspot) {
+        case 4:
+            expectedAnswer = 0;
+            break;
+    }
+
+    $("#quizMulti").hide();
 
     if ($("input[id=quiz" + expectedAnswer + "]").is(':checked')) {
         score++;
         $("#score").text(score);
-    }
-
-    $("#quizMulti").fadeOut();
+        $("#quizCorrect").fadeIn();
+    } else
+        $("#quizIncorrect").fadeIn();
 }
 
 function updateQuiz() {
