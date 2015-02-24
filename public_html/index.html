@@ -48,7 +48,7 @@
                 <div style="position: absolute; left: -50%; width: 624px; height: 712px">
                     <img id="target" src="resources/textures/target.png" alt="" style="position: absolute; left: 250px; top: 220px"/>
                     <div id="quiz" style="position: absolute; left: 100px; top: 123px; width: 425px; height: 360px; background-size: 100% 100%; padding: 10px; display: none"
-                         onClick="toggleQuizQuestion();">
+                         onmousedown="toggleQuizQuestion();">
                         <form id="quizYesNo" style="display: none">
                             <h1>Investigate</h1>
                             <p style="font-size: large">Do you see a problem here?</p>
@@ -70,6 +70,7 @@
                         </form>
                         <div id="quizCorrect" style="display: none; font-size: xx-large; color: greenyellow; text-align: center; padding-top: 80px">Correct!</div>
                         <div id="quizIncorrect" style="display: none; font-size: xx-large; text-align: center; ; padding-top: 80px">Incorrect!</div>
+                        <div id="quizAlreadyChecked" style="display: none; font-size: xx-large; text-align: center; ; padding-top: 80px">Already Checked!</div>
                     </div>
                     <img src="resources/textures/ir-camera.png" width="624" height="712" alt="IR Camera Simulator" usemap="#IRCameraButtons" />
                     <map name="IRCameraButtons">

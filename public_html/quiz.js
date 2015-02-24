@@ -1,6 +1,7 @@
 var score = 0;
 var hotspot = -1;
 var quizInProgress = false;
+var alreadyAnswered = [];
 
 function answer(userAnswer) {
     var expectedAnswer;
@@ -22,10 +23,12 @@ function answer(userAnswer) {
         $("#score").text(score);
         if (expectedAnswer === false) {
             $("#quizCorrect").fadeIn();
+            alreadyAnswered.push(hotspot);
             return;
         }
     } else {
         $("#quizIncorrect").fadeIn();
+        alreadyAnswered.push(hotspot);
         return;
     }
 
@@ -72,33 +75,32 @@ function answerMulti() {
         $("#quizCorrect").fadeIn();
     } else
         $("#quizIncorrect").fadeIn();
+    alreadyAnswered.push(hotspot);
 }
 
 function updateQuiz() {
-    var selectedHotspot = pickHotspot(0, 0);
-    if (hotspot !== selectedHotspot) {
+    var newHotspot = pickHotspot(0, 0);
+    if (hotspot !== newHotspot) {
+        hotspot = newHotspot;
         var div = $("#quiz");
-        if (selectedHotspot === -1)
+        if (newHotspot === -1) {
+            quizInProgress = false;
             div.fadeOut();
-        else {
+        } else {
+            $("[id^=quiz]").hide();
             var filename;
-            if (selectedHotspot === 1)
+            if (newHotspot === 1)
                 filename = "fireplace.jpg";
-            else if (selectedHotspot === 2)
+            else if (newHotspot === 2)
                 filename = "stove.jpg";
-            else if (selectedHotspot === 3)
+            else if (newHotspot === 3)
                 filename = "light-good.png";
-            else if (selectedHotspot === 4)
+            else if (newHotspot === 4)
                 filename = "light-bad.png";
             div.css("background-image", "url(resources/textures/" + filename + ")");
             div.fadeIn();
-        }
-
-        hotspot = selectedHotspot;
-
-        if (hotspot === -1) {
-            $("[id^=quiz]").fadeOut();
-            quizInProgress = false;
+            if (alreadyAnswered.indexOf(newHotspot) !== -1)
+                $("#quizAlreadyChecked").show();
         }
     }
 }
