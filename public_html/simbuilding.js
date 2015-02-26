@@ -17,7 +17,7 @@ var projector;
 var insertNewHousePart;
 var houseParts = [];
 var currentHousePart;
-var viewerHeight = 1.7;
+var viewerHeight = 1.3;
 var hoveredObject;
 var doRender;
 var width = window.innerWidth || 2;
@@ -83,8 +83,8 @@ function render() {
         animateDoor();
 
         renderer.setViewport(0, 0, width, height);
-        camera.fov = 45;
-        camera.aspect = window.innerWidth / window.innerHeight;
+        camera.fov = 65;
+        camera.aspect = window.innerWidth / window.innerHeight * 0.8;
         camera.updateProjectionMatrix();
         hotSpotsHidden.visible = false;
 

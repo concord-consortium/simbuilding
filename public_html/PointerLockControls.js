@@ -16,6 +16,8 @@ THREE.PointerLockControls = function (camera) {
     var moveBackward = false;
     var moveLeft = false;
     var moveRight = false;
+    var rotateLeft = false;
+    var rotateRight = false;
 
     var isOnObject = false;
     var canJump = false;
@@ -57,6 +59,8 @@ THREE.PointerLockControls = function (camera) {
                 break;
 
             case 37: // left
+                rotateLeft = true;
+                break;
             case 65: // a
                 moveLeft = true;
                 break;
@@ -67,6 +71,8 @@ THREE.PointerLockControls = function (camera) {
                 break;
 
             case 39: // right
+                rotateRight = true;
+                break;
             case 68: // d
                 moveRight = true;
                 break;
@@ -88,6 +94,8 @@ THREE.PointerLockControls = function (camera) {
                 break;
 
             case 37: // left
+                rotateLeft = false;
+                break;
             case 65: // a
                 moveLeft = false;
                 break;
@@ -98,6 +106,8 @@ THREE.PointerLockControls = function (camera) {
                 break;
 
             case 39: // right
+                rotateRight = false;
+                break;
             case 68: // d
                 moveRight = false;
                 break;
@@ -142,20 +152,30 @@ THREE.PointerLockControls = function (camera) {
         var time = performance.now();
         var delta = Math.min(0.1, (time - prevTime) / 1000);
 
+
         velocity.x -= velocity.x * 10.0 * delta;
         velocity.z -= velocity.z * 10.0 * delta;
+        if (!rotateLeft && !rotateRight)
+            velocity.y -= velocity.y * 10.0 * delta;    // using .y for rotation
 
 
         if (moveForward)
-            velocity.z -= 40.0 * delta;
+            velocity.z -= 20.0 * delta;
         if (moveBackward)
-            velocity.z += 40.0 * delta;
+            velocity.z += 20.0 * delta;
 
         if (moveLeft)
-            velocity.x -= 40.0 * delta;
+            velocity.x -= 20.0 * delta;
         if (moveRight)
-            velocity.x += 40.0 * delta;
+            velocity.x += 20.0 * delta;
 
+        if (rotateLeft)
+            velocity.y -= 2.0 * delta;
+        if (rotateRight)
+            velocity.y += 2.0 * delta;
+
+        velocity.y = Math.sign(velocity.y) * Math.min(Math.abs(velocity.y), 1);
+        yawObject.rotateY(-velocity.y * delta);
         yawObject.translateX(velocity.x * delta);
         yawObject.translateZ(velocity.z * delta);
         this.adjustCameraPositionForCollision();
@@ -199,7 +219,7 @@ THREE.PointerLockControls = function (camera) {
     };
 
     this.needsUpdate = function () {
-        if (this.isMouseDown || Math.abs(velocity.x) > 0.001 || Math.abs(velocity.z) > 0.001)
+        if (this.isMouseDown || Math.abs(velocity.x) > 0.001 || Math.abs(velocity.y) > 0.001 || Math.abs(velocity.z) > 0.001)
             return true;
         else
             return false;
