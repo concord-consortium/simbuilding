@@ -175,7 +175,7 @@ THREE.PointerLockControls = function (camera) {
             velocity.y += 2.0 * delta;
 
         velocity.y = Math.sign(velocity.y) * Math.min(Math.abs(velocity.y), 1);
-        yawObject.rotateY(-velocity.y * delta);
+        yawObject.rotation.y += -velocity.y * delta;
         yawObject.translateX(velocity.x * delta);
         yawObject.translateZ(velocity.z * delta);
         this.adjustCameraPositionForCollision();
@@ -205,15 +205,18 @@ THREE.PointerLockControls = function (camera) {
             var position = yawObject.position.clone();
             position.y -= 0.8;
             var raycaster = new THREE.Raycaster(position, direction);
-
             var intersects = raycaster.intersectObject(sceneRoot, true);
-            if (intersects.length > 0) {
-                var MIN_DISTANCE_TO_WALL = 0.2;
-                if (intersects[0].distance < MIN_DISTANCE_TO_WALL) {
-                    var collisionPosition = intersects[0].point.clone().sub(direction.multiplyScalar(MIN_DISTANCE_TO_WALL));
-                    yawObject.position.x = collisionPosition.x;
-                    yawObject.position.z = collisionPosition.z;
-                }
+            var MIN_DISTANCE_TO_WALL = 0.3;
+            if (intersects.length > 0 && intersects[0].distance < MIN_DISTANCE_TO_WALL) {
+                var newPosition = intersects[0].point.clone().sub(direction.clone().multiplyScalar(MIN_DISTANCE_TO_WALL * 1.01));
+                var wallDirection = UNIT_Y.clone().cross(intersects[0].face.normal);
+                if (wallDirection.dot(direction) < 0)
+                    wallDirection.negate();
+                var wallIntersects = new THREE.Raycaster(newPosition, wallDirection).intersectObject(sceneRoot, true);
+                if (wallIntersects.length === 0 || wallIntersects[0].distance > MIN_DISTANCE_TO_WALL * 2)
+                    newPosition = newPosition.add(wallDirection.multiplyScalar(0.05));
+                yawObject.position.x = newPosition.x;
+                yawObject.position.z = newPosition.z;
             }
         }
     };
