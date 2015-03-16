@@ -19,9 +19,9 @@ function answer(userAnswer) {
     $("#quizYesNo").hide();
 
     if (expectedAnswer === userAnswer) {
-        score++;
-        $("#score").text(score);
         if (expectedAnswer === false) {
+            score++;
+            $("#score").text(score);
             $("#quizCorrect").fadeIn();
             alreadyAnswered.push(hotspot);
             return;
@@ -43,7 +43,10 @@ function answer(userAnswer) {
         answers.push("Forgot to air seal the recessed");
         answers.push("Forgot to air seal the attic correctly");
     } else {
+        score++;
+        $("#score").text(score);
         $("#quizCorrect").fadeIn();
+        alreadyAnswered.push(hotspot);
         return;
     }
 
@@ -113,7 +116,7 @@ function updateQuiz() {
 }
 
 function toggleQuizQuestion() {
-    if (quizInProgress)
+    if (quizInProgress || alreadyAnswered.indexOf(hotspot) !== -1)
         return;
     var div = $("#quizYesNo");
     if (div.css("display") === "none")
