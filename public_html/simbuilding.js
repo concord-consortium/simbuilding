@@ -61,6 +61,7 @@ function startSimBuilding() {
     loader.options.convertUpAxis = true;
     loader.load('./resources/models/Yorktown.dae', function (houseModel) {
         initScene(houseModel.scene);
+        initHotspots();
         initLights();
         doRender = true;
         setTimeout(render, 100);
@@ -177,13 +178,17 @@ function initScene(houseModel) {
         } else
             collisionPartsWithoutDoors.push(child);
     });
+}
 
+function initHotspots() {
     hotSpotsRoot = new THREE.Object3D();
     scene.add(hotSpotsRoot);
     var hotSpotsVisible = new THREE.Object3D();
     hotSpotsRoot.add(hotSpotsVisible);
     hotSpotsHidden = new THREE.Object3D();
     hotSpotsRoot.add(hotSpotsHidden);
+
+    var geom = new THREE.SphereGeometry(0.1, 20, 20);
 
     var whiteMaterial = new THREE.MeshBasicMaterial();
     var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.5, 20, 20), whiteMaterial);
@@ -194,9 +199,46 @@ function initScene(houseModel) {
     hotSpot.userData.id = 1;
     hotSpot.position.set(14.5, 0.8, -2.8);
     hotSpotsHidden.add(hotSpot);
-    var hotSpot = new THREE.Mesh(new THREE.SphereGeometry(0.1, 20, 20), whiteMaterial);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
     hotSpot.userData.id = 2;
     hotSpot.position.set(1.5, 1.2, -3.61);
+    hotSpotsHidden.add(hotSpot);
+    // Windows
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 5;
+    hotSpot.position.set(4.4, 1.6, 4.2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 6;
+    hotSpot.position.set(6.45, 1.6, 4.2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 5;
+    hotSpot.position.set(10.53, 1.6, 4.2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 5;
+    hotSpot.position.set(12.57, 1.6, 4.2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 5;
+    hotSpot.position.set(4.4, 4.8, 4.2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 5;
+    hotSpot.position.set(6.45, 4.8, 4.2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 5;
+    hotSpot.position.set(8.45, 4.8, 4.2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 6;
+    hotSpot.position.set(10.53, 4.8, 4.2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 5;
+    hotSpot.position.set(12.57, 4.8, 4.2);
     hotSpotsHidden.add(hotSpot);
 
     var shadeMaterial = new THREE.MeshPhongMaterial();
