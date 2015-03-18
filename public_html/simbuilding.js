@@ -262,6 +262,11 @@ function initHotspots() {
     hotSpot.userData.id = 10;
     hotSpot.position.set(13.85, 2.5, 2);
     hotSpotsHidden.add(hotSpot);
+    // under kitchen sink
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 12;
+    hotSpot.position.set(2.9, 0.7, -4.8);
+    hotSpotsHidden.add(hotSpot);
 
 
     var shadeMaterial = new THREE.MeshPhongMaterial();
