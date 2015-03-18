@@ -6,10 +6,10 @@ var alreadyAnswered = [];
 function answer(userAnswer) {
     var expectedAnswer;
     switch (hotspot) {
-        case 3, 5, 7, 9, 11:
+        case 3, 5, 7, 9, 11, 13, 15, 17:
             expectedAnswer = false;
             break;
-        case 4, 6, 8, 10, 12:
+        case 4, 6, 8, 10, 12, 14, 16, 18:
             expectedAnswer = true;
             break;
     }
@@ -118,6 +118,18 @@ function updateQuiz() {
                 filename = "under-sink-good.jpg";
             else if (newHotspot === 12)
                 filename = "under-sink-bad.jpg";
+            else if (newHotspot === 13)
+                filename = "tub-good.jpg";
+            else if (newHotspot === 14)
+                filename = "tub-bad.jpg";
+            else if (newHotspot === 15)
+                filename = "ceiling-good.jpg";
+            else if (newHotspot === 16)
+                filename = "ceiling-bad.jpg";
+            else if (newHotspot === 17)
+                filename = "attic-hatch-good.jpg";
+            else if (newHotspot === 18)
+                filename = "attic-hatch-bad.jpg";
             div.css("background-image", "url(resources/textures/" + filename + ")");
             div.fadeIn();
             if (alreadyAnswered.indexOf(newHotspot) !== -1)
