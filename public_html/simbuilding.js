@@ -240,6 +240,19 @@ function initHotspots() {
     hotSpot.userData.id = 5;
     hotSpot.position.set(12.57, 4.8, 4.2);
     hotSpotsHidden.add(hotSpot);
+    // Baseboard
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 7;
+    hotSpot.position.set(3.15, 0.4, 2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 8;
+    hotSpot.position.set(5.4, 0.4, 4.2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 8;
+    hotSpot.position.set(11.5, 0.4, 4.2);
+    hotSpotsHidden.add(hotSpot);
 
     var shadeMaterial = new THREE.MeshPhongMaterial();
     shadeMaterial.emissive = new THREE.Color(0x555555);

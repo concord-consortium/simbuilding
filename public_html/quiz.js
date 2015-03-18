@@ -55,7 +55,6 @@ function answer(userAnswer) {
     $("input[name=answer]").hide();
     $("label").hide();
 
-
     for (var i = 0; i < answers.length; i++) {
         var radio = $("input[id=quiz" + i + "]");
         radio.show();
@@ -107,6 +106,10 @@ function updateQuiz() {
                 filename = "window-good.jpg";
             else if (newHotspot === 6)
                 filename = "window-bad.jpg";
+            else if (newHotspot === 7)
+                filename = "baseboard-good.jpg";
+            else if (newHotspot === 8)
+                filename = "baseboard-bad.jpg";
             div.css("background-image", "url(resources/textures/" + filename + ")");
             div.fadeIn();
             if (alreadyAnswered.indexOf(newHotspot) !== -1)
