@@ -253,6 +253,16 @@ function initHotspots() {
     hotSpot.userData.id = 8;
     hotSpot.position.set(11.5, 0.4, 4.2);
     hotSpotsHidden.add(hotSpot);
+    // Wall
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 9;
+    hotSpot.position.set(3.15, 2.5, 2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 10;
+    hotSpot.position.set(13.85, 2.5, 2);
+    hotSpotsHidden.add(hotSpot);
+
 
     var shadeMaterial = new THREE.MeshPhongMaterial();
     shadeMaterial.emissive = new THREE.Color(0x555555);

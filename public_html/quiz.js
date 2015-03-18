@@ -6,10 +6,10 @@ var alreadyAnswered = [];
 function answer(userAnswer) {
     var expectedAnswer;
     switch (hotspot) {
-        case 3, 5:
+        case 3, 5, 7, 9:
             expectedAnswer = false;
             break;
-        case 4, 6:
+        case 4, 6, 8, 10:
             expectedAnswer = true;
             break;
     }
@@ -110,6 +110,10 @@ function updateQuiz() {
                 filename = "baseboard-good.jpg";
             else if (newHotspot === 8)
                 filename = "baseboard-bad.jpg";
+            else if (newHotspot === 9)
+                filename = "wall-good.jpg";
+            else if (newHotspot === 10)
+                filename = "wall-bad.jpg";
             div.css("background-image", "url(resources/textures/" + filename + ")");
             div.fadeIn();
             if (alreadyAnswered.indexOf(newHotspot) !== -1)
