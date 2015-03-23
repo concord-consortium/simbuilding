@@ -5,14 +5,10 @@ var alreadyAnswered = [];
 
 function answer(userAnswer) {
     var expectedAnswer;
-    switch (hotspot) {
-        case 3, 5, 7, 9, 11, 13, 15, 17:
-            expectedAnswer = false;
-            break;
-        case 4, 6, 8, 10, 12, 14, 16, 18:
-            expectedAnswer = true;
-            break;
-    }
+    if (hotspot > 2 && hotspot % 2 === 0)
+        expectedAnswer = true;
+    else
+        expectedAnswer = false;
 
     quizInProgress = true;
 
