@@ -1,3 +1,5 @@
+/* global THREE */
+
 var UNIT_Y = new THREE.Vector3(0, 1, 0);
 var NEG_UNIT_Y = new THREE.Vector3(0, -1, 0);
 
@@ -5,7 +7,7 @@ var clock;
 var stats;
 var camControl;
 var renderer;
-var composer;
+var composer, composerIR;
 var camera;
 var scene;
 var sceneRoot;
@@ -34,7 +36,6 @@ function startSimBuilding() {
     mouse = new THREE.Vector2();
     projector = new THREE.Projector();
     stats = initStats();
-    initGui();
     document.addEventListener('mousemove', handleMouseMove, false);
     document.addEventListener('mousedown', handleMouseDown, false);
     document.addEventListener('mouseup', handleMouseUp, false);
@@ -420,33 +421,6 @@ function initStats() {
     stats.domElement.style.top = '0px';
     $("#Stats-output").append(stats.domElement);
     return stats;
-}
-
-function initGui() {
-    var controls = new function () {
-        this.platform = function () {
-            currentHousePart = new SIM.Platform();
-            sceneRoot.add(currentHousePart.root);
-            insertNewHousePart = true;
-        };
-        this.wall = function () {
-            currentHousePart = new SIM.Wall();
-            insertNewHousePart = true;
-        };
-        this.window = function () {
-            currentHousePart = new SIM.Window();
-            insertNewHousePart = true;
-        };
-        this.roof = function () {
-            currentHousePart = new SIM.Roof();
-            insertNewHousePart = true;
-        };
-    };
-    var gui = new dat.GUI();
-    gui.add(controls, 'platform');
-    gui.add(controls, 'wall');
-    gui.add(controls, 'window');
-    gui.add(controls, 'roof');
 }
 
 function handleKeyUp(event) {
