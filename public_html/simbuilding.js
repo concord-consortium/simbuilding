@@ -15,7 +15,6 @@ var hotSpotsRoot;
 var hotSpotsHidden;
 var land;
 var mouse;
-var projector;
 var insertNewHousePart;
 var houseParts = [];
 var currentHousePart;
@@ -34,7 +33,6 @@ var appletTarget = "applet1";
 function startSimBuilding() {
     clock = new THREE.Clock();
     mouse = new THREE.Vector2();
-    projector = new THREE.Projector();
     stats = initStats();
     document.addEventListener('mousemove', handleMouseMove, false);
     document.addEventListener('mousedown', handleMouseDown, false);
@@ -206,7 +204,7 @@ function initHotspots() {
     hotSpotsHidden.add(hotSpot);
     // Windows
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
-    hotSpot.userData.id = 5;
+    hotSpot.userData.id = 6;
     hotSpot.position.set(4.4, 1.6, 4.2);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
@@ -214,23 +212,23 @@ function initHotspots() {
     hotSpot.position.set(6.45, 1.6, 4.2);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
-    hotSpot.userData.id = 5;
+    hotSpot.userData.id = 6;
     hotSpot.position.set(10.53, 1.6, 4.2);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
-    hotSpot.userData.id = 5;
+    hotSpot.userData.id = 6;
     hotSpot.position.set(12.57, 1.6, 4.2);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
-    hotSpot.userData.id = 5;
+    hotSpot.userData.id = 6;
     hotSpot.position.set(4.4, 4.8, 4.2);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
-    hotSpot.userData.id = 5;
+    hotSpot.userData.id = 6;
     hotSpot.position.set(6.45, 4.8, 4.2);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
-    hotSpot.userData.id = 5;
+    hotSpot.userData.id = 6;
     hotSpot.position.set(8.45, 4.8, 4.2);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
@@ -238,12 +236,12 @@ function initHotspots() {
     hotSpot.position.set(10.53, 4.8, 4.2);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
-    hotSpot.userData.id = 5;
+    hotSpot.userData.id = 6;
     hotSpot.position.set(12.57, 4.8, 4.2);
     hotSpotsHidden.add(hotSpot);
     // Baseboard
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
-    hotSpot.userData.id = 7;
+    hotSpot.userData.id = 8;
     hotSpot.position.set(3.15, 0.4, 2);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
@@ -270,12 +268,12 @@ function initHotspots() {
     hotSpotsHidden.add(hotSpot);
     // Tub
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
-    hotSpot.userData.id = 13;
+    hotSpot.userData.id = 14;
     hotSpot.position.set(2.1, 3.8, -4.3);
     hotSpotsHidden.add(hotSpot);
     // Ceiling
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
-    hotSpot.userData.id = 15;
+    hotSpot.userData.id = 16;
     hotSpot.position.set(6.45, 5.8, 2);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
@@ -443,24 +441,6 @@ function handleKeyUp(event) {
 }
 
 function handleMouseDown() {
-//    var p = new THREE.Vector3(mouse.x, mouse.y, 0);
-//    projector.unprojectVector(p, camera);
-//    var position = camControl.getObject().position.clone();
-//    var direction = p.sub(position).normalize();
-//    var raycaster = new THREE.Raycaster(position, direction);
-//    var intersects = raycaster.intersectObject(hotSpotsRoot, true);
-//    var div = $("#applet");
-//    if (intersects.length > 0) {
-//        var id = intersects[0].object.userData.id;
-//        for (i = 0; i < 3; i++)
-//            if (i === id) {
-//                $("#applet" + i).show();
-//                appletTarget = "applet" + i;
-//            } else
-//                $("#applet" + i).hide();
-//        div.fadeIn();
-//        camControl.enabled = false;
-//    }
 }
 
 function handleMouseUp() {
@@ -477,7 +457,7 @@ function hover() {
 
 function pickHotspot(x, y) {
     var p = new THREE.Vector3(x, y, 0);
-    projector.unprojectVector(p, camera);
+    p.unproject(camera);
     var position = camControl.getObject().position.clone();
     var direction = p.sub(position).normalize();
     var raycaster = new THREE.Raycaster(position, direction);

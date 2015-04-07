@@ -186,7 +186,7 @@ THREE.PointerLockControls = function (camera) {
     this.adjustCameraPositionForCollision = function () {
         // detect door to be opened
         var p = new THREE.Vector3(0, 0, 0);
-        projector.unprojectVector(p, camera);
+        p.unproject(camera);
         var position = yawObject.position.clone();
         var direction = p.sub(position).normalize();
         var raycaster = new THREE.Raycaster(position, direction);
