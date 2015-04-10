@@ -48,7 +48,7 @@ function startSimBuilding() {
     camControl.getObject().position.x = 8.5;
     camControl.getObject().position.z = 10;
 
-    renderer = new THREE.WebGLRenderer({antialias: true});
+    renderer = new THREE.WebGLRenderer({antialias: false});
     renderer.setClearColor(0x062A78);
     renderer.setSize(window.innerWidth, window.innerHeight);
     renderer.autoClear = false;
@@ -505,7 +505,6 @@ function animateDoor() {
         var startAngle = doorToBeOpened.userData.startAngle;
         var endAngle = doorToBeOpened.userData.endAngle;
         if (doorToBeOpened.rotation.y !== endAngle) {
-            console.log("Door opening");
             var isIncreasing = endAngle > startAngle;
             if (isIncreasing)
                 doorToBeOpened.rotation.y = Math.min(endAngle, doorToBeOpened.rotation.y + 0.1);
@@ -527,7 +526,6 @@ function animateDoor() {
             var startAngle = doorToBeClosed.userData.endAngle;
             var endAngle = doorToBeClosed.userData.startAngle;
             if (doorToBeClosed.rotation.y !== endAngle) {
-                console.log("Door closing");
                 var isIncreasing = endAngle > startAngle;
                 if (isIncreasing)
                     doorToBeClosed.rotation.y = Math.min(endAngle, doorToBeClosed.rotation.y + 0.1);
