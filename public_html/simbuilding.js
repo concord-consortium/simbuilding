@@ -59,6 +59,10 @@ function startSimBuilding() {
     var loader = new THREE.ColladaLoader();
     loader.options.convertUpAxis = true;
     loader.load('./resources/models/Yorktown.dae', function (houseModel) {
+        houseModel.scene.traverse(function (child) {
+            if (child instanceof THREE.Mesh)
+                child.geometry.computeFaceNormals();
+        });
         initScene(houseModel.scene);
         initHotspots();
         initLights();
