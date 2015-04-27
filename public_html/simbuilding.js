@@ -265,6 +265,23 @@ function initHotspots() {
     hotSpot.userData.id = 10;
     hotSpot.position.set(13.85, 2.5, 2);
     hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 19;
+    hotSpot.position.set(4.4, 0.6, 4.2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 20;
+    hotSpot.position.set(6.45, 0.6, 4.2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 21;
+    hotSpot.position.set(10.53, 0.6, 4.2);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 22;
+    hotSpot.position.set(12.57, 0.6, 4.2);
+    hotSpotsHidden.add(hotSpot);
+
     // Under kitchen sink
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
     hotSpot.userData.id = 12;

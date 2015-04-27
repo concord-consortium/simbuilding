@@ -107,9 +107,9 @@ function updateQuiz() {
             else if (newHotspot === 8)
                 filename = "baseboard-bad.jpg";
             else if (newHotspot === 9)
-                filename = "wall-good.jpg";
+                filename = "wall-1g.jpg";
             else if (newHotspot === 10)
-                filename = "wall-bad.jpg";
+                filename = "wall-1b.jpg";
             else if (newHotspot === 11)
                 filename = "under-sink-good.jpg";
             else if (newHotspot === 12)
@@ -126,6 +126,14 @@ function updateQuiz() {
                 filename = "attic-hatch-good.jpg";
             else if (newHotspot === 18)
                 filename = "attic-hatch-bad.jpg";
+            else if (newHotspot === 19)
+                filename = "wall-2g.jpg";
+            else if (newHotspot === 20)
+                filename = "wall-2b.jpg";
+            else if (newHotspot === 21)
+                filename = "wall-3g.jpg";
+            else if (newHotspot === 22)
+                filename = "wall-3b.jpg";
             div.css("background-image", "url(resources/textures/" + filename + ")");
             div.fadeIn();
             if (alreadyAnswered.indexOf(newHotspot) !== -1)
