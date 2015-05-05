@@ -99,13 +99,13 @@ function updateQuiz() {
             else if (newHotspot === 4)
                 filename = "light-bad.png";
             else if (newHotspot === 5)
-                filename = "window-good.jpg";
+                filename = "window-1g.jpg";
             else if (newHotspot === 6)
-                filename = "window-bad.jpg";
+                filename = "window-1b.jpg";
             else if (newHotspot === 7)
-                filename = "baseboard-good.jpg";
+                filename = "baseboard-1g.jpg";
             else if (newHotspot === 8)
-                filename = "baseboard-bad.jpg";
+                filename = "baseboard-1b.jpg";
             else if (newHotspot === 9)
                 filename = "wall-1g.jpg";
             else if (newHotspot === 10)
@@ -119,9 +119,9 @@ function updateQuiz() {
             else if (newHotspot === 14)
                 filename = "tub-bad.jpg";
             else if (newHotspot === 15)
-                filename = "ceiling-good.jpg";
+                filename = "ceiling-1g.jpg";
             else if (newHotspot === 16)
-                filename = "ceiling-bad.jpg";
+                filename = "ceiling-1b.jpg";
             else if (newHotspot === 17)
                 filename = "attic-hatch-good.jpg";
             else if (newHotspot === 18)

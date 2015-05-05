@@ -249,7 +249,7 @@ function initHotspots() {
     hotSpot.position.set(3.15, 0.4, 2);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
-    hotSpot.userData.id = 8;
+    hotSpot.userData.id = 7;
     hotSpot.position.set(5.4, 0.4, 4.2);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
