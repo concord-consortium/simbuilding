@@ -246,15 +246,36 @@ function initHotspots() {
     // Baseboard
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
     hotSpot.userData.id = 8;
-    hotSpot.position.set(3.15, 0.4, 2);
+    hotSpot.position.set(3.15, 0.4, 3.5);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
     hotSpot.userData.id = 7;
-    hotSpot.position.set(5.4, 0.4, 4.2);
+    hotSpot.position.set(3.7, 0.4, -0.19);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 7;
+    hotSpot.position.set(13.85, 0.4, 0.5);
     hotSpotsHidden.add(hotSpot);
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
     hotSpot.userData.id = 8;
-    hotSpot.position.set(11.5, 0.4, 4.2);
+    hotSpot.position.set(13.85, 0.4, -4.7);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 7;
+    hotSpot.position.set(13, 0.4, -0.25);
+    hotSpotsHidden.add(hotSpot);
+
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 8;
+    hotSpot.position.set(3.15, 3.45, 3.5);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 7;
+    hotSpot.position.set(13.85, 3.45, 0);
+    hotSpotsHidden.add(hotSpot);
+    var hotSpot = new THREE.Mesh(geom, whiteMaterial);
+    hotSpot.userData.id = 8;
+    hotSpot.position.set(13.85, 3.45, -4.7);
     hotSpotsHidden.add(hotSpot);
     // Wall
     var hotSpot = new THREE.Mesh(geom, whiteMaterial);
