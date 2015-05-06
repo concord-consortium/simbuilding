@@ -19,8 +19,6 @@ var currentHousePart;
 var viewerHeight = 1.3;
 var hoveredObject;
 var doRender;
-var width = window.innerWidth || 2;
-var height = window.innerHeight || 2;
 var irMode = false;
 var doorToBeOpened = null;
 var doorToBeClosed = null;
@@ -32,6 +30,7 @@ function startSimBuilding() {
     clock = new THREE.Clock();
     mouse = new THREE.Vector2();
     stats = initStats();
+    window.addEventListener('resize', handleWindowResize, false);
     document.addEventListener('mousemove', handleMouseMove, false);
     document.addEventListener('mousedown', handleMouseDown, false);
     document.addEventListener('mouseup', handleMouseUp, false);
@@ -39,7 +38,7 @@ function startSimBuilding() {
 
     scene = new THREE.Scene();
 
-    camera = new THREE.PerspectiveCamera(45, width / height, 0.1, 1000);
+    camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     camControl = new THREE.PointerLockControls(camera);
     camControl.enabled = true;
     scene.add(camControl.getObject());
@@ -80,7 +79,7 @@ function render() {
         enforceCameraGravity();
         animateDoor();
 
-        renderer.setViewport(0, 0, width, height);
+        renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
         camera.fov = 65;
         camera.aspect = window.innerWidth / window.innerHeight * 0.8;
         camera.updateProjectionMatrix();
@@ -92,7 +91,7 @@ function render() {
         if (irMode) {
             if ($("#ircamera").css("opacity") === "1") {
                 var irWidth = 450;
-                renderer.setViewport(width / 2 - irWidth / 2 + 10, 200, irWidth, irWidth);
+                renderer.setViewport(window.innerWidth / 2 - irWidth / 2 + 10, 200, irWidth, irWidth);
                 camera.fov = 25;
                 camera.aspect = 1;
                 camera.updateProjectionMatrix();
@@ -299,6 +298,15 @@ function initStats() {
     return stats;
 }
 
+function handleWindowResize() {
+    camera.aspect = window.innerWidth / window.innerHeight;
+    camera.updateProjectionMatrix();
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    if (composer)
+        composer.setSize(window.innerWidth, window.innerHeight);
+    doRender = true;
+}
+
 function handleKeyUp(event) {
     if (event.keyCode === 46 && currentHousePart) {
         currentHousePart.root.parent.remove(currentHousePart.root);
@@ -325,8 +333,8 @@ function handleMouseUp() {
 }
 
 function handleMouseMove(event) {
-    mouse.x = (event.clientX / width) * 2 - 1;
-    mouse.y = -(event.clientY / height) * 2 + 1;
+    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
+    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
     updateQuiz();
 }
 
