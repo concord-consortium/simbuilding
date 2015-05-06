@@ -71,16 +71,12 @@ function startSimBuilding() {
 
 function render() {
     var doRenderVal = doRender || camControl.needsUpdate() || doorToBeOpened !== null || doorToBeClosed !== null;
-    doRender = false;
-
-    var delta = clock.getDelta();
-    stats.update();
-
-    camControl.update(delta);
-//	hover();
-
     requestAnimationFrame(render);
     if (doRenderVal) {
+        doRender = false;
+        stats.update();
+        var delta = clock.getDelta();
+        camControl.update(delta);
         enforceCameraGravity();
         animateDoor();
 

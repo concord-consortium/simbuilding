@@ -179,6 +179,7 @@ THREE.PointerLockControls = function (camera) {
         yawObject.translateX(velocity.x * delta);
         yawObject.translateZ(velocity.z * delta);
         this.adjustCameraPositionForCollision();
+        updateQuiz();
 
         prevTime = time;
     };
@@ -222,7 +223,7 @@ THREE.PointerLockControls = function (camera) {
     };
 
     this.needsUpdate = function () {
-        if (this.isMouseDown || Math.abs(velocity.x) > 0.001 || Math.abs(velocity.y) > 0.001 || Math.abs(velocity.z) > 0.001)
+        if (this.isKeyDown || this.isMouseDown || Math.abs(velocity.x) > 0.001 || Math.abs(velocity.y) > 0.001 || Math.abs(velocity.z) > 0.001)
             return true;
         else
             return false;
