@@ -9,6 +9,7 @@ THREE.PointerLockControls = function (camera) {
     pitchObject.add(camera);
 
     var yawObject = new THREE.Object3D();
+    yawObject.eulerOrder = "ZYX";
     yawObject.position.y = 10;
     yawObject.add(pitchObject);
 
@@ -18,13 +19,16 @@ THREE.PointerLockControls = function (camera) {
     var moveRight = false;
     var rotateLeft = false;
     var rotateRight = false;
+    var rotateUp = false;
+    var rotateDown = false;
 
     var isOnObject = false;
     var canJump = false;
 
-    var prevTime = performance.now();
+    var prevTime = -1;
 
-    var velocity = new THREE.Vector3();
+    var velocityMove = new THREE.Vector3();
+    var velocityRotate = new THREE.Vector3();
 
     var PI_2 = Math.PI / 2;
 
@@ -51,65 +55,48 @@ THREE.PointerLockControls = function (camera) {
 
     var onKeyDown = function (event) {
         scope.isKeyDown = true;
-        switch (event.keyCode) {
-
-            case 38: // up
-            case 87: // w
-                moveForward = true;
-                break;
-
-            case 37: // left
-                rotateLeft = true;
-                break;
-            case 65: // a
-                moveLeft = true;
-                break;
-
-            case 40: // down
-            case 83: // s
-                moveBackward = true;
-                break;
-
-            case 39: // right
-                rotateRight = true;
-                break;
-            case 68: // d
-                moveRight = true;
-                break;
-
-            case 32: // space
-                if (canJump === true)
-                    velocity.y += 350;
-                canJump = false;
-                break;
-        }
+        updateFlags(event, true);
     };
 
     var onKeyUp = function (event) {
         scope.isKeyDown = false;
+        updateFlags(event, false);
+    };
+
+    var updateFlags = function (event, enable) {
         switch (event.keyCode) {
             case 38: // up
             case 87: // w
-                moveForward = false;
+                moveForward = enable;
                 break;
-
             case 37: // left
-                rotateLeft = false;
+                rotateLeft = enable;
                 break;
             case 65: // a
-                moveLeft = false;
+                moveLeft = enable;
                 break;
-
             case 40: // down
             case 83: // s
-                moveBackward = false;
+                moveBackward = enable;
                 break;
-
             case 39: // right
-                rotateRight = false;
+                rotateRight = enable;
                 break;
             case 68: // d
-                moveRight = false;
+                moveRight = enable;
+                break;
+            case 33: // page up
+            case 81: // q
+                rotateUp = enable;
+                break;
+            case 34: //page down
+            case 90: //z
+                rotateDown = enable;
+                break;
+            case 32: // space
+                if (canJump === true)
+                    velocity.y += 350;
+                canJump = false;
                 break;
         }
     };
@@ -150,34 +137,42 @@ THREE.PointerLockControls = function (camera) {
             return;
 
         var time = performance.now();
+        if (prevTime === -1) {
+            prevTime = time;
+            return;
+        }
+
         var delta = Math.min(0.1, (time - prevTime) / 1000);
 
+        var speed = 20;
 
-        velocity.x -= velocity.x * 10.0 * delta;
-        velocity.z -= velocity.z * 10.0 * delta;
-        if (!rotateLeft && !rotateRight)
-            velocity.y -= velocity.y * 10.0 * delta;    // using .y for rotation
-
+        velocityMove.sub(velocityMove.clone().multiplyScalar(speed / 2.0 * delta));
+        velocityRotate.sub(velocityRotate.clone().multiplyScalar(speed / 2.0 * delta));
 
         if (moveForward)
-            velocity.z -= 20.0 * delta;
+            velocityMove.z -= speed * delta;
         if (moveBackward)
-            velocity.z += 20.0 * delta;
+            velocityMove.z += speed * delta;
 
         if (moveLeft)
-            velocity.x -= 20.0 * delta;
+            velocityMove.x -= speed * delta;
         if (moveRight)
-            velocity.x += 20.0 * delta;
+            velocityMove.x += speed * delta;
 
         if (rotateLeft)
-            velocity.y -= 2.0 * delta;
+            velocityRotate.y -= speed * delta;
         if (rotateRight)
-            velocity.y += 2.0 * delta;
+            velocityRotate.y += speed * delta;
 
-        velocity.y = Math.sign(velocity.y) * Math.min(Math.abs(velocity.y), 1);
-        yawObject.rotation.y += -velocity.y * delta;
-        yawObject.translateX(velocity.x * delta);
-        yawObject.translateZ(velocity.z * delta);
+        if (rotateUp)
+            velocityRotate.x -= speed * delta;
+        if (rotateDown)
+            velocityRotate.x += speed * delta;
+
+        yawObject.rotation.x += -velocityRotate.x / 2 * delta;
+        yawObject.rotation.y += -velocityRotate.y / 2 * delta;
+        yawObject.translateX(velocityMove.x * delta);
+        yawObject.translateZ(velocityMove.z * delta);
         this.adjustCameraPositionForCollision();
         updateQuiz();
 
@@ -198,9 +193,9 @@ THREE.PointerLockControls = function (camera) {
         }
 
         // detect collision and adjust position accordingly
-        if (velocity.length() !== 0) {
+        if (velocityMove.length() !== 0) {
             var m = yawObject.matrixWorld.clone().setPosition(new THREE.Vector3());
-            var direction = velocity.clone().normalize().applyMatrix4(m);
+            var direction = velocityMove.clone().normalize().applyMatrix4(m);
             direction.y = 0;
             direction.normalize();
             var position = yawObject.position.clone();
@@ -223,10 +218,12 @@ THREE.PointerLockControls = function (camera) {
     };
 
     this.needsUpdate = function () {
-        if (this.isKeyDown || this.isMouseDown || Math.abs(velocity.x) > 0.001 || Math.abs(velocity.y) > 0.001 || Math.abs(velocity.z) > 0.001)
+        if (this.isKeyDown || this.isMouseDown || velocityMove.length() > 0.001 || velocityRotate.length() > 0.001)
             return true;
-        else
+        else {
+            prevTime = -1;
             return false;
+        }
     };
 
 };
