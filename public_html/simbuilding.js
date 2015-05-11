@@ -351,7 +351,7 @@ function pickHotspot(x, y) {
     if (intersects.length > 0)
         return intersects[0].object.userData.id;
     else
-        return -1;
+        return undefined;
 }
 
 function closestPoint(p1, v1, p2, v2) {

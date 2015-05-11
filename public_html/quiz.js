@@ -86,60 +86,16 @@ function updateQuiz() {
     if (hotspot !== newHotspot) {
         hotspot = newHotspot;
         var div = $("#quiz");
-        if (newHotspot === -1) {
-            quizInProgress = false;
-            div.fadeOut();
-        } else {
+        if (newHotspot) {
             $("[id^=quiz]").hide();
-            var filename;
-            if (newHotspot === 1)
-                filename = "fireplace.jpg";
-            else if (newHotspot === 2)
-                filename = "stove.jpg";
-            else if (newHotspot === 3)
-                filename = "light-good.png";
-            else if (newHotspot === 4)
-                filename = "light-bad.png";
-            else if (newHotspot === 5)
-                filename = "window-1g.jpg";
-            else if (newHotspot === 6)
-                filename = "window-1b.jpg";
-            else if (newHotspot === 7)
-                filename = "baseboard-1g.jpg";
-            else if (newHotspot === 8)
-                filename = "baseboard-1b.jpg";
-            else if (newHotspot === 9)
-                filename = "wall-1g.jpg";
-            else if (newHotspot === 10)
-                filename = "wall-1b.jpg";
-            else if (newHotspot === 11)
-                filename = "under-sink-good.jpg";
-            else if (newHotspot === 12)
-                filename = "under-sink-bad.jpg";
-            else if (newHotspot === 13)
-                filename = "tub-good.jpg";
-            else if (newHotspot === 14)
-                filename = "tub-bad.jpg";
-            else if (newHotspot === 15)
-                filename = "ceiling-1g.jpg";
-            else if (newHotspot === 16)
-                filename = "ceiling-1b.jpg";
-            else if (newHotspot === 17)
-                filename = "attic-hatch-good.jpg";
-            else if (newHotspot === 18)
-                filename = "attic-hatch-bad.jpg";
-            else if (newHotspot === 19)
-                filename = "wall-2g.jpg";
-            else if (newHotspot === 20)
-                filename = "wall-2b.jpg";
-            else if (newHotspot === 21)
-                filename = "wall-3g.jpg";
-            else if (newHotspot === 22)
-                filename = "wall-3b.jpg";
+            var filename = newHotspot + ".jpg";
             div.css("background-image", "url(resources/textures/" + filename + ")");
             div.fadeIn();
             if (alreadyAnswered.indexOf(newHotspot) !== -1)
                 $("#quizAlreadyChecked").show();
+        } else {
+            quizInProgress = false;
+            div.fadeOut();
         }
     }
 }
@@ -156,45 +112,45 @@ function initHotspots() {
     var whiteMaterial = new THREE.MeshBasicMaterial();
 
     initHotspotSingle(0, 4, 6, -5.3, geom, whiteMaterial);
-    initHotspotSingle(1, 14.5, 0.8, -2.8, geom, whiteMaterial);
-    initHotspotSingle(2, 1.5, 1.2, -3.61, geom, whiteMaterial);
+    initHotspotSingle("fireplace", 14.5, 0.8, -2.8, geom, whiteMaterial);
+    initHotspotSingle("stove", 1.5, 1.2, -3.61, geom, whiteMaterial);
     // Windows
-    initHotspotSingle(6, 4.4, 1.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle(6, 6.45, 1.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle(6, 10.53, 1.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle(6, 12.57, 1.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle(6, 4.4, 4.8, 4.2, geom, whiteMaterial);
-    initHotspotSingle(6, 6.45, 4.8, 4.2, geom, whiteMaterial);
-    initHotspotSingle(6, 8.45, 4.8, 4.2, geom, whiteMaterial);
-    initHotspotSingle(6, 10.53, 4.8, 4.2, geom, whiteMaterial);
-    initHotspotSingle(6, 12.57, 4.8, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-1g", 4.4, 1.6, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-1b", 6.45, 1.6, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-1b", 10.53, 1.6, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-1b", 12.57, 1.6, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-1b", 4.4, 4.8, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-1b", 6.45, 4.8, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-1b", 8.45, 4.8, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-1b", 10.53, 4.8, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-1b", 12.57, 4.8, 4.2, geom, whiteMaterial);
     // Baseboard
-    initHotspotSingle(8, 3.15, 0.4, 3.5, geom, whiteMaterial);
-    initHotspotSingle(7, 3.7, 0.4, -0.19, geom, whiteMaterial);
-    initHotspotSingle(7, 13.85, 0.4, 0.5, geom, whiteMaterial);
-    initHotspotSingle(8, 13.85, 0.4, -4.7, geom, whiteMaterial);
-    initHotspotSingle(7, 13, 0.4, -0.25, geom, whiteMaterial);
+    initHotspotSingle("baseboard-1b", 3.15, 0.4, 3.5, geom, whiteMaterial);
+    initHotspotSingle("baseboard-1g", 3.7, 0.4, -0.19, geom, whiteMaterial);
+    initHotspotSingle("baseboard-1g", 13.85, 0.4, 0.5, geom, whiteMaterial);
+    initHotspotSingle("baseboard-1b", 13.85, 0.4, -4.7, geom, whiteMaterial);
+    initHotspotSingle("baseboard-1g", 13, 0.4, -0.25, geom, whiteMaterial);
 
-    initHotspotSingle(8, 3.15, 3.45, 3.5, geom, whiteMaterial);
-    initHotspotSingle(7, 13.85, 3.45, 0, geom, whiteMaterial);
-    initHotspotSingle(8, 13.85, 3.45, -4.7, geom, whiteMaterial);
+    initHotspotSingle("baseboard-1g", 3.15, 3.45, 3.5, geom, whiteMaterial);
+    initHotspotSingle("baseboard-1b", 13.85, 3.45, 0, geom, whiteMaterial);
+    initHotspotSingle("baseboard-1g", 13.85, 3.45, -4.7, geom, whiteMaterial);
     // Wall
-    initHotspotSingle(9, 3.15, 2.5, 2, geom, whiteMaterial);
-    initHotspotSingle(10, 13.85, 2.5, 2, geom, whiteMaterial);
-    initHotspotSingle(19, 4.4, 0.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle(20, 6.45, 0.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle(21, 10.53, 0.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle(22, 12.57, 0.6, 4.2, geom, whiteMaterial);
+    initHotspotSingle("wall-1g", 3.15, 2.5, 2, geom, whiteMaterial);
+    initHotspotSingle("wall-1b", 13.85, 2.5, 2, geom, whiteMaterial);
+    initHotspotSingle("wall-2g", 4.4, 0.6, 4.2, geom, whiteMaterial);
+    initHotspotSingle("wall-2b", 6.45, 0.6, 4.2, geom, whiteMaterial);
+    initHotspotSingle("wall-3g", 10.53, 0.6, 4.2, geom, whiteMaterial);
+    initHotspotSingle("wall-3b", 12.57, 0.6, 4.2, geom, whiteMaterial);
 
     // Under kitchen sink
-    initHotspotSingle(12, 2.9, 0.7, -4.8, geom, whiteMaterial);
+    initHotspotSingle("under-sink-bad", 2.9, 0.7, -4.8, geom, whiteMaterial);
     // Tub
-    initHotspotSingle(14, 2.1, 3.8, -4.3, geom, whiteMaterial);
+    initHotspotSingle("tub-bad", 2.1, 3.8, -4.3, geom, whiteMaterial);
     // Ceiling
-    initHotspotSingle(16, 6.45, 5.8, 2, geom, whiteMaterial);
-    initHotspotSingle(16, 11.5, 5.7, 2.5, geom, whiteMaterial);
+    initHotspotSingle("ceiling-1b", 6.45, 5.8, 2, geom, whiteMaterial);
+    initHotspotSingle("ceiling-1b", 11.5, 5.7, 2.5, geom, whiteMaterial);
     // Attic hatch
-    initHotspotSingle(17, 10, 5.8, -1, geom, whiteMaterial);
+    initHotspotSingle("attic-1g", 10, 5.8, -1, geom, whiteMaterial);
 
 
     var shadeMaterial = new THREE.MeshPhongMaterial();
