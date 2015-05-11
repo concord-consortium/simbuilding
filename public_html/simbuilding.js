@@ -177,6 +177,11 @@ function initScene(houseModel) {
 }
 
 function initLights() {
+    var light = new THREE.DirectionalLight();
+    light.intensity = 0.3;
+    light.position.set(0, -1, 0);
+    scene.add(light);
+
     var light = new THREE.SpotLight();
     light.distance = 8;
     light.intensity = 1.5;
