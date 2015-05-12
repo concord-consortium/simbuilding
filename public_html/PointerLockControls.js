@@ -32,6 +32,9 @@ THREE.PointerLockControls = function (camera) {
 
     var PI_2 = Math.PI / 2;
 
+    var touchStartx = 0;
+    var touchStarty = 0;
+
     var onMouseDown = function () {
         scope.isMouseDown = true;
     };
@@ -49,6 +52,39 @@ THREE.PointerLockControls = function (camera) {
 
         yawObject.rotation.y -= movementX * 0.004;
         pitchObject.rotation.x -= movementY * 0.004;
+
+        pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
+    };
+
+    var onTouchDown = function (event) {
+        scope.isMouseDown = true;
+        touchStartx = event.touches[0].clientX;
+        touchStarty = event.touches[0].clientY;
+
+        if (event.touches.length >= 2)
+            moveForward = true;
+        event.preventDefault();
+    };
+
+    var onTouchUp = function (event) {
+        scope.isMouseDown = false;
+        if (event.touches.length < 2)
+            moveForward = false;
+        event.preventDefault();
+    };
+
+    var onTouchMove = function (event) {
+        if (scope.enabled === false || event.touches.length < 1)
+            return;
+
+        var movementX = event.touches[0].clientX - touchStartx;
+        var movementY = event.touches[0].clientY - touchStarty;
+
+        touchStartx = event.touches[0].clientX;
+        touchStarty = event.touches[0].clientY;
+
+        yawObject.rotation.y += movementX * 0.001;
+        pitchObject.rotation.x += movementY * 0.001;
 
         pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
 
@@ -109,7 +145,9 @@ THREE.PointerLockControls = function (camera) {
     document.addEventListener('keydown', onKeyDown, false);
     document.addEventListener('keyup', onKeyUp, false);
 
-    document.addEventListener('touchmove', onMouseMove, false);
+    document.addEventListener('touchmove', onTouchMove, false);
+    document.addEventListener('touchstart', onTouchDown, false);
+    document.addEventListener('touchend', onTouchUp, false);
 
     this.enabled = false;
     this.isMouseDown = false;

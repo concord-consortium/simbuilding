@@ -32,10 +32,7 @@
 
         <div id="WebGL-output">
             <img id="ircamera-small" src="resources/textures/ircamera.png" width="300" height="400" alt="" style="position: absolute; right: 0; bottom: 0;"
-                 onclick ='$("#ircamera").fadeIn();
-                         $("#ircamera-small").fadeOut();
-                         irMode = true;
-                         doRender = true;' />
+                 onclick ='toggleIRCamera()' ontouchstart='toggleIRCamera()' />
             <div id="ircamera" style="
                  position: absolute;
                  left: 50%;

@@ -426,3 +426,10 @@ function animateDoor() {
                 doorToBeClosed = null;
         }
 }
+
+function toggleIRCamera() {
+    $("#ircamera").fadeIn();
+    $("#ircamera-small").fadeOut();
+    irMode = true;
+    doRender = true;
+}
