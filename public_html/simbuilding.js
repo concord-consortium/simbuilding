@@ -20,8 +20,8 @@ var viewerHeight = 1.3;
 var hoveredObject;
 var doRender;
 var irMode = false;
-var doorToBeOpened = null;
-var doorToBeClosed = null;
+var doorToBeOpened = [];
+var doorToBeClosed = [];
 var doors = [];
 var collisionPartsWithoutDoors = [];
 var appletTarget = "applet1";
@@ -69,7 +69,7 @@ function startSimBuilding() {
 }
 
 function render() {
-    var doRenderVal = doRender || camControl.needsUpdate() || doorToBeOpened !== null || doorToBeClosed !== null;
+    var doRenderVal = doRender || camControl.needsUpdate() || doorToBeOpened.length !== 0 || doorToBeClosed.length !== 0;
     requestAnimationFrame(render);
     if (doRenderVal) {
         doRender = false;
@@ -392,38 +392,50 @@ function enforceCameraGravity() {
 }
 
 function animateDoor() {
-    if (doorToBeOpened !== null) {
-        var startAngle = doorToBeOpened.userData.startAngle;
-        var endAngle = doorToBeOpened.userData.endAngle;
-        if (doorToBeOpened.rotation.y !== endAngle) {
-            var isIncreasing = endAngle > startAngle;
-            if (isIncreasing)
-                doorToBeOpened.rotation.y = Math.min(endAngle, doorToBeOpened.rotation.y + 0.1);
-            else
-                doorToBeOpened.rotation.y = Math.max(endAngle, doorToBeOpened.rotation.y - 0.1);
-            if (doorToBeClosed === doorToBeOpened)
-                doorToBeClosed = null;
-        } else {
-            doorToBeClosed = doorToBeOpened;
-            doorTimeout = 100;
-            doorToBeOpened = null;
-        }
-    }
-
-    if (doorToBeClosed !== null)
-        if (doorTimeout > 0)
-            doorTimeout--;
-        else {
-            var startAngle = doorToBeClosed.userData.endAngle;
-            var endAngle = doorToBeClosed.userData.startAngle;
-            if (doorToBeClosed.rotation.y !== endAngle) {
+    if (doorToBeOpened.length !== 0)
+        for (var i = 0; i < doorToBeOpened.length; i++) {
+            var door = doorToBeOpened[i];
+            var startAngle = door.userData.startAngle;
+            var endAngle = door.userData.endAngle;
+            if (door.rotation.y !== endAngle) {
                 var isIncreasing = endAngle > startAngle;
                 if (isIncreasing)
-                    doorToBeClosed.rotation.y = Math.min(endAngle, doorToBeClosed.rotation.y + 0.1);
+                    door.rotation.y = Math.min(endAngle, door.rotation.y + 0.1);
                 else
-                    doorToBeClosed.rotation.y = Math.max(endAngle, doorToBeClosed.rotation.y - 0.1);
-            } else
-                doorToBeClosed = null;
+                    door.rotation.y = Math.max(endAngle, door.rotation.y - 0.1);
+                var index = doorToBeClosed.indexOf(door);
+                if (index !== -1)
+                    doorToBeClosed.splice(index, 1);
+            } else {
+                if (doorToBeClosed.indexOf(door) === -1)
+                    doorToBeClosed.push(door);
+                door.userData.doorTimeout = 100;
+                var index = doorToBeOpened.indexOf(door);
+                if (index !== -1)
+                    doorToBeOpened.splice(index, 1);
+            }
+        }
+
+    if (doorToBeClosed.length !== 0)
+        for (var i = 0; i < doorToBeClosed.length; i++) {
+            var door = doorToBeClosed[i];
+            if (door.userData.doorTimeout > 0)
+                door.userData.doorTimeout--;
+            else {
+                var startAngle = door.userData.endAngle;
+                var endAngle = door.userData.startAngle;
+                if (door.rotation.y !== endAngle) {
+                    var isIncreasing = endAngle > startAngle;
+                    if (isIncreasing)
+                        door.rotation.y = Math.min(endAngle, door.rotation.y + 0.1);
+                    else
+                        door.rotation.y = Math.max(endAngle, door.rotation.y - 0.1);
+                } else {
+                    var index = doorToBeClosed.indexOf(door);
+                    if (index !== -1)
+                        doorToBeClosed.splice(index, 1);
+                }
+            }
         }
 }
 

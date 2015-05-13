@@ -230,8 +230,11 @@ THREE.PointerLockControls = function (camera) {
         var raycaster = new THREE.Raycaster(position, direction);
         var intersects = raycaster.intersectObjects(doors, true);
         if (intersects.length > 0) {
-            if (intersects[0].distance < 2.0 && intersects[0].object.parent.name.indexOf("Door") === 0)
-                doorToBeOpened = intersects[0].object.parent.parent;
+            if (intersects[0].distance < 2.0 && intersects[0].object.parent.name.indexOf("Door") === 0) {
+                var door = intersects[0].object.parent.parent;
+                if (doorToBeOpened.indexOf(door) === -1)
+                    doorToBeOpened.push(door);
+            }
         }
 
         // detect collision and adjust position accordingly
