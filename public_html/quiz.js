@@ -141,6 +141,12 @@ function initHotspots() {
     initHotspotSingle("wall-2b", 6.45, 0.6, 4.2, geom, whiteMaterial);
     initHotspotSingle("wall-2g", 10.53, 0.6, 4.2, geom, whiteMaterial);
     initHotspotSingle("wall-2b", 12.57, 0.6, 4.2, geom, whiteMaterial);
+    initHotspotSingle("wall-3g", 3.15, 3, 0.2, geom, whiteMaterial);
+    initHotspotSingle("wall-3b", 13.85, 3, -0.5, geom, whiteMaterial);
+    initHotspotSingle("wall-4g", 13, 4, 0.5, geom, whiteMaterial);
+    initHotspotSingle("wall-4b", 9.9, 4, -4.5, geom, whiteMaterial);
+    initHotspotSingle("wall-5g", 12, 3, -0.25, geom, whiteMaterial);
+    initHotspotSingle("wall-5b", 3.15, 5, 1, geom, whiteMaterial);
 
     // Under kitchen sink
     initHotspotSingle("under-sink-bad", 2.9, 0.7, -4.8, geom, whiteMaterial);
