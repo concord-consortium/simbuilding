@@ -150,8 +150,10 @@ function initHotspots() {
     initHotspotSingle("wall-5g", 12, 3, -0.25, geom, whiteMaterial);
     initHotspotSingle("wall-5b", 3.15, 5, 1, geom, whiteMaterial);
     // Ceiling
-    initHotspotSingle("ceiling-1b", 6.45, 5.8, 2, geom, whiteMaterial);
-    initHotspotSingle("ceiling-1b", 11.5, 5.7, 2.5, geom, whiteMaterial);
+    initHotspotSingle("ceiling-1b", 3.15, 5.8, 3.3, geom, whiteMaterial);
+    initHotspotSingle("ceiling-1g", 13.85, 5.7, 1.3, geom, whiteMaterial);
+    initHotspotSingle("ceiling-2g", 13.2, 5.7, 4.2, geom, whiteMaterial);
+    initHotspotSingle("ceiling-2b", 8.9, 5.7, 4.2, geom, whiteMaterial);
     // Attic hatch
     initHotspotSingle("attic-1g", 10, 5.8, -1, geom, whiteMaterial);
 
