@@ -155,7 +155,8 @@ function initHotspots() {
     initHotspotSingle("ceiling-2g", 13.2, 5.7, 4.2, geom, whiteMaterial);
     initHotspotSingle("ceiling-2b", 8.9, 5.7, 4.2, geom, whiteMaterial);
     // Attic hatch
-    initHotspotSingle("attic-1g", 10, 5.8, -1, geom, whiteMaterial);
+    initHotspotSingle("attic-1b", 10, 5.8, -1, geom, whiteMaterial);
+    initHotspotSingle("attic-1g", 3.65, 5.8, 1, geom, whiteMaterial);
 
     var shadeMaterial = new THREE.MeshPhongMaterial();
     shadeMaterial.emissive = new THREE.Color(0x555555);
