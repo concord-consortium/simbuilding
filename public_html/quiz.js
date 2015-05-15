@@ -115,15 +115,21 @@ function initHotspots() {
     initHotspotSingle("fireplace", 14.5, 0.8, -2.8, geom, whiteMaterial);
     initHotspotSingle("stove", 1.5, 1.2, -3.61, geom, whiteMaterial);
     // Windows
-    initHotspotSingle("window-1g", 4.4, 1.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle("window-1b", 6.45, 1.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle("window-1b", 10.53, 1.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle("window-1b", 12.57, 1.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle("window-1b", 4.4, 4.8, 4.2, geom, whiteMaterial);
-    initHotspotSingle("window-1b", 6.45, 4.8, 4.2, geom, whiteMaterial);
-    initHotspotSingle("window-1b", 8.45, 4.8, 4.2, geom, whiteMaterial);
-    initHotspotSingle("window-1b", 10.53, 4.8, 4.2, geom, whiteMaterial);
-    initHotspotSingle("window-1b", 12.57, 4.8, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-1g", 4.4, 2.35, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-1b", 6.45, 2.35, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-2g", 10.53, 2.5, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-5g", 10.9, 0.9, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-2b", 12.57, 2.5, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-5b", 13, 0.9, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-3g", 4.4, 4.8, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-3b", 6.45, 4.8, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-4g", 8.45, 5.3, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-4b", 10.53, 5.3, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-1g", 12.57, 5.3, 4.2, geom, whiteMaterial);
+    initHotspotSingle("window-1g", 12.57, 2.35, -5.5, geom, whiteMaterial);
+    initHotspotSingle("window-1g", 12.57, 5.3, -5.5, geom, whiteMaterial);
+    initHotspotSingle("window-1g", 8.97, 2.35, -5.5, geom, whiteMaterial);
+    initHotspotSingle("window-1g", 8.97, 5.3, -5.5, geom, whiteMaterial);
     // Baseboard
     initHotspotSingle("baseboard-1b", 3.15, 0.4, 3.5, geom, whiteMaterial);
     initHotspotSingle("baseboard-1g", 3.7, 0.4, -0.19, geom, whiteMaterial);
