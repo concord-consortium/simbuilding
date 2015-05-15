@@ -111,9 +111,6 @@ function initHotspots() {
     var geom = new THREE.SphereGeometry(0.1, 20, 20);
     var whiteMaterial = new THREE.MeshBasicMaterial();
 
-    initHotspotSingle(0, 4, 6, -5.3, geom, whiteMaterial);
-    initHotspotSingle("fireplace", 14.5, 0.8, -2.8, geom, whiteMaterial);
-    initHotspotSingle("stove", 1.5, 1.2, -3.61, geom, whiteMaterial);
     // Windows
     initHotspotSingle("window-1g", 4.4, 2.35, 4.2, geom, whiteMaterial);
     initHotspotSingle("window-1b", 6.45, 2.35, 4.2, geom, whiteMaterial);
@@ -136,7 +133,6 @@ function initHotspots() {
     initHotspotSingle("baseboard-1g", 13.85, 0.4, 0.5, geom, whiteMaterial);
     initHotspotSingle("baseboard-1b", 13.85, 0.4, -4.7, geom, whiteMaterial);
     initHotspotSingle("baseboard-1g", 13, 0.4, -0.25, geom, whiteMaterial);
-
     initHotspotSingle("baseboard-1g", 3.15, 3.45, 3.5, geom, whiteMaterial);
     initHotspotSingle("baseboard-1b", 13.85, 3.45, 0, geom, whiteMaterial);
     initHotspotSingle("baseboard-1g", 13.85, 3.45, -4.7, geom, whiteMaterial);
@@ -153,17 +149,11 @@ function initHotspots() {
     initHotspotSingle("wall-4b", 9.9, 4, -4.5, geom, whiteMaterial);
     initHotspotSingle("wall-5g", 12, 3, -0.25, geom, whiteMaterial);
     initHotspotSingle("wall-5b", 3.15, 5, 1, geom, whiteMaterial);
-
-    // Under kitchen sink
-    initHotspotSingle("under-sink-bad", 2.9, 0.7, -4.8, geom, whiteMaterial);
-    // Tub
-    initHotspotSingle("tub-bad", 2.1, 3.8, -4.3, geom, whiteMaterial);
     // Ceiling
     initHotspotSingle("ceiling-1b", 6.45, 5.8, 2, geom, whiteMaterial);
     initHotspotSingle("ceiling-1b", 11.5, 5.7, 2.5, geom, whiteMaterial);
     // Attic hatch
     initHotspotSingle("attic-1g", 10, 5.8, -1, geom, whiteMaterial);
-
 
     var shadeMaterial = new THREE.MeshPhongMaterial();
     shadeMaterial.emissive = new THREE.Color(0x555555);
