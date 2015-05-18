@@ -31,7 +31,7 @@
         </div>
 
         <div id="WebGL-output">
-            <img id="ircamera-small" src="resources/textures/ircamera.png" width="300" height="400" alt="" style="position: absolute; right: 0; bottom: 0;"
+            <img id="ircamera-small" src="resources/images/ircamera.png" width="300" height="400" alt="" style="position: absolute; right: 0; bottom: 0;"
                  onclick ='toggleIRCamera()' ontouchstart='toggleIRCamera()' />
             <div id="ircamera" style="
                  position: absolute;
@@ -43,7 +43,7 @@
                  margin: 0 auto;
                  ">
                 <div style="position: absolute; left: -50%; width: 624px; height: 712px">
-                    <img id="target" src="resources/textures/target.png" alt="" style="position: absolute; left: 250px; top: 220px"/>
+                    <img id="target" src="resources/images/target.png" alt="" style="position: absolute; left: 250px; top: 220px"/>
                     <div id="quiz" style="position: absolute; left: 100px; top: 123px; width: 425px; height: 360px; background-size: 100% 100%; padding: 10px; display: none"
                          onmousedown="toggleQuizQuestion();">
                         <form id="quizYesNo" style="display: none">
@@ -69,7 +69,7 @@
                         <div id="quizIncorrect" style="display: none; font-size: xx-large; text-align: center; ; padding-top: 80px">Incorrect!</div>
                         <div id="quizAlreadyChecked" style="display: none; font-size: xx-large; text-align: center; ; padding-top: 80px">Already Checked!</div>
                     </div>
-                    <img src="resources/textures/ir-camera.png" width="624" height="712" alt="IR Camera Simulator" usemap="#IRCameraButtons" />
+                    <img src="resources/images/ir-camera.png" width="624" height="712" alt="IR Camera Simulator" usemap="#IRCameraButtons" />
                     <map name="IRCameraButtons">
                         <area shape="rect" coords="120,540,210,600" alt="Play" href="javascript: if (running) {running = false; stop(appletTarget)} else {running = true; run(appletTarget)}" />
                         <area shape="rect" coords="420,540,510,600" alt="Reset" href="javascript: jsReset(appletTarget)" />
