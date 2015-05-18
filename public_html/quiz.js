@@ -7,7 +7,7 @@ var hotSpotsHidden;
 
 function answer(userAnswer) {
     var expectedAnswer;
-    if (hotspot > 2 && hotspot % 2 === 0)
+    if (hotspot.indexOf("g", hotspot.length - 1) === -1)
         expectedAnswer = true;
     else
         expectedAnswer = false;
