@@ -331,14 +331,7 @@ function handleKeyUp(event) {
     }
 }
 
-function handleMouseDown(event) {
-    var mouseX = (event.clientX / window.innerWidth) * 2 - 1;
-    var mouseY = -(event.clientY / window.innerHeight) * 2 + 1;
-    var vector = new THREE.Vector3(mouseX, mouseY, 0.5);
-    vector.unproject(camera);
-    var raycaster = new THREE.Raycaster(camera.parent.parent.position, vector.sub(camera.position).normalize());
-    var intersects = raycaster.intersectObjects(scene.children, true);
-    console.log(intersects[0].point.x + ", " + intersects[0].point.y + ", " + intersects[0].point.z);
+function handleMouseDown() {
 }
 
 function handleMouseUp() {
