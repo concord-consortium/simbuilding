@@ -1,3 +1,6 @@
+/* global THREE, doors, doorToBeOpened, sceneRoot, UNIT_Y */
+
+"use strict";
 
 THREE.PointerLockControls = function (camera) {
 
@@ -23,7 +26,6 @@ THREE.PointerLockControls = function (camera) {
     var rotateDown = false;
 
     var isOnObject = false;
-    var canJump = false;
 
     var prevTime = -1;
 
@@ -131,11 +133,6 @@ THREE.PointerLockControls = function (camera) {
             case 90: //z
                 rotateDown = enable;
                 break;
-            case 32: // space
-                if (canJump === true)
-                    velocity.y += 350;
-                canJump = false;
-                break;
         }
     };
 
@@ -159,7 +156,6 @@ THREE.PointerLockControls = function (camera) {
 
     this.isOnObject = function (boolean) {
         isOnObject = boolean;
-        canJump = boolean;
     };
 
     this.getDirection = function () {

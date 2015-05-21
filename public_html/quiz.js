@@ -1,3 +1,7 @@
+/* global THREE, scene */
+
+"use strict";
+
 var score = 0;
 var hotspot = -1;
 var quizInProgress = false;
@@ -89,7 +93,7 @@ function updateQuiz() {
         if (newHotspot) {
             $("[id^=quiz]").hide();
             var filename = newHotspot + ".jpg";
-            div.css("background-image", "url(resources/textures/" + filename + ")");
+            div.css("background-image", "url(resources/images/" + filename + ")");
             div.fadeIn();
             if (alreadyAnswered.indexOf(newHotspot) !== -1)
                 $("#quizAlreadyChecked").show();
@@ -183,6 +187,4 @@ function toggleQuizQuestion() {
     var div = $("#quizYesNo");
     if (div.css("display") === "none")
         div.fadeIn();
-//    else
-//        div.fadeOut();
 }

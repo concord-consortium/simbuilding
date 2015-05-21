@@ -31,8 +31,12 @@
         </div>
 
         <div id="WebGL-output">
-            <img id="ircamera-small" src="resources/images/ircamera.png" width="300" height="400" alt="" style="position: absolute; right: 0; bottom: 0;"
-                 onclick ='toggleIRCamera()' ontouchstart='toggleIRCamera()' />
+            <div style="position: absolute; right: 0; bottom: 0;">
+                <img id="moisturemeter" src="resources/images/moisturemeter.png" width="88" height="200"
+                     onclick ='toggleIRCamera()' ontouchstart='toggleIRCamera()' />
+                <img id="ircamera-small" src="resources/images/ircamera.png" width="150" height="200"
+                     onclick ='toggleIRCamera()' ontouchstart='toggleIRCamera()' />
+            </div>
             <div id="ircamera" style="
                  position: absolute;
                  left: 50%;

@@ -1,4 +1,6 @@
-/* global THREE */
+/* global THREE, hotSpotsHidden, hotSpotsRoot */
+
+"use strict";
 
 var UNIT_Y = new THREE.Vector3(0, 1, 0);
 var NEG_UNIT_Y = new THREE.Vector3(0, -1, 0);
@@ -25,6 +27,7 @@ var doorToBeClosed = [];
 var doors = [];
 var collisionPartsWithoutDoors = [];
 var appletTarget = "applet1";
+var renderPass, copyPass, colorifyPass;
 
 function startSimBuilding() {
     clock = new THREE.Clock();
@@ -123,16 +126,12 @@ function initShaders() {
 }
 
 function initScene(houseModel) {
-//	var axis = new THREE.AxisHelper(20);
-//	scene.add(axis);
-
     sceneRoot = new THREE.Object3D();
     scene.add(sceneRoot);
     land = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshPhongMaterial());
     land.rotation.x = -Math.PI / 2;
     land.position.y = -0.1;
     land.geometry.computeBoundingBox();
-//	land.material.color.setHex(0x00FF00);
     sceneRoot.add(land);
     collisionPartsWithoutDoors.push(land);
 
