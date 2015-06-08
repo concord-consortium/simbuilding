@@ -438,9 +438,22 @@ function animateDoor() {
         }
 }
 
-function toggleIRCamera() {
-    $("#ircamera").fadeIn();
-    $("#ircamera-small").fadeOut();
-    irMode = true;
+function toggleTool(tool) {
+    $("#ircamera-small").fadeIn();
+    $("#moisturemeter-small").fadeIn();
+
+    $("#ircamera").fadeOut();
+    $("#moisturemeter").fadeOut();
+
+    irMode = false;
+
+    if (tool === 0) {
+        $("#ircamera").fadeIn();
+        $("#ircamera-small").fadeOut();
+        irMode = true;
+    } else if (tool === 1) {
+        $("#moisturemeter").fadeIn();
+        $("#moisturemeter-small").fadeOut();
+    }
     doRender = true;
 }

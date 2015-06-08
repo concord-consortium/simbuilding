@@ -32,15 +32,15 @@
 
         <div id="WebGL-output">
             <div style="position: absolute; right: 0; bottom: 0;">
-                <img id="moisturemeter" src="resources/images/moisturemeter.png" width="88" height="200"
-                     onclick ='toggleIRCamera()' ontouchstart='toggleIRCamera()' />
+                <img id="moisturemeter-small" src="resources/images/moisturemeter.png" width="88" height="200"
+                     onclick ='toggleTool(1)' ontouchstart='toggleTool(1)' />
                 <img id="ircamera-small" src="resources/images/ircamera.png" width="150" height="200"
-                     onclick ='toggleIRCamera()' ontouchstart='toggleIRCamera()' />
+                     onclick ='toggleTool(0)' ontouchstart='toggleTool(0)' />
             </div>
             <div id="ircamera" style="
                  position: absolute;
                  left: 50%;
-                 bottom: 0;
+                 bottom: 0px;
                  width: 624px;
                  height: 712px;
                  display: none;
@@ -73,60 +73,33 @@
                         <div id="quizIncorrect" style="display: none; font-size: xx-large; text-align: center; ; padding-top: 80px">Incorrect!</div>
                         <div id="quizAlreadyChecked" style="display: none; font-size: xx-large; text-align: center; ; padding-top: 80px">Already Checked!</div>
                     </div>
-                    <img src="resources/images/ir-camera.png" width="624" height="712" alt="IR Camera Simulator" usemap="#IRCameraButtons" />
+                    <img src="resources/images/ir-camera.png" alt="" width="624" height="712" usemap="#IRCameraButtons" />
                     <map name="IRCameraButtons">
                         <area shape="rect" coords="120,540,210,600" alt="Play" href="javascript: if (running) {running = false; stop(appletTarget)} else {running = true; run(appletTarget)}" />
                         <area shape="rect" coords="420,540,510,600" alt="Reset" href="javascript: jsReset(appletTarget)" />
                         <area shape="rect" coords="260,565,360,665" alt="Chart" href="javascript: if (chart) {chart = false; runScript(appletTarget, 'set graph false;')} else {chart = true; runScript(appletTarget, 'set graph true;')}" />
-                        <area shape="circle" coords="432,647,20" alt="Off" href='javascript:
-                              if (camControl.enabled) {
-                              $("#ircamera").fadeOut();
-                              $("#ircamera-small").fadeIn();
-                              irMode = false;
-                              } else {
-                              $("#applet").fadeOut();
-                              camControl.enabled = true;
-                              }
-                              doRender = true;' />
+                        <area shape="circle" coords="432,647,20" alt="Off" href='javascript: toggleTool(-1)' />
                     </map>
-                    <div id="applet" style="position: absolute; left: 100px; top: 123px; display: none">
-                        <applet id="applet0" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="450" height="360" style="display: none">
-                            <param name="script" value="load resources/e2d/thermal-bridge.e2d;" />
-                            <param name="permissions" value="sandbox" />
-                            <param name="MAYSCRIPT" value="true" />
-                        </applet>
-                        <applet id="applet1" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="450" height="360" style="display: none">
-                            <param name="script" value="load resources/e2d/fireplace-on.e2d;" />
-                            <param name="permissions" value="sandbox" />
-                            <param name="MAYSCRIPT" value="true" />
-                        </applet>
-                        <applet id="applet2" archive="resources/e2d/energy2d-applet.jar" code="org.concord.energy2d.system.System2D" width="450" height="360" style="display: none">
-                            <param name="script" value="load resources/e2d/natural-convection1.e2d;" />
-                            <param name="permissions" value="sandbox" />
-                            <param name="MAYSCRIPT" value="true" />
-                        </applet>
+                </div>
+            </div>
+            <div id="moisturemeter" style="
+                 position: absolute;
+                 left: 50%;
+                 bottom: -400px;
+                 width: 400px;
+                 height: 909px;
+                 display: none;
+                 margin: 0 auto;
+                 ">
+                <div style="position: absolute; left: -50%; width: 400px; height: 909px">
+                    <img src="resources/images/target.png" alt="" style="position: absolute; left: 140px; top: -100px"/>
+                    <img src="resources/images/moisturemeter.png" alt="" width="400" height="909" usemap="#MoistureButtons"/>
+                    <div id="moisturemeter-value" style="font-size: 100px; position: absolute; left: 150px; top: 200px">
+                        98
                     </div>
-                    <br>
-                    <div id="menu" style="
-                         position: absolute;
-                         left: 50%;
-                         bottom: 300px;
-                         text-align: center;
-                         width: 480px;
-                         margin-left: -240px;
-                         display: none;
-                         ">
-                        <form>
-                            <input id="run_button" type="button" value="Run" onclick="run('applet1')" style="width: 100px"> <br/> <br/>
-                            <input id="stop_button" type="button" value="Stop" onclick="stop('applet1')" style="width: 100px"> <br/> <br/>
-                            <input id="reset_button" type="button" value="Reset" onclick="jsReset('applet1')" style="width: 100px"> <br/> <br/>
-                            <select onChange="runScript('applet1', 'set color_palette_type ' + this.options[this.selectedIndex].value)" style="width: 100px">
-                                <option value="RAINBOW">Rainbow</option>
-                                <option value="IRON" selected>Iron</option>
-                                <option value="GRAY">Gray</option>
-                            </select>
-                        </form>
-                    </div>
+                    <map name="MoistureButtons">
+                        <area shape="rect" coords="120,430,190,490" alt="Off" href="javascript: toggleTool(-1)" />
+                    </map>
                 </div>
             </div>
         </div>
