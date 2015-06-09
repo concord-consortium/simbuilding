@@ -26,18 +26,20 @@
         <div id="Stats-output">
         </div>
 
-        <div id="score" style="position: absolute; top: 50px; width: 50; height: 50; font-size: 50px; color: greenyellow">
+        <div id="score" style="position: absolute; top: 50px; width: 50px; height: 50px; font-size: 50px; color: greenyellow">
             0
         </div>
 
         <div id="WebGL-output">
             <div style="position: absolute; right: 0; bottom: 0;">
-                <img id="moisturemeter-small" src="resources/images/moisturemeter.png" width="88" height="200"
-                     onclick ='toggleTool(1)' ontouchstart='toggleTool(1)' />
-                <img id="ircamera-small" src="resources/images/ircamera.png" width="150" height="200"
-                     onclick ='toggleTool(0)' ontouchstart='toggleTool(0)' />
+                <img id="tool-temperature-small" src="resources/images/tool-temperature.png" alt="" width="62" height="200"
+                     onclick ="toggleTool(2)" ontouchstart="toggleTool(2)"/>
+                <img id="tool-moisture-small" src="resources/images/tool-moisture.png" alt="" width="88" height="200"
+                     onclick ="toggleTool(1)" ontouchstart="toggleTool(1)"/>
+                <img id="tool-ircamera-small" src="resources/images/tool-ircamera-small.png" alt="" width="150" height="200"
+                     onclick ="toggleTool(0)" ontouchstart="toggleTool(0)"/>
             </div>
-            <div id="ircamera" style="
+            <div id="tool-ircamera" style="
                  position: absolute;
                  left: 50%;
                  bottom: 0px;
@@ -73,7 +75,7 @@
                         <div id="quizIncorrect" style="display: none; font-size: xx-large; text-align: center; ; padding-top: 80px">Incorrect!</div>
                         <div id="quizAlreadyChecked" style="display: none; font-size: xx-large; text-align: center; ; padding-top: 80px">Already Checked!</div>
                     </div>
-                    <img src="resources/images/ir-camera.png" alt="" width="624" height="712" usemap="#IRCameraButtons" />
+                    <img src="resources/images/tool-ircamera.png" alt="" width="624" height="712" usemap="#IRCameraButtons" />
                     <map name="IRCameraButtons">
                         <area shape="rect" coords="120,540,210,600" alt="Play" href="javascript: if (running) {running = false; stop(appletTarget)} else {running = true; run(appletTarget)}" />
                         <area shape="rect" coords="420,540,510,600" alt="Reset" href="javascript: jsReset(appletTarget)" />
@@ -82,7 +84,7 @@
                     </map>
                 </div>
             </div>
-            <div id="moisturemeter" style="
+            <div id="tool-moisture" style="
                  position: absolute;
                  left: 50%;
                  bottom: -400px;
@@ -93,12 +95,32 @@
                  ">
                 <div style="position: absolute; left: -50%; width: 400px; height: 909px">
                     <img src="resources/images/target.png" alt="" style="position: absolute; left: 140px; top: -100px"/>
-                    <img src="resources/images/moisturemeter.png" alt="" width="400" height="909" usemap="#MoistureButtons"/>
-                    <div id="moisturemeter-value" style="font-size: 100px; position: absolute; left: 150px; top: 200px">
+                    <img src="resources/images/tool-moisture.png" alt="" width="400" height="909" usemap="#MoistureButtons"/>
+                    <div id="moisture-value" style="font-size: 100px; position: absolute; left: 150px; top: 200px">
                         98
                     </div>
                     <map name="MoistureButtons">
                         <area shape="rect" coords="120,430,190,490" alt="Off" href="javascript: toggleTool(-1)" />
+                    </map>
+                </div>
+            </div>
+            <div id="tool-temperature" style="
+                 position: absolute;
+                 left: 50%;
+                 bottom: -250px;
+                 width: 200px;
+                 height: 643px;
+                 display: none;
+                 margin: 0 auto;
+                 ">
+                <div style="position: absolute; left: -50%; width: 200px; height: 643px">
+                    <img src="resources/images/target.png" alt="" style="position: absolute; left: 35px; top: -140px"/>
+                    <img src="resources/images/tool-temperature.png" alt="" width="200" height="643" usemap="#TemperatureButtons"/>
+                    <div id="moisturemeter-value" style="font-size: 40px; position: absolute; left: 60px; top: 230px">
+                        98&deg;C
+                    </div>
+                    <map name="TemperatureButtons">
+                        <area shape="rect" coords="40,0,70,490" alt="Off" href="javascript: toggleTool(-1)" />
                     </map>
                 </div>
             </div>

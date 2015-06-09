@@ -439,21 +439,26 @@ function animateDoor() {
 }
 
 function toggleTool(tool) {
-    $("#ircamera-small").fadeIn();
-    $("#moisturemeter-small").fadeIn();
+    $("#tool-ircamera-small").fadeIn();
+    $("#tool-moisture-small").fadeIn();
+    $("#tool-temperature-small").fadeIn();
 
-    $("#ircamera").fadeOut();
-    $("#moisturemeter").fadeOut();
+    $("#tool-ircamera").fadeOut();
+    $("#tool-moisture").fadeOut();
+    $("#tool-temperature").fadeOut();
 
     irMode = false;
 
     if (tool === 0) {
-        $("#ircamera").fadeIn();
-        $("#ircamera-small").fadeOut();
+        $("#tool-ircamera").fadeIn();
+        $("#tool-ircamera-small").fadeOut();
         irMode = true;
     } else if (tool === 1) {
-        $("#moisturemeter").fadeIn();
-        $("#moisturemeter-small").fadeOut();
+        $("#tool-moisture").fadeIn();
+        $("#tool-moisture-small").fadeOut();
+    } else if (tool === 2) {
+        $("#tool-temperature").fadeIn();
+        $("#tool-temperature-small").fadeOut();
     }
     doRender = true;
 }
