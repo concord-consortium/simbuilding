@@ -92,7 +92,7 @@ function render() {
         composer.render(delta);
 
         if (irMode) {
-            if ($("#ircamera").css("opacity") === "1") {
+            if ($("#tool-ircamera").css("opacity") === "1") {
                 var irWidth = 450;
                 renderer.setViewport(window.innerWidth / 2 - irWidth / 2 + 10, 200, irWidth, irWidth);
                 camera.fov = 25;
