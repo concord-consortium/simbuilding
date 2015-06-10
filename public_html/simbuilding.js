@@ -14,10 +14,6 @@ var camera;
 var scene;
 var sceneRoot;
 var land;
-var mouse;
-var insertNewHousePart;
-var houseParts = [];
-var currentHousePart;
 var viewerHeight = 1.3;
 var hoveredObject;
 var doRender;
@@ -26,18 +22,12 @@ var doorToBeOpened = [];
 var doorToBeClosed = [];
 var doors = [];
 var collisionPartsWithoutDoors = [];
-var appletTarget = "applet1";
 var renderPass, copyPass, colorifyPass;
 
 function startSimBuilding() {
     clock = new THREE.Clock();
-    mouse = new THREE.Vector2();
     stats = initStats();
     window.addEventListener('resize', handleWindowResize, false);
-    document.addEventListener('mousemove', handleMouseMove, false);
-    document.addEventListener('mousedown', handleMouseDown, false);
-    document.addEventListener('mouseup', handleMouseUp, false);
-    document.addEventListener('keyup', handleKeyUp, false);
 
     scene = new THREE.Scene();
 
@@ -78,7 +68,8 @@ function render() {
         doRender = false;
         stats.update();
         var delta = clock.getDelta();
-        camControl.update(delta);
+        if (camControl.needsUpdate())
+            camControl.update(delta);
         enforceCameraGravity();
         animateDoor();
 
@@ -309,40 +300,6 @@ function handleWindowResize() {
     if (composer)
         composer.setSize(window.innerWidth, window.innerHeight);
     doRender = true;
-}
-
-function handleKeyUp(event) {
-    if (event.keyCode === 46 && currentHousePart) {
-        currentHousePart.root.parent.remove(currentHousePart.root);
-        houseParts.splice(houseParts.indexOf(currentHousePart), 1);
-        currentHousePart = null;
-    } else if (event.keyCode === 73) { // 'i'
-        if ($("#ircamera").css("display") === "none") {
-            $("#ircamera").fadeIn();
-            $("#ircamera-small").fadeOut();
-            irMode = true;
-        } else {
-            $("#ircamera").fadeOut();
-            $("#ircamera-small").fadeIn();
-            irMode = false;
-        }
-        doRender = true;
-    }
-}
-
-function handleMouseDown() {
-}
-
-function handleMouseUp() {
-}
-
-function handleMouseMove(event) {
-    mouse.x = (event.clientX / window.innerWidth) * 2 - 1;
-    mouse.y = -(event.clientY / window.innerHeight) * 2 + 1;
-    updateQuiz();
-}
-
-function hover() {
 }
 
 function pickHotspot(x, y) {

@@ -12,7 +12,7 @@ THREE.PointerLockControls = function (camera) {
     pitchObject.add(camera);
 
     var yawObject = new THREE.Object3D();
-    yawObject.eulerOrder = "ZYX";
+    yawObject.rotation.order = "ZYX";
     yawObject.position.y = 10;
     yawObject.add(pitchObject);
 
