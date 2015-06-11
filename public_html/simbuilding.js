@@ -23,6 +23,7 @@ var doorToBeClosed = [];
 var doors = [];
 var collisionPartsWithoutDoors = [];
 var renderPass, copyPass, colorifyPass;
+var blowdoorMode = false;
 
 function startSimBuilding() {
     clock = new THREE.Clock();
@@ -416,6 +417,9 @@ function toggleTool(tool) {
     } else if (tool === 2) {
         $("#tool-temperature").fadeIn();
         $("#tool-temperature-small").fadeOut();
+    } else if (tool === 3) {
+        blowdoorMode = !blowdoorMode;
+        document.getElementById("fan").src = "resources/images/fan-" + (blowdoorMode ? "animated.gif" : "still.gif");
     }
     doRender = true;
 }
