@@ -1,0 +1,18 @@
+{
+  "ID": 1,
+  "ThermalBypassID": "None",
+  "ThermogramWithoutBlowerDoor": "window-3g.jpg",
+  "ThermogramWithBlowerDoor": "window-3b.jpg",
+  "Question": "Is any air coming in from outside?",
+  "AnswerAndFeedback": [
+    {
+      "Yes": "Correct!"
+    },
+    {
+      "No": "Try running a blower door test. Were you right?"
+    },
+    {
+      "Cannot tell": "Try running a blower door test. Were you right?"
+    }
+  ]
+}
