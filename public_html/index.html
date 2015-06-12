@@ -31,19 +31,21 @@
         </div>
 
         <div id="WebGL-output">
-            <div style="position: absolute; right: 0; bottom: 0;">
-                <img id="tool-temperature-small" src="resources/images/tool-temperature.png" alt="" width="62" height="200"
-                     style="margin-left: 20px; margin-right: 20px;"
-                     onclick ="toggleTool(2)" ontouchstart="toggleTool(2)"/>
-                <img id="tool-moisture-small" src="resources/images/tool-moisture.png" alt="" width="88" height="200"
-                     onclick ="toggleTool(1)" ontouchstart="toggleTool(1)"/>
-                <img id="tool-ircamera-small" src="resources/images/tool-ircamera-small.png" alt="" width="150" height="200"
-                     onclick ="toggleTool(0)" ontouchstart="toggleTool(0)"/>
+            <div style="position: absolute; right: 10px; bottom: 10px;">
+                <a href="javascript: toggleTool(2)">
+                    <img id="tool-temperature-small" src="resources/images/tool-temperature.png" alt="" width="62" height="200" style="margin-left: 20px; margin-right: 20px;"/>
+                </a>
+                <a href="javascript: toggleTool(1)">
+                    <img id="tool-moisture-small" src="resources/images/tool-moisture.png" alt="" width="88" height="200"/>
+                </a>
+                <a href="javascript: toggleTool(0)">
+                    <img id="tool-ircamera-small" src="resources/images/tool-ircamera-small.png" alt="" width="150" height="200"/>
+                </a>
             </div>
-            <div style="position: absolute; left: 0; bottom: 0;">
-                <img id="fan" src="resources/images/fan-still.gif" alt="" width="108" height="197"
-                     style="margin-left: 20px; margin: 20px;"
-                     onclick ="toggleTool(3)" ontouchstart="toggleTool(3)"/>
+            <div style="position: absolute; left: 10px; bottom: 10px;">
+                <a href="javascript: toggleTool(3)">
+                    <img id="fan" src="resources/images/fan-still.gif" alt="" width="108" height="197"/>
+                </a>
             </div>
             <div id="tool-ircamera" style="
                  position: absolute;
@@ -83,9 +85,9 @@
                     </div>
                     <img src="resources/images/tool-ircamera.png" alt="" width="624" height="712" usemap="#IRCameraButtons" />
                     <map name="IRCameraButtons">
-                        <area shape="rect" coords="120,540,210,600" alt="Play" href="javascript: if (running) {running = false; stop(appletTarget)} else {running = true; run(appletTarget)}" />
-                        <area shape="rect" coords="420,540,510,600" alt="Reset" href="javascript: jsReset(appletTarget)" />
-                        <area shape="rect" coords="260,565,360,665" alt="Chart" href="javascript: if (chart) {chart = false; runScript(appletTarget, 'set graph false;')} else {chart = true; runScript(appletTarget, 'set graph true;')}" />
+                        <area shape="rect" coords="120,540,210,600" alt="Play" href="" />
+                        <area shape="rect" coords="420,540,510,600" alt="Reset" href="" />
+                        <area shape="rect" coords="260,565,360,665" alt="Chart" href="" />
                         <area shape="circle" coords="432,647,20" alt="Off" href='javascript: toggleTool(-1)' />
                     </map>
                 </div>
@@ -133,8 +135,6 @@
         </div>
 
         <script type="text/javascript">
-            running = false;
-            chart = false;
             $(function () {
                 document.body.onselectstart = function () {
                     return false;
@@ -143,12 +143,6 @@
                     return false;
                 };
                 startSimBuilding();
-            });
-            $('ircamera-small').on('dragstart', function (event) {
-                event.preventDefault();
-            });
-            $('ircamera').on('dragstart', function (event) {
-                event.preventDefault();
             });
         </script>
     </body>
