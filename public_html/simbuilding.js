@@ -60,6 +60,8 @@ function startSimBuilding() {
         doRender = true;
         setTimeout(render, 100);
     });
+
+    initQuiz();
 }
 
 function render() {

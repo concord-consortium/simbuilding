@@ -135,15 +135,13 @@
         </div>
 
         <script type="text/javascript">
-            $(function () {
-                document.body.onselectstart = function () {
-                    return false;
-                };
-                document.body.ondragstart = function () {
-                    return false;
-                };
-                startSimBuilding();
-            });
+            document.body.onselectstart = function () {
+                return false;
+            };
+            document.body.ondragstart = function () {
+                return false;
+            };
+            startSimBuilding();
         </script>
     </body>
 </html>

@@ -8,6 +8,13 @@ var quizInProgress = false;
 var alreadyAnswered = [];
 var hotSpotsRoot;
 var hotSpotsHidden;
+var quizData;
+
+function initQuiz() {
+    $.getJSON('scenarios.json', function (data) {
+        quizData = data;
+    });
+}
 
 function answer(userAnswer) {
     var expectedAnswer;
@@ -92,7 +99,11 @@ function updateQuiz() {
         var div = $("#quiz");
         if (newHotspot) {
             $("[id^=quiz]").hide();
-            var filename = newHotspot + ".jpg";
+            var filename;
+            if (Number.isInteger(newHotspot))
+                filename = quizData.ThermogramWithoutBlowerDoor;
+            else
+                filename = newHotspot + ".jpg";
             div.css("background-image", "url(resources/images/" + filename + ")");
             div.fadeIn();
             if (alreadyAnswered.indexOf(newHotspot) !== -1)
@@ -123,7 +134,8 @@ function initHotspots() {
     initHotspotSingle("window-2b", 12.57, 2.5, 4.2, geom, whiteMaterial);
     initHotspotSingle("window-5b", 13, 0.9, 4.2, geom, whiteMaterial);
     initHotspotSingle("window-3g", 4.4, 4.8, 4.2, geom, whiteMaterial);
-    initHotspotSingle("window-3b", 6.45, 4.8, 4.2, geom, whiteMaterial);
+//    initHotspotSingle("window-3b", 6.45, 4.8, 4.2, geom, whiteMaterial);
+    initHotspotSingle(1, 6.45, 4.8, 4.2, geom, whiteMaterial);
     initHotspotSingle("window-4g", 8.45, 5.3, 4.2, geom, whiteMaterial);
     initHotspotSingle("window-4b", 10.53, 5.3, 4.2, geom, whiteMaterial);
     initHotspotSingle("window-1g", 12.57, 5.3, 4.2, geom, whiteMaterial);
