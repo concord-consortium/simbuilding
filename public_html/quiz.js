@@ -100,9 +100,32 @@ function updateQuiz() {
         if (newHotspot) {
             $("[id^=quiz]").hide();
             var filename;
-            if (Number.isInteger(newHotspot))
+            if (Number.isInteger(newHotspot)) {
+                $("#question").text(quizData.Question);
+                $("#answers").empty();
+                for (var i = 0; i < quizData.AnswerAndFeedback.length; i++) {
+                    var answer = Object.keys(quizData.AnswerAndFeedback[i])[0];
+                    var answerTag = jQuery('<input/>', {
+                        type: 'button',
+                        value: answer
+                    });
+                    answerTag.appendTo('#answers');
+                    answerTag.click(quizData.AnswerAndFeedback[i][answer], function (e) {
+                        $("#quizYesNo").hide();
+                        var resultDiv;
+                        if (e.data.indexOf("Correct") !== -1) {
+                            resultDiv = $("#quizCorrect");
+                            score++;
+                            $("#score").text(score);
+                        } else
+                            resultDiv = $("#quizIncorrect");
+                        resultDiv.text(e.data);
+                        resultDiv.fadeIn();
+                        alreadyAnswered.push(hotspot);
+                    });
+                }
                 filename = quizData.ThermogramWithoutBlowerDoor;
-            else
+            } else
                 filename = newHotspot + ".jpg";
             div.css("background-image", "url(resources/images/" + filename + ")");
             div.fadeIn();

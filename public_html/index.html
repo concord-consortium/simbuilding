@@ -62,9 +62,11 @@
                          onmousedown="toggleQuizQuestion();">
                         <form id="quizYesNo" style="display: none">
                             <h1>Investigate</h1>
-                            <p style="font-size: large">Do you see a problem here?</p>
-                            <input id="problem_yes_button" type="button" value="Yes" onclick="answer(true)" style="width: 50px">
-                            <input id="problem_no_button" type="button" value="No" onclick="answer(false)" style="width: 50px">
+                            <p id="question" style="font-size: large">Do you see a problem here?</p>
+                            <div id="answers">
+                                <input id="problem_yes_button" type="button" value="Yes" onclick="answer(true)" style="width: 50px">
+                                <input id="problem_no_button" type="button" value="No" onclick="answer(false)" style="width: 50px">
+                            </div>
                         </form>
                         <form id="quizMulti" style="display: none">
                             <h1>Investigate</h1>
