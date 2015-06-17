@@ -1,18 +1,59 @@
-{
+[
+  {
     "ID": 1,
     "ThermalBypassID": "None",
     "ThermogramWithoutBlowerDoor": "window-3g.jpg",
     "ThermogramWithBlowerDoor": "window-3b.jpg",
     "Question": "Is any air coming in from outside?",
+    "Tip": "Often we can feel insulation leaks even though we cannot see them. Even tiny cracks in window insulation make a big difference in the room over time. Blower Door Tests allow us to find these small cracks. This window is sealed well.",
     "AnswerAndFeedback": [
-        {
-            "Yes": "Correct!"
-        },
-        {
-            "No": "Try running a blower door test. Were you right?"
-        },
-        {
-            "Cannot tell": "Try running a blower door test. Were you right?"
-        }
+      {
+        "Yes": "Correct!"
+      },
+      {
+        "No": "Try running a blower door test. Were you right?"
+      },
+      {
+        "Cannot tell": "Try running a blower door test."
+      }
     ]
-}
+  },
+  {
+    "ID": 2,
+    "ThermalBypassID": "None",
+    "ThermogramWithoutBlowerDoor": "window-3g.jpg",
+    "ThermogramWithBlowerDoor": "window-3g.jpg",
+    "Question": "Is any air coming in from outside?",
+    "Tip": "None",
+    "AnswerAndFeedback": [
+      {
+        "Yes": "Try running a blower door test. Were you right?"
+      },
+      {
+        "No": "Correct!"
+      },
+      {
+        "Cannot tell": "Try running a blower door test."
+      }
+    ]
+  },
+  {
+    "ID": 3,
+    "ThermalBypassID": "5.1.1",
+    "ThermogramWithoutBlowerDoor": "attic-1b.jpg",
+    "ThermogramWithBlowerDoor": "attic-1b.jpg",
+    "Question": "Is the attic at a different temperature from the rest of the house? Is that affecting this room?",
+    "Tip": "Attics were often left uninsulated because people rarely used the room for long periods of time. In the winter, the cold would leak from the attic into the house. In the summer, the heat on the roof would seep into the attic and make the house hotter. This attic door is poorly insulated.",
+    "AnswerAndFeedback": [
+      {
+        "Yes": "Correct!"
+      },
+      {
+        "No": "Incorrect!"
+      },
+      {
+        "Cannot tell": "Is the color of the attic hatch similar to that of the surrounding ceiling?"
+      }
+    ]
+  }
+]
