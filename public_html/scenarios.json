@@ -6,15 +6,19 @@
     "ThermogramWithBlowerDoor": "window-3b.jpg",
     "Question": "Is any air coming in from outside?",
     "Tip": "Often we can feel insulation leaks even though we cannot see them. Even tiny cracks in window insulation make a big difference in the room over time. Blower Door Tests allow us to find these small cracks. This window is sealed well.",
-    "AnswerAndFeedback": [
+    "Answers": [
       {
-        "Yes": "Correct!"
+        "Answer": "Yes",
+        "Feedback": "Correct!",
+        "Correct": true
       },
       {
-        "No": "Try running a blower door test. Were you right?"
+        "Answer": "No",
+        "Feedback": "Try running a blower door test. Were you right?"
       },
       {
-        "Cannot tell": "Try running a blower door test."
+        "Answer":"Can't tell",
+        "Feedback": "Try running a blower door test."
       }
     ]
   },
@@ -25,15 +29,19 @@
     "ThermogramWithBlowerDoor": "window-3g.jpg",
     "Question": "Is any air coming in from outside?",
     "Tip": "None",
-    "AnswerAndFeedback": [
+    "Answers": [
       {
-        "Yes": "Try running a blower door test. Were you right?"
+        "Answer": "Yes",
+        "Feedback": "Are you sure?"
       },
       {
-        "No": "Correct!"
+        "Answer": "No",
+        "Feedback": "Correct!",
+        "Correct": true
       },
       {
-        "Cannot tell": "Try running a blower door test."
+        "Answer":"Can't tell",
+        "Feedback": "Try running a blower door test."
       }
     ]
   },
@@ -44,15 +52,19 @@
     "ThermogramWithBlowerDoor": "attic-1b.jpg",
     "Question": "Is the attic at a different temperature from the rest of the house? Is that affecting this room?",
     "Tip": "Attics were often left uninsulated because people rarely used the room for long periods of time. In the winter, the cold would leak from the attic into the house. In the summer, the heat on the roof would seep into the attic and make the house hotter. This attic door is poorly insulated.",
-    "AnswerAndFeedback": [
+       "Answers": [
       {
-        "Yes": "Correct!"
+        "Answer": "Yes",
+        "Feedback": "Correct!",
+        "Correct": true
       },
       {
-        "No": "Incorrect!"
+        "Answer": "No",
+        "Feedback": "Incorrect!"
       },
       {
-        "Cannot tell": "Is the color of the attic hatch similar to that of the surrounding ceiling?"
+        "Answer":"Can't tell",
+        "Feedback": "Is the color of the attic hatch similar to that of the surrounding ceiling?"
       }
     ]
   }
