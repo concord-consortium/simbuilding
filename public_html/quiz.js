@@ -101,30 +101,34 @@ function updateQuiz() {
             $("[id^=quiz]").hide();
             var filename;
             if (Number.isInteger(newHotspot)) {
-                $("#question").text(quizData.Question);
+                var selectedQuizData;
+                for (var i = 0; i < quizData.length && !selectedQuizData; i++)
+                    if (quizData[i].ID === newHotspot)
+                        selectedQuizData = quizData[i];
+                $("#question").text(selectedQuizData.Question);
                 $("#answers").empty();
-                for (var i = 0; i < quizData.AnswerAndFeedback.length; i++) {
-                    var answer = Object.keys(quizData.AnswerAndFeedback[i])[0];
+                for (var i = 0; i < selectedQuizData.Answers.length; i++) {
+                    var answer = selectedQuizData.Answers[i].Answer;
                     var answerTag = jQuery('<input/>', {
                         type: 'button',
                         value: answer
                     });
                     answerTag.appendTo('#answers');
-                    answerTag.click(quizData.AnswerAndFeedback[i][answer], function (e) {
+                    answerTag.click(selectedQuizData.Answers[i], function (e) {
                         $("#quizYesNo").hide();
                         var resultDiv;
-                        if (e.data.indexOf("Correct") !== -1) {
+                        if (e.data.Correct) {
                             resultDiv = $("#quizCorrect");
                             score++;
                             $("#score").text(score);
                         } else
                             resultDiv = $("#quizIncorrect");
-                        resultDiv.text(e.data);
+                        resultDiv.text(e.data.Feedback);
                         resultDiv.fadeIn();
                         alreadyAnswered.push(hotspot);
                     });
                 }
-                filename = quizData.ThermogramWithoutBlowerDoor;
+                filename = selectedQuizData.ThermogramWithoutBlowerDoor;
             } else
                 filename = newHotspot + ".jpg";
             div.css("background-image", "url(resources/images/" + filename + ")");
@@ -156,7 +160,8 @@ function initHotspots() {
     initHotspotSingle("window-5g", 10.9, 0.9, 4.2, geom, whiteMaterial);
     initHotspotSingle("window-2b", 12.57, 2.5, 4.2, geom, whiteMaterial);
     initHotspotSingle("window-5b", 13, 0.9, 4.2, geom, whiteMaterial);
-    initHotspotSingle("window-3g", 4.4, 4.8, 4.2, geom, whiteMaterial);
+//    initHotspotSingle("window-3g", 4.4, 4.8, 4.2, geom, whiteMaterial);
+    initHotspotSingle(2, 4.4, 4.8, 4.2, geom, whiteMaterial);
 //    initHotspotSingle("window-3b", 6.45, 4.8, 4.2, geom, whiteMaterial);
     initHotspotSingle(1, 6.45, 4.8, 4.2, geom, whiteMaterial);
     initHotspotSingle("window-4g", 8.45, 5.3, 4.2, geom, whiteMaterial);
