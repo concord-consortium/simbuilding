@@ -134,7 +134,6 @@ function updateQuiz() {
                     filename = selectedQuizData.ThermogramWithoutBlowerDoor;
             } else
                 filename = newHotspot + ".jpg";
-//            div.css("background-image", "url(resources/images/" + filename + ")");
             div.attr("src", "resources/images/" + filename);
             div.fadeIn();
             if (alreadyAnswered.indexOf(newHotspot) !== -1)
@@ -143,6 +142,10 @@ function updateQuiz() {
                 $("#quizYesNo").delay(3000).fadeIn();
         } else {
             quizInProgress = false;
+            $("#quizYesNo").fadeOut();
+            $("#quizCorrect").fadeOut();
+            $("#quizIncorrect").fadeOut();
+            $("#quizAlreadyChecked").fadeOut();
             div.fadeOut();
         }
     }
