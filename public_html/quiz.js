@@ -96,7 +96,6 @@ function updateQuiz() {
     var newHotspot = pickHotspot(0, 0);
     if (hotspot !== newHotspot) {
         hotspot = newHotspot;
-        var div = $("#quiz");
         if (newHotspot) {
             $("[id^=quiz]").hide();
             var filename;
@@ -115,7 +114,7 @@ function updateQuiz() {
                     });
                     answerTag.appendTo('#answers');
                     answerTag.click(selectedQuizData.Answers[i], function (e) {
-                        $("#quizYesNo").hide();
+                        $("#quizQuestionAnswers").hide();
                         var resultDiv;
                         if (e.data.Correct) {
                             resultDiv = $("#quizCorrect");
@@ -134,19 +133,19 @@ function updateQuiz() {
                     filename = selectedQuizData.ThermogramWithoutBlowerDoor;
             } else
                 filename = newHotspot + ".jpg";
-            div.attr("src", "resources/images/" + filename);
-            div.fadeIn();
+            $("#quizImage").attr("src", "resources/images/" + filename);
+            $("#quizImage").fadeIn();
             if (alreadyAnswered.indexOf(newHotspot) !== -1)
                 $("#quizAlreadyChecked").show();
             else
-                $("#quizYesNo").delay(3000).fadeIn();
+                $("#quizQuestionAnswers").delay(3000).fadeIn();
         } else {
             quizInProgress = false;
-            $("#quizYesNo").fadeOut();
+            $("#quizQuestionAnswers").fadeOut();
             $("#quizCorrect").fadeOut();
             $("#quizIncorrect").fadeOut();
             $("#quizAlreadyChecked").fadeOut();
-            div.fadeOut();
+            $("#quizImage").fadeOut();
         }
     }
 }
@@ -228,12 +227,4 @@ function initHotspotSingle(id, x, y, z, geometry, material) {
     hotSpot.userData.id = id;
     hotSpot.position.set(x, y, z);
     hotSpotsHidden.add(hotSpot);
-}
-
-function toggleQuizQuestion() {
-    if (quizInProgress || alreadyAnswered.indexOf(hotspot) !== -1)
-        return;
-    var div = $("#quizYesNo");
-    if (div.css("display") === "none")
-        div.fadeIn();
 }

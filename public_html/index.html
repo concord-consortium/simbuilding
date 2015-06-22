@@ -65,12 +65,12 @@
                         <area shape="circle" coords="432,647,20" alt="Off" href='javascript: toggleTool(-1)' />
                     </map>
                     <img id="target" src="resources/images/target.png" alt="" style="position: absolute; left: 250px; top: 220px"/>
-                    <img id="quiz" src="" alt="" style="position: absolute; left: 90px; top: 118px; width: 450px; height: 385px; display: none"/>
+                    <img id="quizImage" src="" alt="" style="position: absolute; left: 90px; top: 118px; width: 450px; height: 385px; display: none"/>
                     <div style="position: absolute; left: 90px; top: 118px; width: 450px; height: 385px; padding: 10px; z-index: 2">
-                        <form id="quizYesNo" style="display: none">
+                        <div id="quizQuestionAnswers" style="display: none">
                             <p id="question" style="font-size: large">Do you see a problem here?</p>
                             <div id="answers"></div>
-                        </form>
+                        </div>
                         <div id="quizCorrect" style="display: none; font-size: xx-large; color: greenyellow; text-align: center; padding-top: 80px">Correct!</div>
                         <div id="quizIncorrect" style="display: none; font-size: xx-large; text-align: center; ; padding-top: 80px">Incorrect!</div>
                         <div id="quizAlreadyChecked" style="display: none; font-size: xx-large; text-align: center; padding-top: 80px">Already Checked!</div>
