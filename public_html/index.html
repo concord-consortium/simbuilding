@@ -57,7 +57,7 @@
                  margin: 0 auto;
                  ">
                 <div style="position: absolute; left: -50%; width: 624px; height: 712px">
-                    <img src="resources/images/tool-ircamera2.png" alt="" width="624" height="712" usemap="#IRCameraButtons" style="position: absolute; z-index: 1"/>
+                    <img src="resources/images/tool-ircamera.png" alt="" width="624" height="712" usemap="#IRCameraButtons" style="position: absolute; z-index: 1"/>
                     <map name="IRCameraButtons">
                         <area shape="rect" coords="120,540,210,600" alt="Play" href="" />
                         <area shape="rect" coords="420,540,510,600" alt="Reset" href="" />
@@ -65,32 +65,16 @@
                         <area shape="circle" coords="432,647,20" alt="Off" href='javascript: toggleTool(-1)' />
                     </map>
                     <img id="target" src="resources/images/target.png" alt="" style="position: absolute; left: 250px; top: 220px"/>
-                    <div id="quiz" style="position: absolute; left: 70px; top: 103px; width: 450px; height: 400px; background-size: 100% 100%; padding: 10px; display: none"
-                         onmousedown="toggleQuizQuestion();">
+                    <img id="quiz" src="" alt="" style="position: absolute; left: 90px; top: 118px; width: 450px; height: 385px; display: none"/>
+                    <div style="position: absolute; left: 90px; top: 118px; width: 450px; height: 385px; padding: 10px; z-index: 2">
                         <form id="quizYesNo" style="display: none">
                             <h1>Investigate</h1>
                             <p id="question" style="font-size: large">Do you see a problem here?</p>
-                            <div id="answers">
-                                <input id="problem_yes_button" type="button" value="Yes" onclick="answer(true)" style="width: 50px">
-                                <input id="problem_no_button" type="button" value="No" onclick="answer(false)" style="width: 50px">
-                            </div>
-                        </form>
-                        <form id="quizMulti" style="display: none">
-                            <h1>Investigate</h1>
-                            <p style="font-size: large">Do you see a problem here?</p>
-                            <input type="radio" name = "answer" id="quiz0">
-                            <label for="quiz0" style="font-size: large"></label><br/>
-                            <input type="radio" name = "answer" id="quiz1">
-                            <label for="quiz1" style="font-size: large"></label><br/>
-                            <input type="radio" name = "answer" id="quiz2">
-                            <label for="quiz2" style="font-size: large"></label><br/>
-                            <input type="radio" name = "answer" id="quiz3">
-                            <label for="quiz3" style="font-size: large"></label><br/>
-                            <input type="button" value="Submit" onclick="answerMulti()">
+                            <div id="answers"></div>
                         </form>
                         <div id="quizCorrect" style="display: none; font-size: xx-large; color: greenyellow; text-align: center; padding-top: 80px">Correct!</div>
                         <div id="quizIncorrect" style="display: none; font-size: xx-large; text-align: center; ; padding-top: 80px">Incorrect!</div>
-                        <div id="quizAlreadyChecked" style="display: none; font-size: xx-large; text-align: center; ; padding-top: 80px">Already Checked!</div>
+                        <div id="quizAlreadyChecked" style="display: none; font-size: xx-large; text-align: center; padding-top: 80px">Already Checked!</div>
                     </div>
                 </div>
             </div>
