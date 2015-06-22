@@ -1,4 +1,4 @@
-/* global THREE, scene */
+/* global THREE, scene, blowdoorMode */
 
 "use strict";
 
@@ -128,7 +128,10 @@ function updateQuiz() {
                         alreadyAnswered.push(hotspot);
                     });
                 }
-                filename = selectedQuizData.ThermogramWithoutBlowerDoor;
+                if (blowdoorMode)
+                    filename = selectedQuizData.ThermogramWithBlowerDoor;
+                else
+                    filename = selectedQuizData.ThermogramWithoutBlowerDoor;
             } else
                 filename = newHotspot + ".jpg";
             div.css("background-image", "url(resources/images/" + filename + ")");

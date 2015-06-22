@@ -57,8 +57,15 @@
                  margin: 0 auto;
                  ">
                 <div style="position: absolute; left: -50%; width: 624px; height: 712px">
+                    <img src="resources/images/tool-ircamera2.png" alt="" width="624" height="712" usemap="#IRCameraButtons" style="position: absolute; z-index: 1"/>
+                    <map name="IRCameraButtons">
+                        <area shape="rect" coords="120,540,210,600" alt="Play" href="" />
+                        <area shape="rect" coords="420,540,510,600" alt="Reset" href="" />
+                        <area shape="rect" coords="260,565,360,665" alt="Chart" href="" />
+                        <area shape="circle" coords="432,647,20" alt="Off" href='javascript: toggleTool(-1)' />
+                    </map>
                     <img id="target" src="resources/images/target.png" alt="" style="position: absolute; left: 250px; top: 220px"/>
-                    <div id="quiz" style="position: absolute; left: 100px; top: 123px; width: 425px; height: 360px; background-size: 100% 100%; padding: 10px; display: none"
+                    <div id="quiz" style="position: absolute; left: 70px; top: 103px; width: 450px; height: 400px; background-size: 100% 100%; padding: 10px; display: none"
                          onmousedown="toggleQuizQuestion();">
                         <form id="quizYesNo" style="display: none">
                             <h1>Investigate</h1>
@@ -85,13 +92,6 @@
                         <div id="quizIncorrect" style="display: none; font-size: xx-large; text-align: center; ; padding-top: 80px">Incorrect!</div>
                         <div id="quizAlreadyChecked" style="display: none; font-size: xx-large; text-align: center; ; padding-top: 80px">Already Checked!</div>
                     </div>
-                    <img src="resources/images/tool-ircamera.png" alt="" width="624" height="712" usemap="#IRCameraButtons" />
-                    <map name="IRCameraButtons">
-                        <area shape="rect" coords="120,540,210,600" alt="Play" href="" />
-                        <area shape="rect" coords="420,540,510,600" alt="Reset" href="" />
-                        <area shape="rect" coords="260,565,360,665" alt="Chart" href="" />
-                        <area shape="circle" coords="432,647,20" alt="Off" href='javascript: toggleTool(-1)' />
-                    </map>
                 </div>
             </div>
             <div id="tool-moisture" style="

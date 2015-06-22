@@ -87,8 +87,8 @@ function render() {
 
         if (irMode) {
             if ($("#tool-ircamera").css("opacity") === "1") {
-                var irWidth = 450;
-                renderer.setViewport(window.innerWidth / 2 - irWidth / 2 + 10, 200, irWidth, irWidth);
+                var irWidth = 460;
+                renderer.setViewport(window.innerWidth / 2 - irWidth / 2 + 5, 200, irWidth, irWidth);
                 camera.fov = 25;
                 camera.aspect = 1;
                 camera.updateProjectionMatrix();
@@ -399,33 +399,37 @@ function animateDoor() {
 }
 
 function toggleTool(tool) {
-    if (tool !== 0)
-        $("#tool-ircamera-small").animate({opacity: 1});
-    if (tool !== 1)
-        $("#tool-moisture-small").animate({opacity: 1});
-    if (tool !== 2)
-        $("#tool-temperature-small").animate({opacity: 1});
-
-    $("#tool-ircamera").fadeOut();
-    $("#tool-moisture").fadeOut();
-    $("#tool-temperature").fadeOut();
-
-    irMode = false;
-    var opacityOff = 0.3;
-
-    if (tool === 0) {
-        $("#tool-ircamera").fadeIn();
-        $("#tool-ircamera-small").animate({opacity: opacityOff});
-        irMode = true;
-    } else if (tool === 1) {
-        $("#tool-moisture").fadeIn();
-        $("#tool-moisture-small").animate({opacity: opacityOff});
-    } else if (tool === 2) {
-        $("#tool-temperature").fadeIn();
-        $("#tool-temperature-small").animate({opacity: opacityOff});
-    } else if (tool === 3) {
+    if (tool === 3) {
         blowdoorMode = !blowdoorMode;
         document.getElementById("fan").src = "resources/images/fan-" + (blowdoorMode ? "animated.gif" : "still.gif");
+        hotspot = null;
+        updateQuiz();
+    } else {
+        if (tool !== 0)
+            $("#tool-ircamera-small").animate({opacity: 1});
+        if (tool !== 1)
+            $("#tool-moisture-small").animate({opacity: 1});
+        if (tool !== 2)
+            $("#tool-temperature-small").animate({opacity: 1});
+
+        $("#tool-ircamera").fadeOut();
+        $("#tool-moisture").fadeOut();
+        $("#tool-temperature").fadeOut();
+
+        irMode = false;
+        var opacityOff = 0.3;
+
+        if (tool === 0) {
+            $("#tool-ircamera").fadeIn();
+            $("#tool-ircamera-small").animate({opacity: opacityOff});
+            irMode = true;
+        } else if (tool === 1) {
+            $("#tool-moisture").fadeIn();
+            $("#tool-moisture-small").animate({opacity: opacityOff});
+        } else if (tool === 2) {
+            $("#tool-temperature").fadeIn();
+            $("#tool-temperature-small").animate({opacity: opacityOff});
+        }
     }
     doRender = true;
 }
