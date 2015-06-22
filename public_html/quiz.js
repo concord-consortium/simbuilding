@@ -138,6 +138,8 @@ function updateQuiz() {
             div.fadeIn();
             if (alreadyAnswered.indexOf(newHotspot) !== -1)
                 $("#quizAlreadyChecked").show();
+            else
+                $("#quizYesNo").delay(3000).fadeIn();
         } else {
             quizInProgress = false;
             div.fadeOut();
