@@ -135,6 +135,8 @@ function updateQuiz() {
                 filename = newHotspot + ".jpg";
             $("#quizImage").attr("src", "resources/images/" + filename);
             $("#quizImage").fadeIn();
+            $("#temperature-high").fadeIn();
+            $("#temperature-low").fadeIn();
             if (alreadyAnswered.indexOf(newHotspot) !== -1)
                 $("#quizAlreadyChecked").show();
             else
@@ -146,6 +148,8 @@ function updateQuiz() {
             $("#quizIncorrect").fadeOut();
             $("#quizAlreadyChecked").fadeOut();
             $("#quizImage").fadeOut();
+            $("#temperature-high").fadeOut();
+            $("#temperature-low").fadeOut();
         }
     }
 }
