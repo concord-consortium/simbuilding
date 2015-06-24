@@ -112,36 +112,65 @@ THREE.PointerLockControls = function (camera) {
     };
 
     var updateFlags = function (event, enable) {
-        switch (event.keyCode) {
+        var key;
+        if (event.key)
+            key = event.key;
+        else if (event.which)
+            key = event.which;
+//        alert(key);
+        switch (key) {
             case 38: // up
             case 87: // w
+            case "ArrowUp":
+            case "Up":
+            case "w":
+            case "W":
                 moveForward = enable;
-                break;
-            case 37: // left
-                rotateLeft = enable;
-                break;
-            case 65: // a
-                moveLeft = enable;
                 break;
             case 40: // down
             case 83: // s
+            case "ArrowDown":
+            case "Down":
+            case "s":
+            case "S":
                 moveBackward = enable;
                 break;
             case 39: // right
+            case "ArrowRight":
+            case "Right":
                 rotateRight = enable;
                 break;
+            case 37: // left
+            case "ArrowLeft":
+            case "Left":
+                rotateLeft = enable;
+                break;
+            case 65: // a
+            case "a":
+            case "A":
+                moveLeft = enable;
+                break;
             case 68: // d
+            case "d":
+            case "D":
                 moveRight = enable;
                 break;
             case 33: // page up
             case 81: // q
+            case "PageUp":
+            case "q":
+            case "Q":
                 rotateUp = enable;
                 break;
             case 34: //page down
             case 90: //z
+            case "PageDown":
+            case "z":
+            case "Z":
                 rotateDown = enable;
                 break;
         }
+        event.preventDefault();
     };
 
     document.addEventListener('mousedown', onMouseDown, false);
