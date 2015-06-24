@@ -3,9 +3,6 @@
 "use strict";
 
 THREE.PointerLockControls = function (camera) {
-
-    var scope = this;
-
     camera.rotation.set(0, 0, 0);
 
     var pitchObject = new THREE.Object3D();
@@ -15,6 +12,10 @@ THREE.PointerLockControls = function (camera) {
     yawObject.rotation.order = "ZYX";
     yawObject.position.y = 10;
     yawObject.add(pitchObject);
+
+    var enabled = true;
+    var isMouseDown = false;
+    var isKeyDown = false;
 
     var moveForward = false;
     var moveBackward = false;
@@ -37,20 +38,27 @@ THREE.PointerLockControls = function (camera) {
     var touchStartx = 0;
     var touchStarty = 0;
 
-    var onMouseDown = function () {
-        scope.isMouseDown = true;
+    var onMouseDown = function (event) {
+        isMouseDown = true;
+        touchStartx = event.clientX;
+        touchStarty = event.clientY;
+        event.preventDefault();
     };
 
-    var onMouseUp = function () {
-        scope.isMouseDown = false;
+    var onMouseUp = function (event) {
+        isMouseDown = false;
+        event.preventDefault();
     };
 
     var onMouseMove = function (event) {
-        if (scope.enabled === false || !scope.isMouseDown)
+        if (enabled === false || !isMouseDown)
             return;
 
-        var movementX = event.movementX || event.mozMovementX || event.webkitMovementX || 0;
-        var movementY = event.movementY || event.mozMovementY || event.webkitMovementY || 0;
+        var movementX = event.clientX - touchStartx;
+        var movementY = event.clientY - touchStarty;
+
+        touchStartx = event.clientX;
+        touchStarty = event.clientY;
 
         yawObject.rotation.y -= movementX * 0.004;
         pitchObject.rotation.x -= movementY * 0.004;
@@ -59,7 +67,7 @@ THREE.PointerLockControls = function (camera) {
     };
 
     var onTouchDown = function (event) {
-        scope.isMouseDown = true;
+        isMouseDown = true;
         touchStartx = event.touches[0].clientX;
         touchStarty = event.touches[0].clientY;
 
@@ -69,14 +77,14 @@ THREE.PointerLockControls = function (camera) {
     };
 
     var onTouchUp = function (event) {
-        scope.isMouseDown = false;
+        isMouseDown = false;
         if (event.touches.length < 2)
             moveForward = false;
         event.preventDefault();
     };
 
     var onTouchMove = function (event) {
-        if (scope.enabled === false || event.touches.length < 1)
+        if (enabled === false || !isMouseDown || event.touches.length < 1)
             return;
 
         var movementX = event.touches[0].clientX - touchStartx;
@@ -94,12 +102,12 @@ THREE.PointerLockControls = function (camera) {
     };
 
     var onKeyDown = function (event) {
-        scope.isKeyDown = true;
+        isKeyDown = true;
         updateFlags(event, true);
     };
 
     var onKeyUp = function (event) {
-        scope.isKeyDown = false;
+        isKeyDown = false;
         updateFlags(event, false);
     };
 
@@ -146,10 +154,6 @@ THREE.PointerLockControls = function (camera) {
     document.addEventListener('touchstart', onTouchDown, false);
     document.addEventListener('touchend', onTouchUp, false);
 
-    this.enabled = false;
-    this.isMouseDown = false;
-    this.isKeyDown = false;
-
     this.getObject = function () {
         return yawObject;
     };
@@ -171,7 +175,7 @@ THREE.PointerLockControls = function (camera) {
     }();
 
     this.update = function () {
-        if (scope.enabled === false)
+        if (enabled === false)
             return;
 
         var time = performance.now();
@@ -259,7 +263,7 @@ THREE.PointerLockControls = function (camera) {
     };
 
     this.needsUpdate = function () {
-        if (this.isKeyDown || this.isMouseDown || velocityMove.length() > 0.001 || velocityRotate.length() > 0.001)
+        if (isKeyDown || isMouseDown || velocityMove.length() > 0.001 || velocityRotate.length() > 0.001)
             return true;
         else {
             prevTime = -1;
