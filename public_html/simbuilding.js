@@ -50,17 +50,23 @@ function startSimBuilding() {
 
     var loader = new THREE.ColladaLoader();
     loader.options.convertUpAxis = true;
-    loader.load('./resources/models/Yorktown.dae', function (houseModel) {
-        houseModel.scene.traverse(function (child) {
-            if (child instanceof THREE.Mesh)
-                child.geometry.computeFaceNormals();
-        });
-        initScene(houseModel.scene);
-        initHotspots();
-        initLights();
-        doRender = true;
-        setTimeout(render, 100);
-    });
+    loader.load('./resources/models/Yorktown.dae',
+            function (houseModel) {
+                houseModel.scene.traverse(function (child) {
+                    if (child instanceof THREE.Mesh)
+                        child.geometry.computeFaceNormals();
+                });
+                initScene(houseModel.scene);
+                initHotspots();
+                initLights();
+                $("#progressPanel").fadeOut();
+                doRender = true;
+                setTimeout(render, 100);
+            },
+            function (callback) {
+                $("#progress").attr("value", callback.loaded / callback.total);
+            }
+    );
 
     initQuiz();
 }
