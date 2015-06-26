@@ -127,6 +127,16 @@ function updateQuiz() {
                         alreadyAnswered.push(hotspot);
                     });
                 }
+                $("#answers").append("<br/><br/>");
+                var tipTag = jQuery('<input/>', {
+                    type: 'button',
+                    value: '?'
+                });
+                tipTag.appendTo('#answers');
+                tipTag.click(selectedQuizData, function (e) {
+                    if (!$("#answers").children().last().is("p"))
+                        $("#answers").append("<p>" + e.data.Tip + "</p>");
+                });
                 if (blowdoorMode)
                     filename = selectedQuizData.ThermogramWithBlowerDoor;
                 else
