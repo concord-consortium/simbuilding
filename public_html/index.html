@@ -64,15 +64,15 @@
                 <div style="position: absolute; left: -50%; width: 624px; height: 712px">
                     <img src="resources/images/tool-ircamera.png" alt="" width="624" height="712" usemap="#IRCameraButtons" style="position: absolute; z-index: 1"/>
                     <map name="IRCameraButtons">
-                        <area shape="rect" coords="120,540,210,600" alt="Play" href="" />
-                        <area shape="rect" coords="420,540,510,600" alt="Reset" href="" />
-                        <area shape="rect" coords="260,565,360,665" alt="Chart" href="" />
+                        <area shape="rect" coords="120,540,210,600" alt="Play" href="javascript: console.log('n/a')" />
+                        <area shape="rect" coords="420,540,510,600" alt="Reset" href="javascript: console.log('n/a')" />
+                        <area shape="rect" coords="260,565,360,665" alt="Chart" href="javascript: console.log('n/a')" />
                         <area shape="circle" coords="432,647,20" alt="Off" href='javascript: toggleTool(-1)' />
                     </map>
                     <img id="target" src="resources/images/target.png" alt="" style="position: absolute; left: 250px; top: 220px"/>
                     <img id="quizImage" src="resources/images/attic-1b.jpg" alt="" style="position: absolute; left: 90px; top: 118px; width: 450px; height: 385px; display: none"/>
-                    <div id="temperature-high" style="font-size: xx-large; text-align: center; width: 50px; position: absolute; top: 185px; right: 98px; display: none">80</div>
-                    <div id="temperature-low" style="font-size: xx-large; text-align: center; width: 50px; position: absolute; top: 399px; right: 98px; display: none">60</div>
+                    <div id="temperature-high" style="font-size: xx-large; text-align: center; width: 50px; position: absolute; top: 185px; right: 98px; color: white; display: none">80</div>
+                    <div id="temperature-low" style="font-size: xx-large; text-align: center; width: 50px; position: absolute; top: 399px; right: 98px;  color: white; display: none">60</div>
                     <div style="position: absolute; left: 90px; top: 118px; width: 450px; height: 385px; padding: 10px; z-index: 2">
                         <div id="quizQuestionAnswers" style="display: none">
                             <p id="question" style="font-size: large">Do you see a problem here?</p>
