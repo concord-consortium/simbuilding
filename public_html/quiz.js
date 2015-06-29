@@ -112,6 +112,7 @@ function updateQuiz() {
                         type: 'button',
                         value: answer
                     });
+                    answerTag.css("margin-right", "5px");
                     answerTag.appendTo('#answers');
                     answerTag.click(selectedQuizData.Answers[i], function (e) {
                         $("#quizQuestionAnswers").hide();
@@ -153,7 +154,7 @@ function updateQuiz() {
                 $("#quizQuestionAnswers").delay(3000).fadeIn();
         } else {
             quizInProgress = false;
-            $("#quizQuestionAnswers").fadeOut();
+            $("#quizQuestionAnswers").stop(true, false).fadeOut();
             $("#quizCorrect").fadeOut();
             $("#quizIncorrect").fadeOut();
             $("#quizAlreadyChecked").fadeOut();
