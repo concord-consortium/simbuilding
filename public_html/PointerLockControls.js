@@ -245,6 +245,7 @@ THREE.PointerLockControls = function (camera) {
         yawObject.translateX(velocityMove.x * delta);
         yawObject.translateZ(velocityMove.z * delta);
         this.adjustCameraPositionForCollision();
+        this.updateWhichRoom(yawObject.position);
         updateQuiz();
 
         prevTime = time;
@@ -288,6 +289,32 @@ THREE.PointerLockControls = function (camera) {
                 yawObject.position.x = newPosition.x;
                 yawObject.position.z = newPosition.z;
             }
+        }
+    };
+
+    this.updateWhichRoom = function (position) {
+        room = 0;
+        if (position.y < 2.5) {
+            if (position.x > 3.15 && position.x < 7.5 && position.z > 0.1 && position.z < 3.8)
+                room = 1;
+            else if (position.x > 9.5 && position.x < 13.5 && position.z > 0.1 && position.z < 3.8)
+                room = 2;
+            else if (position.x > 8 && position.x < 13.5 && position.z > -5 && position.z < -0.5)
+                room = 3;
+            else if (position.x > 1.5 && position.x < 8 && position.z > -6 && position.z < -3)
+                room = 4; // kitchen
+        } else if (position.y < 5) {
+            if (position.x > 10 && position.x < 13.5 && position.z > 1 && position.z < 3.8)
+                room = 5; // red room
+            else if (position.x > 10 && position.x < 13.5 && position.z > -5 && position.z < -2.3)
+                room = 6; // blue room
+            else if (position.x > 6.4 && position.x < 9.5 && position.z > -5 && position.z < -2.3)
+                room = 7; // green room
+            else if (position.x > 3.15 && position.x < 8.5 && position.z > 0.14 && position.z < 3.8)
+                room = 8;
+            else if (position.x > 8 && position.x < 10.6 && position.z > -1.7 && position.z < 0)
+                room = 9; // upstairs hull way
+
         }
     };
 
