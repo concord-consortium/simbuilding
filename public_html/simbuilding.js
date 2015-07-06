@@ -12,7 +12,6 @@ var renderer;
 var composer, composerIR;
 var camera;
 var scene;
-var sceneTop;
 var sceneRoot;
 var land;
 var viewerHeight = 1.3;
@@ -25,7 +24,6 @@ var doors = [];
 var collisionPartsWithoutDoors = [];
 var renderPass, copyPass, colorifyPass;
 var blowdoorMode = false;
-var room = 0;
 
 function startSimBuilding() {
     polyfill();
@@ -34,7 +32,6 @@ function startSimBuilding() {
     window.addEventListener('resize', handleWindowResize, false);
 
     scene = new THREE.Scene();
-    sceneTop = new THREE.Scene();
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     camControl = new THREE.PointerLockControls(camera);
@@ -105,11 +102,6 @@ function render() {
                 hotSpotsHidden.visible = true;
 
                 composerIR.render(delta);
-
-                for (var i = 0; i < hotSpotsHidden.children.length; i++)
-                    hotSpotsHidden.children[i].visible = i === room;
-                renderer.clearDepth();
-                renderer.render(sceneTop, camera);
             } else
                 doRender = true;
         }
