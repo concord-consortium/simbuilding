@@ -245,6 +245,7 @@ THREE.PointerLockControls = function (camera) {
         yawObject.translateX(velocityMove.x * delta);
         yawObject.translateZ(velocityMove.z * delta);
         this.adjustCameraPositionForCollision();
+        this.updateWhichRoom(yawObject.position);
         updateQuiz();
 
         prevTime = time;
@@ -289,6 +290,13 @@ THREE.PointerLockControls = function (camera) {
                 yawObject.position.z = newPosition.z;
             }
         }
+    };
+
+    this.updateWhichRoom = function (position) {
+        if (position.x > 1.5 && position.x < 13.5 && position.z > -6 && position.z < 3.8)
+            showHotspots = true;
+        else
+            showHotspots = false;
     };
 
     this.needsUpdate = function () {

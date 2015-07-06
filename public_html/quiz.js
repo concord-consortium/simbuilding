@@ -131,7 +131,7 @@ function updateQuiz() {
                 $("#answers").append("<br/><br/>");
                 var tipTag = jQuery('<input/>', {
                     type: 'button',
-                    value: '?'
+                    value: 'Hint'
                 });
                 tipTag.appendTo('#answers');
                 tipTag.click(selectedQuizData, function (e) {

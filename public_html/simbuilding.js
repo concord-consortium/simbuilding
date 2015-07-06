@@ -24,6 +24,7 @@ var doors = [];
 var collisionPartsWithoutDoors = [];
 var renderPass, copyPass, colorifyPass;
 var blowdoorMode = false;
+var showHotspots = false;
 
 function startSimBuilding() {
     polyfill();
@@ -99,7 +100,7 @@ function render() {
                 camera.fov = 25;
                 camera.aspect = 1;
                 camera.updateProjectionMatrix();
-                hotSpotsHidden.visible = true;
+                hotSpotsHidden.visible = showHotspots;
 
                 composerIR.render(delta);
             } else
@@ -313,12 +314,14 @@ function handleWindowResize() {
 }
 
 function pickHotspot(x, y) {
+    if (!showHotspots)
+        return undefined;
     var p = new THREE.Vector3(x, y, 0);
     p.unproject(camera);
     var position = camControl.getObject().position.clone();
     var direction = p.sub(position).normalize();
     var raycaster = new THREE.Raycaster(position, direction);
-    var intersects = raycaster.intersectObject(hotSpotsRoot, true);
+    var intersects = raycaster.intersectObject(scene, true);
     if (intersects.length > 0)
         return intersects[0].object.userData.id;
     else
