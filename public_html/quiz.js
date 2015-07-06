@@ -148,10 +148,11 @@ function updateQuiz() {
             $("#quizImage").fadeIn();
             $("#temperature-high").fadeIn();
             $("#temperature-low").fadeIn();
+            $("#minimize").delay(1000).fadeIn();
             if (alreadyAnswered.indexOf(newHotspot) !== -1)
                 $("#quizAlreadyChecked").show();
             else
-                $("#quizQuestionAnswers").delay(3000).fadeIn();
+                $("#quizQuestionAnswers").delay(1000).fadeIn();
         } else {
             quizInProgress = false;
             $("#quizQuestionAnswers").stop(true, false).fadeOut();
@@ -161,8 +162,18 @@ function updateQuiz() {
             $("#quizImage").fadeOut();
             $("#temperature-high").fadeOut();
             $("#temperature-low").fadeOut();
+            $("#minimize").fadeOut();
         }
     }
+}
+
+function toggleQuizMinimize() {
+    var invisible = $("#quizQuestionAnswers").css("display") === "none";
+    $("#minimize").attr("value", invisible ? "\u25B2" : "\u25BC");
+    if (invisible)
+        $("#quizQuestionAnswers").fadeIn();
+    else
+        $("#quizQuestionAnswers").fadeOut();
 }
 
 function initHotspots() {
