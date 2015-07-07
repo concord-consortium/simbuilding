@@ -1,7 +1,6 @@
-/* global THREE, scene, blowdoorMode */
+/* global THREE, scene, blowdoorMode, selectedTool */
 
 "use strict";
-
 var score = 0;
 var hotspot = -1;
 var quizInProgress = false;
@@ -9,7 +8,6 @@ var alreadyAnswered = [];
 var hotSpotsRoot;
 var hotSpotsHidden;
 var quizData;
-
 function initQuiz() {
     $.getJSON('scenarios.json', function (data) {
         quizData = data;
@@ -22,11 +20,8 @@ function answer(userAnswer) {
         expectedAnswer = true;
     else
         expectedAnswer = false;
-
     quizInProgress = true;
-
     $("#quizYesNo").hide();
-
     if (expectedAnswer === userAnswer) {
         if (expectedAnswer === false) {
             score++;
@@ -63,7 +58,6 @@ function answer(userAnswer) {
     $("#quizMulti").fadeIn();
     $("input[name=answer]").hide();
     $("label").hide();
-
     for (var i = 0; i < answers.length; i++) {
         var radio = $("input[id=quiz" + i + "]");
         radio.show();
@@ -82,7 +76,6 @@ function answerMulti() {
     }
 
     $("#quizMulti").hide();
-
     if ($("input[id=quiz" + expectedAnswer + "]").is(':checked')) {
         score++;
         $("#score").text(score);
@@ -93,57 +86,57 @@ function answerMulti() {
 }
 
 function updateQuiz() {
-    var newHotspot = pickHotspot(0, 0);
-    if (hotspot !== newHotspot) {
+    var y = 0;
+    if (selectedTool === 1)
+        y = 0.15;
+    var newHotspot = pickHotspot(0, y);
+    if (hotspot !== newHotspot && Number.isInteger(newHotspot)) {
         hotspot = newHotspot;
-        if (newHotspot) {
-            $("[id^=quiz]").hide();
-            var filename;
-            if (Number.isInteger(newHotspot)) {
-                var selectedQuizData;
-                for (var i = 0; i < quizData.length && !selectedQuizData; i++)
-                    if (quizData[i].ID === newHotspot)
-                        selectedQuizData = quizData[i];
-                $("#question").text(selectedQuizData.Question);
-                $("#answers").empty();
-                for (var i = 0; i < selectedQuizData.Answers.length; i++) {
-                    var answer = selectedQuizData.Answers[i].Answer;
-                    var answerTag = jQuery('<input/>', {
-                        type: 'button',
-                        value: answer
-                    });
-                    answerTag.css("margin-right", "5px");
-                    answerTag.appendTo('#answers');
-                    answerTag.click(selectedQuizData.Answers[i], function (e) {
-                        $("#quizQuestionAnswers").hide();
-                        var resultDiv;
-                        if (e.data.Correct) {
-                            resultDiv = $("#quizCorrect");
-                            score++;
-                            $("#score").text(score);
-                        } else
-                            resultDiv = $("#quizIncorrect");
-                        resultDiv.text(e.data.Feedback);
-                        resultDiv.fadeIn();
-                        alreadyAnswered.push(hotspot);
-                    });
-                }
-                $("#answers").append("<br/><br/>");
-                var tipTag = jQuery('<input/>', {
+        $("[id^=quiz]").hide();
+        var selectedQuizData;
+        for (var i = 0; i < quizData.length && !selectedQuizData; i++)
+            if (quizData[i].ID === newHotspot)
+                selectedQuizData = quizData[i];
+        if (selectedTool === 0) {
+            $("#question").text(selectedQuizData.Question);
+            $("#answers").empty();
+            for (var i = 0; i < selectedQuizData.Answers.length; i++) {
+                var answer = selectedQuizData.Answers[i].Answer;
+                var answerTag = jQuery('<input/>', {
                     type: 'button',
-                    value: 'Hint'
+                    value: answer
                 });
-                tipTag.appendTo('#answers');
-                tipTag.click(selectedQuizData, function (e) {
-                    if (!$("#answers").children().last().is("p"))
-                        $("#answers").append("<p>" + e.data.Tip + "</p>");
+                answerTag.css("margin-right", "5px");
+                answerTag.appendTo('#answers');
+                answerTag.click(selectedQuizData.Answers[i], function (e) {
+                    $("#quizQuestionAnswers").hide();
+                    var resultDiv;
+                    if (e.data.Correct) {
+                        resultDiv = $("#quizCorrect");
+                        score++;
+                        $("#score").text(score);
+                    } else
+                        resultDiv = $("#quizIncorrect");
+                    resultDiv.text(e.data.Feedback);
+                    resultDiv.fadeIn();
+                    alreadyAnswered.push(hotspot);
                 });
-                if (blowdoorMode)
-                    filename = selectedQuizData.ThermogramWithBlowerDoor;
-                else
-                    filename = selectedQuizData.ThermogramWithoutBlowerDoor;
-            } else
-                filename = newHotspot + ".jpg";
+            }
+            $("#answers").append("<br/><br/>");
+            var tipTag = jQuery('<input/>', {
+                type: 'button',
+                value: 'Hint'
+            });
+            tipTag.appendTo('#answers');
+            tipTag.click(selectedQuizData, function (e) {
+                if (!$("#answers").children().last().is("p"))
+                    $("#answers").append("<p>" + e.data.Tip + "</p>");
+            });
+            var filename;
+            if (blowdoorMode)
+                filename = selectedQuizData.ThermogramWithBlowerDoor;
+            else
+                filename = selectedQuizData.ThermogramWithoutBlowerDoor;
             $("#quizImage").attr("src", "resources/images/" + filename);
             $("#quizImage").fadeIn();
             $("#temperature-high").fadeIn();
@@ -154,17 +147,21 @@ function updateQuiz() {
                 $("#quizAlreadyChecked").show();
             else
                 $("#quizQuestionAnswers").delay(1000).fadeIn();
-        } else {
-            quizInProgress = false;
-            $("#quizQuestionAnswers").stop(true, false).fadeOut();
-            $("#quizCorrect").fadeOut();
-            $("#quizIncorrect").fadeOut();
-            $("#quizAlreadyChecked").fadeOut();
-            $("#quizImage").fadeOut();
-            $("#temperature-high").fadeOut();
-            $("#temperature-low").fadeOut();
-            $("#minimize").fadeOut();
+        } else if (selectedTool === 1) {
+            $("#moisture-value").text(selectedQuizData.Moisture ? (selectedQuizData.Moisture + ".0") : "");
         }
+    } else if (!newHotspot) {
+        hotspot = null;
+        quizInProgress = false;
+        $("#moisture-value").text("");
+        $("#quizQuestionAnswers").stop(true, false).fadeOut();
+        $("#quizCorrect").fadeOut();
+        $("#quizIncorrect").fadeOut();
+        $("#quizAlreadyChecked").fadeOut();
+        $("#quizImage").fadeOut();
+        $("#temperature-high").fadeOut();
+        $("#temperature-low").fadeOut();
+        $("#minimize").fadeOut();
     }
 }
 
@@ -184,10 +181,8 @@ function initHotspots() {
     hotSpotsRoot.add(hotSpotsVisible);
     hotSpotsHidden = new THREE.Object3D();
     hotSpotsRoot.add(hotSpotsHidden);
-
     var geom = new THREE.SphereGeometry(0.1, 20, 20);
     var whiteMaterial = new THREE.MeshBasicMaterial();
-
     // Windows
 //    initHotspotSingle("window-1g", 4.4, 2.35, 4.2, geom, whiteMaterial);
     initHotspotSingle(24, 4.4, 2.35, 4.2, geom, whiteMaterial);
@@ -273,7 +268,6 @@ function initHotspots() {
     initHotspotSingle(3, 10, 5.8, -1, geom, whiteMaterial);
 //    initHotspotSingle("attic-1g", 3.65, 5.8, 1, geom, whiteMaterial);
     initHotspotSingle(4, 3.65, 5.8, 1, geom, whiteMaterial);
-
     var shadeMaterial = new THREE.MeshPhongMaterial();
     shadeMaterial.emissive = new THREE.Color(0x555555);
     var hotSpot = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.03, 20, 1), shadeMaterial);

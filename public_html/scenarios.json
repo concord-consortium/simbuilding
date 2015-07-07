@@ -114,7 +114,7 @@
       },
       {
         "Answer": "No",
-        "Feedback": "Incorrect.  No socks or slippers necessary! The floor is well insulated, as shown by the even temperature across the IR image. "
+        "Feedback": "Incorrect. No socks or slippers necessary! The floor is well insulated, as shown by the even temperature across the IR image."
       },
       {
         "Answer": "Don't know",
@@ -293,6 +293,7 @@
     "ThermogramWithoutBlowerDoor": "wall-1g.jpg",
     "ThermogramWithBlowerDoor": "wall-1g.jpg",
     "Question": "Is the purple on the wall water damage or wall structure?",
+    "Moisture" : 5,
     "Tip": "Try using the moisture sensor. Compare this image to images of other walls. Are the purple lines consistent across all walls?",
     "Answers": [
       {
@@ -362,7 +363,8 @@
     "ThermogramWithoutBlowerDoor": "wall-3b.jpg",
     "ThermogramWithBlowerDoor": "wall-3b.jpg",
     "Question": "What substance is making splotches of the wall cooler?",
-    "Tip": "Try using the moisture sensor.",
+    "Moisture" : 30,
+    "Tip": "Try using the moisture sensor.",    
     "Answers": [
       {
         "Answer": "Cold air from outside",
@@ -501,6 +503,7 @@
     "ThermogramWithoutBlowerDoor": "window-1b.jpg",
     "ThermogramWithBlowerDoor": "window-1b.jpg",
     "Question": "The purple splotches on the window frame indicate what kind of damage?",
+    "Moisture" : 50,
     "Tip": " Try using the moisture sensor.",
     "Answers": [
       {
@@ -524,6 +527,7 @@
     "ThermogramWithoutBlowerDoor": "window-1g.jpg",
     "ThermogramWithBlowerDoor": "window-1g.jpg",
     "Question": "Is this wooden window frame at risk for mold?",
+    "Moisture" : 5,
     "Tip": " Try using the moisture sensor.",
     "Answers": [
       {
@@ -547,6 +551,7 @@
     "ThermogramWithoutBlowerDoor": "window-1g.jpg",
     "ThermogramWithBlowerDoor": "window-1g.jpg",
     "Question": "What could cause this watercolor effect on the ceiling crown?",
+    "Moisture" : 30,
     "Tip": " Try using the moisture sensor.",
     "Answers": [
       {
@@ -570,6 +575,7 @@
     "ThermogramWithoutBlowerDoor": "window-2g.jpg",
     "ThermogramWithBlowerDoor": "window-2g.jpg",
     "Question": "Is the wall around this window at risk for rot and mold?",
+    "Moisture" : 30,
     "Tip": " Try using the moisture sensor.",
     "Answers": [
       {

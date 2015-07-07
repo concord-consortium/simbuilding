@@ -23,6 +23,7 @@ var doorToBeClosed = [];
 var doors = [];
 var collisionPartsWithoutDoors = [];
 var renderPass, copyPass, colorifyPass;
+var selectedTool = -1;
 var blowdoorMode = false;
 var showHotspots = false;
 
@@ -88,7 +89,7 @@ function render() {
         camera.fov = 65;
         camera.aspect = window.innerWidth / window.innerHeight * 0.8;
         camera.updateProjectionMatrix();
-        hotSpotsHidden.visible = false;
+        hotSpotsHidden.visible = showHotspots && selectedTool > 0;
 
         renderer.clear();
         composer.render(delta);
@@ -409,6 +410,8 @@ function animateDoor() {
 }
 
 function toggleTool(tool) {
+    selectedTool = tool;
+    hotspot = null;
     if (tool === 3) {
         blowdoorMode = !blowdoorMode;
         document.getElementById("fan").src = "resources/images/retrotec-" + (blowdoorMode ? "animated2.gif" : "still.gif");
