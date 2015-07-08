@@ -8,6 +8,9 @@ var alreadyAnswered = [];
 var hotSpotsRoot;
 var hotSpotsHidden;
 var quizData;
+var whiteMaterial = new THREE.MeshBasicMaterial();
+var greyMaterial = new THREE.MeshBasicMaterial({color: 0x555555});
+
 function initQuiz() {
     $.getJSON('scenarios.json', function (data) {
         quizData = data;
@@ -114,12 +117,27 @@ function updateQuiz() {
                     if (e.data.Correct) {
                         resultDiv = $("#quizCorrect");
                         score++;
-                        $("#score").text(score);
-                    } else
+                        $("#score").css("background-color", "green");
+                        alreadyAnswered.push(hotspot);
+                        for (var i = 0; i < hotSpotsHidden.children.length; i++)
+                            if (hotSpotsHidden.children[i].userData.id === hotspot)
+                                hotSpotsHidden.children[i].material = greyMaterial;
+                    } else {
+                        score--;
+                        $("#score").css("background-color", "red");
                         resultDiv = $("#quizIncorrect");
-                    resultDiv.text(e.data.Feedback);
+                    }
+                    $("#score").animate({
+                        opacity: 0.25
+                    }, 1000, function () {
+                        $("#score").text("Score: " + score);
+                    }).animate({
+                        opacity: 1
+                    }, 1000, function () {
+                        $("#score").css("background-color", "black");
+                    });
+                    resultDiv.html("<br/>" + e.data.Feedback);
                     resultDiv.fadeIn();
-                    alreadyAnswered.push(hotspot);
                 });
             }
             $("#answers").append("<br/><br/>");
@@ -182,7 +200,6 @@ function initHotspots() {
     hotSpotsHidden = new THREE.Object3D();
     hotSpotsRoot.add(hotSpotsHidden);
     var geom = new THREE.SphereGeometry(0.1, 20, 20);
-    var whiteMaterial = new THREE.MeshBasicMaterial();
     // Windows
 //    initHotspotSingle("window-1g", 4.4, 2.35, 4.2, geom, whiteMaterial);
     initHotspotSingle(24, 4.4, 2.35, 4.2, geom, whiteMaterial);
