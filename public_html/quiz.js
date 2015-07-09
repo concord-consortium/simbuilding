@@ -2,6 +2,7 @@
 
 "use strict";
 var score = 0;
+var found = 0;
 var hotspot = -1;
 var quizInProgress = false;
 var alreadyAnswered = [];
@@ -14,6 +15,7 @@ var greyMaterial = new THREE.MeshBasicMaterial({color: 0x555555});
 function initQuiz() {
     $.getJSON('scenarios.json', function (data) {
         quizData = data;
+        $("#found").text("0 / " + quizData.length);
     });
 }
 
@@ -125,6 +127,8 @@ function updateQuiz() {
 
                 answerTag.click(selectedQuizData.Answers[i], function (e) {
                     $("#quizQuestionAnswers").hide();
+                    if (!alreadyAnswered[hotspot])
+                        $("#found").text(++found + " / " + quizData.length);
                     alreadyAnswered[hotspot] = {answer: e.data.Answer};
                     var resultDiv;
                     if (e.data.Correct) {
