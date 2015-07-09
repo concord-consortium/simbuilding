@@ -144,6 +144,7 @@ function updateQuiz() {
                         $("#score").css("background-color", "red");
                         resultDiv = $("#quizIncorrect");
                     }
+                    $("#found").text(++found + " / 50");
                     $("#score").animate({
                         opacity: 0.25
                     }, 1000, function () {
