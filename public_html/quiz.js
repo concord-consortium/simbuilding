@@ -102,23 +102,36 @@ function updateQuiz() {
                 selectedQuizData = quizData[i];
         if (selectedTool === 0) {
             $("#question").text(selectedQuizData.Question);
+            if (alreadyAnswered[hotspot]) {
+                $("#lastAnswer").show();
+                $("#lastAnswer").html("(Your last answer is <span style='color: " + (alreadyAnswered[hotspot].correct ? "green'>" : "red'>") + (alreadyAnswered[hotspot].correct ? "correct" : "incorrect") + "</span>)");
+            } else
+                $("#lastAnswer").hide();
             $("#answers").empty();
             for (var i = 0; i < selectedQuizData.Answers.length; i++) {
                 var answer = selectedQuizData.Answers[i].Answer;
                 var answerTag = jQuery('<input/>', {
-                    type: 'button',
-                    value: answer
+                    type: 'radio',
+                    id: answer
                 });
-                answerTag.css("margin-right", "5px");
+                if (alreadyAnswered[hotspot] && answer === alreadyAnswered[hotspot].answer)
+                    answerTag.attr("checked", "checked");
                 answerTag.appendTo('#answers');
+                var labelTag = jQuery('<label/>', {
+                    for : answer
+                });
+                labelTag.text(answer);
+                labelTag.appendTo('#answers');
+
                 answerTag.click(selectedQuizData.Answers[i], function (e) {
                     $("#quizQuestionAnswers").hide();
+                    alreadyAnswered[hotspot] = {answer: e.data.Answer};
                     var resultDiv;
                     if (e.data.Correct) {
                         resultDiv = $("#quizCorrect");
                         score++;
+                        alreadyAnswered[hotspot].correct = true;
                         $("#score").css("background-color", "green");
-                        alreadyAnswered.push(hotspot);
                         for (var i = 0; i < hotSpotsHidden.children.length; i++)
                             if (hotSpotsHidden.children[i].userData.id === hotspot)
                                 hotSpotsHidden.children[i].material = greyMaterial;
