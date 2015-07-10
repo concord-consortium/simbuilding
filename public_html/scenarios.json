@@ -85,7 +85,7 @@
     "Tip": "Is the temperature of the floor close to the warm temperature of the walls?",
     "Answers": [
       {
-        "Answer": "No",
+        "Answer": "Yes",
         "Feedback": "Correct! Time to break out the bunny slippers and fuzzy socks.",
         "Correct": true
       },
