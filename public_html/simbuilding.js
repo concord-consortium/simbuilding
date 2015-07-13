@@ -410,7 +410,6 @@ function animateDoor() {
 }
 
 function toggleTool(tool) {
-    selectedTool = tool;
     hotspot = null;
     if (tool === 3) {
         blowdoorMode = !blowdoorMode;
@@ -418,6 +417,7 @@ function toggleTool(tool) {
         hotspot = null;
         updateQuiz();
     } else {
+        selectedTool = tool;
         if (tool !== 0)
             $("#tool-ircamera-small").animate({opacity: 1});
         if (tool !== 1)

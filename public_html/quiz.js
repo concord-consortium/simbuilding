@@ -93,7 +93,7 @@ function answerMulti() {
 function updateQuiz() {
     var y = 0;
     if (selectedTool === 1)
-        y = 0.15;
+        y = 0.5;
     var newHotspot = pickHotspot(0, y);
     if (hotspot !== newHotspot && Number.isInteger(newHotspot)) {
         hotspot = newHotspot;
