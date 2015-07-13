@@ -324,7 +324,7 @@ function pickHotspot(x, y) {
     var raycaster = new THREE.Raycaster(position, direction);
     var intersects = raycaster.intersectObject(scene, true);
     if (intersects.length > 0)
-        return intersects[0].object.userData.id;
+        return intersects[0].object;
     else
         return undefined;
 }

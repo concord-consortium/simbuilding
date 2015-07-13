@@ -3,7 +3,7 @@
 "use strict";
 var score = 0;
 var found = 0;
-var hotspot = -1;
+var hotspot = undefined;
 var quizInProgress = false;
 var alreadyAnswered = [];
 var hotSpotsRoot;
@@ -15,7 +15,6 @@ var greyMaterial = new THREE.MeshBasicMaterial({color: 0x555555});
 function initQuiz() {
     $.getJSON('scenarios.json', function (data) {
         quizData = data;
-        $("#found").text("Found: 0 / Total: " + quizData.length);
     });
 }
 
@@ -95,18 +94,36 @@ function updateQuiz() {
     if (selectedTool === 1)
         y = 0.5;
     var newHotspot = pickHotspot(0, y);
-    if (hotspot !== newHotspot && Number.isInteger(newHotspot)) {
+    if (newHotspot)
+        if (!Number.isInteger(newHotspot.userData.id))
+            newHotspot = undefined;
+
+    if (hotspot === newHotspot)
+        return;
+    else if (!newHotspot) {
+        hotspot = undefined;
+        quizInProgress = false;
+        $("#moisture-value").text("");
+        $("#quizQuestionAnswers").stop(true, false).fadeOut();
+        $("#quizCorrect").fadeOut();
+        $("#quizIncorrect").fadeOut();
+        $("#quizAlreadyChecked").fadeOut();
+        $("#quizImage").fadeOut();
+        $("#temperature-high").fadeOut();
+        $("#temperature-low").fadeOut();
+        $("#minimize").fadeOut();
+    } else {
         hotspot = newHotspot;
         $("[id^=quiz]").hide();
         var selectedQuizData;
         for (var i = 0; i < quizData.length && !selectedQuizData; i++)
-            if (quizData[i].ID === newHotspot)
+            if (quizData[i].ID === hotspot.userData.id)
                 selectedQuizData = quizData[i];
         if (selectedTool === 0) {
             $("#question").text(selectedQuizData.Question);
-            if (alreadyAnswered[hotspot]) {
+            if (alreadyAnswered[hotspot.id]) {
                 $("#lastAnswer").show();
-                $("#lastAnswer").html("(Your last answer is <span style='color: " + (alreadyAnswered[hotspot].correct ? "green'>" : "red'>") + (alreadyAnswered[hotspot].correct ? "correct" : "incorrect") + "</span>)");
+                $("#lastAnswer").html("(Your last answer is <span style='color: " + (alreadyAnswered[hotspot.id].Correct ? "green'>" : "red'>") + (alreadyAnswered[hotspot.id].Correct ? "correct" : "incorrect") + "</span>)");
             } else
                 $("#lastAnswer").hide();
             $("#answers").empty();
@@ -116,7 +133,7 @@ function updateQuiz() {
                     type: 'radio',
                     id: answer
                 });
-                if (alreadyAnswered[hotspot] && answer === alreadyAnswered[hotspot].answer)
+                if (alreadyAnswered[hotspot.id] && answer === alreadyAnswered[hotspot.id].Answer)
                     answerTag.attr("checked", "checked");
                 answerTag.appendTo('#answers');
                 var labelTag = jQuery('<label/>', {
@@ -127,18 +144,19 @@ function updateQuiz() {
 
                 answerTag.click(selectedQuizData.Answers[i], function (e) {
                     $("#quizQuestionAnswers").hide();
-                    if (!alreadyAnswered[hotspot])
-                        $("#found").text("Found: " + ++found + " / Total: " + quizData.length);
-                    alreadyAnswered[hotspot] = {answer: e.data.Answer};
+                    if (!alreadyAnswered[hotspot.id])
+                        $("#found").text("Found: " + ++found + " / Total: " + hotSpotsHidden.children.length);
+                    alreadyAnswered[hotspot] = e.data;
                     var resultDiv;
                     if (e.data.Correct) {
                         resultDiv = $("#quizCorrect");
                         score++;
-                        alreadyAnswered[hotspot].correct = true;
                         $("#score").css("background-color", "green");
                         for (var i = 0; i < hotSpotsHidden.children.length; i++)
-                            if (hotSpotsHidden.children[i].userData.id === hotspot)
+                            if (hotSpotsHidden.children[i] === hotspot) {
                                 hotSpotsHidden.children[i].material = greyMaterial;
+                                break;
+                            }
                     } else {
                         score--;
                         $("#score").css("background-color", "red");
@@ -178,25 +196,13 @@ function updateQuiz() {
             $("#temperature-low").fadeIn();
             $("#minimize").attr("value", "\u25B2");
             $("#minimize").delay(1000).fadeIn();
-            if (alreadyAnswered.indexOf(newHotspot) !== -1)
+            if (alreadyAnswered.indexOf(hotspot.id) !== -1)
                 $("#quizAlreadyChecked").show();
             else
                 $("#quizQuestionAnswers").delay(1000).fadeIn();
         } else if (selectedTool === 1) {
             $("#moisture-value").text(selectedQuizData.Moisture ? (selectedQuizData.Moisture + ".0") : "");
         }
-    } else if (!newHotspot) {
-        hotspot = null;
-        quizInProgress = false;
-        $("#moisture-value").text("");
-        $("#quizQuestionAnswers").stop(true, false).fadeOut();
-        $("#quizCorrect").fadeOut();
-        $("#quizIncorrect").fadeOut();
-        $("#quizAlreadyChecked").fadeOut();
-        $("#quizImage").fadeOut();
-        $("#temperature-high").fadeOut();
-        $("#temperature-low").fadeOut();
-        $("#minimize").fadeOut();
     }
 }
 
@@ -312,6 +318,8 @@ function initHotspots() {
     hotSpot.userData.id = 4;
     hotSpot.position.set(10, 3, -2.8);
     hotSpotsVisible.add(hotSpot);
+
+    $("#found").text("Found: 0 / Total: " + hotSpotsHidden.children.length);
 }
 
 function initHotspotSingle(id, x, y, z, geometry, material) {
