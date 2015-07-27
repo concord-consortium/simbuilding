@@ -105,7 +105,7 @@
         "Correct": true
       },
       {
-        "Answer": "No",
+        "Answer": "Yes",
         "Feedback": "Incorrect! You must like having cold toes! This floor is poorly insulated and would be very cold to walk on."
       },
       {
@@ -340,11 +340,13 @@
       },
       {
         "Answer": "Poor insulation",
-        "Feedback": "Yes, possibly. Mice and rats eat and move insulation around in the walls to make nests. Compressed, missing, or wet insulation would appear colder in the IR image. Further investigation is required."
+        "Feedback": "Yes, possibly. Mice and rats eat and move insulation around in the walls to make nests. Compressed, missing, or wet insulation would appear colder in the IR image. Further investigation is required.",
+        "Correct": true
       },
       {
         "Answer": "Water",
-        "Feedback": "Yes, possibly. Mice and rats eat and move insulation around in the walls to make nests. Compressed, missing, or wet insulation would appear colder in the IR image. Further investigation is required."
+        "Feedback": "Yes, possibly. Mice and rats eat and move insulation around in the walls to make nests. Compressed, missing, or wet insulation would appear colder in the IR image. Further investigation is required.",
+        "Correct": true
       }
     ]
   },
