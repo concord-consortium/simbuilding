@@ -92,7 +92,10 @@ function answerMulti() {
 function updateQuiz() {
     var y = 0;
     if (selectedTool === 1)
-        y = 0.5;
+        y = -((window.innerHeight - 546.5) / window.innerHeight * 2.0 - 1);
+    else if (selectedTool === 2)
+        y = -((window.innerHeight - 470.5) / window.innerHeight * 2.0 - 1);
+
     var newHotspot = pickHotspot(0, y);
     if (newHotspot)
         if (!Number.isInteger(newHotspot.userData.id))
