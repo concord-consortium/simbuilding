@@ -457,3 +457,34 @@ function polyfill() {
                 Math.floor(value) === value;
     };
 }
+
+function toggleToolbox(state) {
+  if (state == 'open' || state == 'close') {
+    var function_name = state + 'Toolbox';
+    window[function_name]();
+  } else {
+    if (toolbox.style.backgroundImage.search('closed') > -1) {
+      openToolbox();
+    } else {
+      closeToolbox();
+    }
+  }
+}
+
+function openToolbox() {
+  var toolbox = document.getElementById('toolbox');
+  var tool_links = document.querySelectorAll('#toolbox a');
+  toolbox.style.backgroundImage = 'url(resources/images/toolbox-open.png)';
+  for (var i = 0; i < tool_links.length; i++) {
+    tool_links[i].style.display = 'inline';
+  }
+} 
+
+function closeToolbox() {
+  var toolbox = document.getElementById('toolbox');
+  var tool_links = document.querySelectorAll('#toolbox a');
+  toolbox.style.backgroundImage = 'url(resources/images/toolbox-closed.png)';
+  for (var i = 0; i < tool_links.length; i++) {
+    tool_links[i].style.display = 'none';
+  }
+}
