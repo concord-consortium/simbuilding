@@ -10,8 +10,20 @@ THREE.PointerLockControls = function (camera) {
 
     var yawObject = new THREE.Object3D();
     yawObject.rotation.order = "ZYX";
-    yawObject.position.y = 10;
+//    yawObject.position.y = 10;
     yawObject.add(pitchObject);
+
+//    localStorage.clear();
+    if (localStorage.cameraX) {
+        yawObject.position.x = parseFloat(localStorage.cameraX);
+        yawObject.position.y = parseFloat(localStorage.cameraY);
+        yawObject.position.z = parseFloat(localStorage.cameraZ);
+        pitchObject.rotation.x = parseFloat(localStorage.cameraRotX);
+        yawObject.rotation.y = parseFloat(localStorage.cameraRotY);
+    } else {
+        yawObject.position.x = 8.5;
+        yawObject.position.z = 10;
+    }
 
     var enabled = true;
     var isMouseDown = false;
@@ -247,6 +259,12 @@ THREE.PointerLockControls = function (camera) {
         this.adjustCameraPositionForCollision();
         this.updateWhichRoom(yawObject.position);
         updateQuiz();
+
+        localStorage.cameraX = yawObject.position.x;
+        localStorage.cameraY = yawObject.position.y;
+        localStorage.cameraZ = yawObject.position.z;
+        localStorage.cameraRotX = pitchObject.rotation.x;
+        localStorage.cameraRotY = yawObject.rotation.y;
 
         prevTime = time;
     };

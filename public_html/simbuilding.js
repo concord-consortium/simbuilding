@@ -17,6 +17,7 @@ var land;
 var viewerHeight = 1.3;
 var hoveredObject;
 var doRender;
+var firstRender = true;
 var irMode = false;
 var doorToBeOpened = [];
 var doorToBeClosed = [];
@@ -39,8 +40,6 @@ function startSimBuilding() {
     camControl = new THREE.PointerLockControls(camera);
     camControl.enabled = true;
     scene.add(camControl.getObject());
-    camControl.getObject().position.x = 8.5;
-    camControl.getObject().position.z = 10;
 
     renderer = new THREE.WebGLRenderer({antialias: false});
     renderer.setClearColor(0x062A78);
@@ -77,12 +76,16 @@ function render() {
     var doRenderVal = doRender || camControl.needsUpdate() || doorToBeOpened.length !== 0 || doorToBeClosed.length !== 0;
     requestAnimationFrame(render);
     if (doRenderVal) {
-        doRender = false;
+        if (!firstRender)
+            doRender = false;
+//        doRender = true;
         stats.update();
         var delta = clock.getDelta();
         if (camControl.needsUpdate())
             camControl.update(delta);
-        enforceCameraGravity();
+        if (!firstRender)
+            enforceCameraGravity();
+        firstRender = false;
         animateDoor();
 
         renderer.setViewport(0, 0, window.innerWidth, window.innerHeight);
