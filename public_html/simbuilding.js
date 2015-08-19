@@ -463,7 +463,9 @@ function toggleToolbox(state) {
     var function_name = state + 'Toolbox';
     window[function_name]();
   } else {
-    if (toolbox.style.backgroundImage.search('closed') > -1) {
+    var toolbox = document.getElementById('toolbox');
+    var toolbox_bg = toolbox.currentStyle || window.getComputedStyle(toolbox, false);
+    if (toolbox_bg.backgroundImage.search('closed') > -1) {
       openToolbox();
     } else {
       closeToolbox();
