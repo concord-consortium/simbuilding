@@ -10,10 +10,8 @@ THREE.PointerLockControls = function (camera) {
 
     var yawObject = new THREE.Object3D();
     yawObject.rotation.order = "ZYX";
-//    yawObject.position.y = 10;
     yawObject.add(pitchObject);
 
-//    localStorage.clear();
     if (localStorage.cameraX) {
         yawObject.position.x = parseFloat(localStorage.cameraX);
         yawObject.position.y = parseFloat(localStorage.cameraY);
@@ -129,7 +127,6 @@ THREE.PointerLockControls = function (camera) {
             key = event.key;
         else if (event.which)
             key = event.which;
-//        alert(key);
         switch (key) {
             case 38: // up
             case 87: // w

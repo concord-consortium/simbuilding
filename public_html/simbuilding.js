@@ -58,8 +58,9 @@ function startSimBuilding() {
                         child.geometry.computeFaceNormals();
                 });
                 initScene(houseModel.scene);
-                initHotspots();
                 initLights();
+                initQuiz();
+                initHotspots();
                 $("#progressPanel").fadeOut();
                 doRender = true;
                 setTimeout(render, 100);
@@ -68,8 +69,6 @@ function startSimBuilding() {
                 $("#progress").attr("value", callback.loaded / callback.total);
             }
     );
-
-    initQuiz();
 }
 
 function render() {

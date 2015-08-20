@@ -5,14 +5,19 @@ var score = 0;
 var found = 0;
 var hotspot = undefined;
 var quizInProgress = false;
-var alreadyAnswered = [];
+var alreadyAnswered;
 var hotSpotsRoot;
 var hotSpotsHidden;
 var quizData;
 var whiteMaterial = new THREE.MeshBasicMaterial();
 var greyMaterial = new THREE.MeshBasicMaterial({color: 0x555555});
+var idCounter = 0;
 
 function initQuiz() {
+    if (localStorage.alreadyAnswered)
+        alreadyAnswered = JSON.parse(localStorage.alreadyAnswered);
+    else
+        alreadyAnswered = [];
     $.getJSON('scenarios.json', function (data) {
         quizData = data;
     });
@@ -49,13 +54,13 @@ function updateQuiz() {
         $("[id^=quiz]").hide();
         var selectedQuizData;
         for (var i = 0; i < quizData.length && !selectedQuizData; i++)
-            if (quizData[i].ID === hotspot.userData.id)
+            if (quizData[i].ID === hotspot.userData.quizID)
                 selectedQuizData = quizData[i];
         if (selectedTool === 0) {
             $("#question").text(selectedQuizData.Question);
-            if (alreadyAnswered[hotspot.id]) {
+            if (alreadyAnswered[hotspot.userData.id]) {
                 $("#lastAnswer").show();
-                $("#lastAnswer").html("(Your last answer is <span style='color: " + (alreadyAnswered[hotspot.id].Correct ? "green'>" : "red'>") + (alreadyAnswered[hotspot.id].Correct ? "correct" : "incorrect") + "</span>)");
+                $("#lastAnswer").html("(Your last answer is <span style='color: " + (alreadyAnswered[hotspot.userData.id].Correct ? "green'>" : "red'>") + (alreadyAnswered[hotspot.userData.id].Correct ? "correct" : "incorrect") + "</span>)");
             } else
                 $("#lastAnswer").hide();
             $("#answers").empty();
@@ -65,7 +70,7 @@ function updateQuiz() {
                     type: 'radio',
                     id: answer
                 });
-                if (alreadyAnswered[hotspot.id] && answer === alreadyAnswered[hotspot.id].Answer)
+                if (alreadyAnswered[hotspot.userData.id] && answer === alreadyAnswered[hotspot.userData.id].Answer)
                     answerTag.attr("checked", "checked");
                 answerTag.appendTo('#answers');
                 var labelTag = jQuery('<label/>', {
@@ -76,19 +81,16 @@ function updateQuiz() {
 
                 answerTag.click(selectedQuizData.Answers[i], function (e) {
                     $("#quizQuestionAnswers").hide();
-                    if (!alreadyAnswered[hotspot.id])
+                    if (!alreadyAnswered[hotspot.userData.id])
                         $("#found").text("Found: " + ++found + " / Total: " + hotSpotsHidden.children.length);
-                    alreadyAnswered[hotspot] = e.data;
+                    alreadyAnswered[hotspot.userData.id] = e.data;
+                    localStorage.alreadyAnswered = JSON.stringify(alreadyAnswered);
                     var resultDiv;
                     if (e.data.Correct) {
                         resultDiv = $("#quizCorrect");
                         score++;
                         $("#score").css("background-color", "green");
-                        for (var i = 0; i < hotSpotsHidden.children.length; i++)
-                            if (hotSpotsHidden.children[i] === hotspot) {
-                                hotSpotsHidden.children[i].material = greyMaterial;
-                                break;
-                            }
+                        changeToGrey(hotspot.userData.id);
                     } else {
                         score--;
                         $("#score").css("background-color", "red");
@@ -128,7 +130,7 @@ function updateQuiz() {
             $("#temperature-low").fadeIn();
             $("#minimize").attr("value", "\u25B2");
             $("#minimize").delay(1000).fadeIn();
-            if (alreadyAnswered.indexOf(hotspot.id) !== -1)
+            if (alreadyAnswered.indexOf(hotspot.userData.id) !== -1)
                 $("#quizAlreadyChecked").show();
             else
                 $("#quizQuestionAnswers").delay(1000).fadeIn();
@@ -204,20 +206,34 @@ function initHotspots() {
     var shadeMaterial = new THREE.MeshPhongMaterial();
     shadeMaterial.emissive = new THREE.Color(0x555555);
     var hotSpot = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.03, 20, 1), shadeMaterial);
-    hotSpot.userData.id = 31;
+    hotSpot.userData.id = idCounter++;
+    hotSpot.userData.quizID = 31;
     hotSpot.position.set(8.2, 3, 1);
     hotSpotsVisible.add(hotSpot);
     var hotSpot = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.03, 20, 1), shadeMaterial);
-    hotSpot.userData.id = 32;
+    hotSpot.userData.id = idCounter++;
+    hotSpot.userData.quizID = 32;
     hotSpot.position.set(10, 3, -2.8);
     hotSpotsVisible.add(hotSpot);
 
     $("#found").text("Found: 0 / Total: " + hotSpotsHidden.children.length);
 }
 
-function initHotspotSingle(id, x, y, z, geometry, material) {
+function initHotspotSingle(quizID, x, y, z, geometry, material) {
     var hotSpot = new THREE.Mesh(geometry, material);
+    var id = idCounter++;
     hotSpot.userData.id = id;
+    hotSpot.userData.quizID = quizID;
     hotSpot.position.set(x, y, z);
+    if (alreadyAnswered[id])
+        hotSpot.material = greyMaterial;
     hotSpotsHidden.add(hotSpot);
+}
+
+function changeToGrey(id) {
+    for (var i = 0; i < hotSpotsHidden.children.length; i++)
+        if (hotSpotsHidden.children[i].userData.id === id) {
+            hotSpotsHidden.children[i].material = greyMaterial;
+            break;
+        }
 }
