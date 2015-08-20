@@ -648,5 +648,51 @@
         "Feedback": " This window is properly sealed, and keeps the area around it consistent with the rest of the room. It would be very comfortable to sit by."
       }
     ]
-  }
+  },
+  {
+    "ID": 31,
+    "ThermalBypassID": "None",
+    "ThermogramWithoutBlowerDoor": "light-good.png",
+    "ThermogramWithBlowerDoor": "light-good.png",
+    "Question": "What did the builder do wrong?",
+    "Tip": "",
+    "Answers": [
+      {
+        "Answer": "Forgot to air seal the recessed",
+        "Feedback": "Wrong"
+      },
+      {
+        "Answer": "Forgot to air seal the attic correctly",
+        "Feedback": "Wrong"
+      },
+      {
+        "Answer": "Nothing is wrong",
+        "Feedback": "Correct",
+        "Correct": true
+      }
+    ]
+  },
+  {
+    "ID": 32,
+    "ThermalBypassID": "None",
+    "ThermogramWithoutBlowerDoor": "light-bad.png",
+    "ThermogramWithBlowerDoor": "light-bad.png",
+    "Question": "What did the builder do wrong?",
+    "Tip": "",
+    "Answers": [
+      {
+        "Answer": "Forgot to air seal the recessed",
+        "Feedback": "Correct",
+        "Correct": true
+      },
+      {
+        "Answer": "Forgot to air seal the attic correctly",
+        "Feedback": "Wrong"
+      },
+      {
+        "Answer": "Nothing is wrong",
+        "Feedback": "Wrong"        
+      }
+    ]
+  }  
 ]
