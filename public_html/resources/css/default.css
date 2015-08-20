@@ -7,11 +7,21 @@ body {
 
 /* SCORE & STATS
 -------------------------------------------------------*/
+#score-wrap {
+  background: url(../images/score-bg.png);
+  border-radius: .5em;
+  height: 1em;
+  left: 1%;
+  padding: 1em;
+  position: absolute;
+  top: 1%;
+  width: 18.75em;
+  }
 #score {
   background: transparent !important;
   color: white;
   font: bold 1.875em verdana, arial, helvetica, sans-serif;
-  margin: 0 5px 5px 10px;
+  margin: 2px 0 0 0;
   padding: 2px;
   position: absolute;
   top: 0;
@@ -20,7 +30,7 @@ body {
   color: white;
   font: .75em verdana, arial, helvetica, sans-serif;
   left: 170px;
-  margin: 5px;
+  margin: 6px 5px 5px 10px;
   padding: 2px;
   position: absolute;
   top: 8px;
