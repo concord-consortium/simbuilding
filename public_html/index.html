@@ -3,6 +3,7 @@
 <html>
     <head>
         <title>SimBuilding</title>
+        <link rel="stylesheet" href="resources/css/default.css" />
         <script type="text/javascript" src="resources/e2d/energy2d.js"></script>
         <script type="text/javascript" src="libs/three.js"></script>
         <script type="text/javascript" src="libs/jquery-1.9.0.js"></script>
@@ -22,91 +23,77 @@
         <script type="text/javascript" src="quiz.js"></script>
     </head>
 
-    <body style="margin: 0; overflow: hidden">
-        <div id="Stats-output" style="position: absolute; right: 100px;">
+    <body>
+        <div id="Stats-output">
         </div>
 
-        <div id="score" style="position: absolute; top: 0px; font-size: 50px; color: white; background-color: black; border-radius: 10px; padding: 2px; margin: 5px">
+        <div id="score-wrap">
+          <div id="score">
             Score: 0
+          </div>
+
+          <div id="found">
+          </div>
         </div>
 
-        <div id="found" style="position: absolute; top: 70px; font-size: 20px; color: white; background-color: black; border-radius: 10px; padding: 2px; margin: 5px">
-        </div>
-
-        <div id ="progressPanel" style="position: absolute; top: 40%; left: 20%; width: 60%; height: 35%; padding: 20px; color: white; background-color: blue; border-radius: 10px">
-            <div style="text-align: center">
+        <div id ="progressPanel">
+            <div>
                 <h1>Welcome to SimBuilding!</h1>
-                <h2>Concord Consortium &copy; 2015<br/>
-                    Supported by the National Science Foundation through grant #1304485</h2>
+                <p>Concord Consortium &copy; 2015<br/>
+                Supported by the National Science Foundation through grant #1304485</p>
             </div>
-            <h2>Loading...</h2>
-            <progress id="progress" value="0" style="width: 100%"></progress>
+            <p>Loading...</p>
+            <progress id="progress" value="0"></progress>
         </div>
 
         <div id="WebGL-output">
-            <div style="position: absolute; right: 10px; bottom: 10px;">
-                <a href="javascript: toggleTool(2)">
-                    <img id="tool-temperature-small" src="resources/images/tool-temperature.png" alt="" width="62" height="200" style="margin-left: 20px; margin-right: 20px;"/>
+            <div id="toolbox" onclick="toggleToolbox();">
+                <a href="javascript: toggleTool(2); toggleToolbox('open');">
+                    <img id="tool-temperature-small" src="resources/images/tool-temperature.png" alt="" width="31" height="100" />
                 </a>
-                <a href="javascript: toggleTool(1)">
-                    <img id="tool-moisture-small" src="resources/images/tool-moisture.png" alt="" width="88" height="200"/>
+                <a href="javascript: toggleTool(1); toggleToolbox('open');">
+                    <img id="tool-moisture-small" src="resources/images/tool-moisture.png" alt="" width="44" height="100" />
                 </a>
-                <a href="javascript: toggleTool(0)">
-                    <img id="tool-ircamera-small" src="resources/images/tool-ircamera-small.png" alt="" width="150" height="200"/>
-                </a>
-            </div>
-            <div style="position: absolute; left: 10px; bottom: 10px;">
-                <a href="javascript: toggleTool(3)">
-                    <img id="fan" src="resources/images/retrotec-still.gif" alt="" width="66" height="150"/>
+                <a href="javascript: toggleTool(0); toggleToolbox('open');">
+                    <img id="tool-ircamera-small" src="resources/images/tool-ircamera-small.png" alt="" width="75" height="100" />
                 </a>
             </div>
-            <div id="tool-ircamera" style="
-                 position: absolute;
-                 left: 50%;
-                 bottom: 0px;
-                 width: 624px;
-                 height: 712px;
-                 display: none;
-                 margin: 0 auto;
-                 ">
-                <div style="position: absolute; left: -50%; width: 624px; height: 712px">
-                    <img src="resources/images/tool-ircamera.png" alt="" width="624" height="712" usemap="#IRCameraButtons" style="position: absolute; z-index: 1"/>
+            <div id="fan-container">
+                <a href="javascript: toggleTool(3);">
+                    <img id="fan" src="resources/images/retrotec-still.gif" alt="" width="66" height="150" />
+                </a>
+            </div>
+            <div id="tool-ircamera">
+                <div>
+                    <img src="resources/images/tool-ircamera.png" alt="" width="624" height="712" usemap="#IRCameraButtons" />
                     <map name="IRCameraButtons">
                         <area shape="rect" coords="120,540,210,600" alt="Play" href="javascript: console.log('n/a')" />
                         <area shape="rect" coords="420,540,510,600" alt="Reset" href="javascript: console.log('n/a')" />
                         <area shape="rect" coords="260,565,360,665" alt="Chart" href="javascript: console.log('n/a')" />
                         <area shape="circle" coords="432,647,20" alt="Off" href='javascript: toggleTool(-1)' />
                     </map>
-                    <img id="target" src="resources/images/target.png" alt="" style="position: absolute; left: 250px; top: 220px"/>
-                    <img id="quizImage" src="" alt="" style="position: absolute; left: 90px; top: 118px; width: 450px; height: 385px; display: none"/>
-                    <div id="temperature-high" style="font-size: xx-large; text-align: center; width: 50px; position: absolute; top: 185px; right: 98px; color: white; display: none">80</div>
-                    <div id="temperature-low" style="font-size: xx-large; text-align: center; width: 50px; position: absolute; top: 399px; right: 98px;  color: white; display: none">60</div>
-                    <input id="minimize" type="button" value="&#x25B2;" style="position: absolute; top: 130px; left: 105px; z-index: 3; display: none" onclick="toggleQuizMinimize()"/>
-                    <div style="position: absolute; left: 90px; top: 118px; width: 430px; height: 365px; padding: 10px; z-index: 2">
-                        <div id="quizQuestionAnswers" style="padding: 10px; border-radius: 10px; background-color: rgba(255,255,0,0.6); display: none">
-                            <p id="question" style="font-size: large">Do you see a problem here?</p>
-                            <p id="lastAnswer" style="font-size: large">Last Answer:</p>
+                    <img id="target" src="resources/images/target.png" alt="" />
+                    <img id="quizImage" src="" alt="" />
+                    <div id="temperature-high">80</div>
+                    <div id="temperature-low">60</div>
+                    <input id="minimize" type="button" value="&#x25B2;" onclick="toggleQuizMinimize()"/>
+                    <div class="quiz">
+                        <div id="quizQuestionAnswers">
+                            <p id="question">Do you see a problem here?</p>
+                            <p id="lastAnswer">Last Answer:</p>
                             <div id="answers"></div>
                         </div>
-                        <div id="quizCorrect" style="padding: 10px; border-radius: 10px; background-color: rgba(255,255,0,0.6); display: none">Correct!</div>
-                        <div id="quizIncorrect" style="padding: 10px; border-radius: 10px; background-color: rgba(255,255,0,0.6); display: none">Incorrect!</div>
-                        <div id="quizAlreadyChecked" style="padding: 10px; border-radius: 10px; background-color: rgba(255,255,0,0.6); display: none; font-size: xx-large; text-align: center; position: absolute; top: 100px; width: 410px">Already Checked!</div>
+                        <div id="quizCorrect">Correct!</div>
+                        <div id="quizIncorrect">Incorrect!</div>
+                        <div id="quizAlreadyChecked">Already Checked!</div>
                     </div>
                 </div>
             </div>
-            <div id="tool-moisture" style="
-                 position: absolute;
-                 left: 50%;
-                 bottom: -400px;
-                 width: 400px;
-                 height: 909px;
-                 display: none;
-                 margin: 0 auto;
-                 ">
-                <div style="position: absolute; left: -50%; width: 400px; height: 909px">
-                    <img src="resources/images/target.png" alt="" style="position: absolute; left: 140px; top: -100px"/>
-                    <img src="resources/images/tool-moisture.png" alt="" width="400" height="909" usemap="#MoistureButtons"/>
-                    <div id="moisture-value" style="font-size: 100px; position: absolute; left: 80px; top: 200px; width: 200px; text-align: right">
+            <div id="tool-moisture">
+                <div>
+                    <img id="moisture-target" src="resources/images/target.png" alt="" />
+                    <img src="resources/images/tool-moisture.png" alt="" width="400" height="909" usemap="#MoistureButtons" />
+                    <div id="moisture-value">
                         98
                     </div>
                     <map name="MoistureButtons">
@@ -114,19 +101,11 @@
                     </map>
                 </div>
             </div>
-            <div id="tool-temperature" style="
-                 position: absolute;
-                 left: 50%;
-                 bottom: -250px;
-                 width: 200px;
-                 height: 643px;
-                 display: none;
-                 margin: 0 auto;
-                 ">
-                <div style="position: absolute; left: -50%; width: 200px; height: 643px">
-                    <img src="resources/images/target.png" alt="" style="position: absolute; left: 35px; top: -140px"/>
+            <div id="tool-temperature">
+                <div>
+                    <img id="temperature-target" src="resources/images/target.png" alt="" />
                     <img src="resources/images/tool-temperature.png" alt="" width="200" height="643" usemap="#TemperatureButtons"/>
-                    <div id="temperature-value" style="font-size: 40px; position: absolute; left: 60px; top: 230px">
+                    <div id="temperature-value">
                         20&deg;C
                     </div>
                     <map name="TemperatureButtons">

@@ -1,0 +1,233 @@
+body {
+  font-family: verdana, arial, helvetica, sans-serif;
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  }
+
+/* SCORE & STATS
+-------------------------------------------------------*/
+#score-wrap {
+  background: url(../images/score-bg.png);
+  border-radius: .5em;
+  height: 1em;
+  left: 1%;
+  padding: 1em;
+  position: absolute;
+  top: 1%;
+  width: 18.75em;
+  }
+#score {
+  background: transparent !important;
+  color: white;
+  font: bold 1.875em verdana, arial, helvetica, sans-serif;
+  margin: 2px 0 0 0;
+  padding: 2px;
+  position: absolute;
+  top: 0;
+  }
+#found {
+  color: white;
+  font: .75em verdana, arial, helvetica, sans-serif;
+  left: 170px;
+  margin: 6px 5px 5px 10px;
+  padding: 2px;
+  position: absolute;
+  top: 8px;
+  }
+#Stats-output {
+  position: absolute;
+  right: 100px;
+  top: 1%;
+  }
+
+/* LOADING PANEL
+-------------------------------------------------------*/
+#progressPanel {
+  background: transparent url(../images/bubble.png) no-repeat;
+  background-size: 100%;
+  height: 381px;
+  left: 50%;
+  margin: -190px 0 0 -300px;
+  padding: 0;
+  position: absolute;
+  top: 50%;
+  width: 600px;
+  }
+  #progressPanel h1 {
+    color: #e16a3e;
+    font: 1.875em verdana, arial, helvetica, sans-serif;
+    margin: 3.5em 0 .5em 1.4em;
+    padding: 0;
+    }
+  #progressPanel p {
+    font: .9em verdana, arial, helvetica, sans-serif;
+    margin: 0 0 1em 3em;
+    }
+  #progress { margin-left: 3em; width: 83%; }
+  progress[value] {
+    -moz-appearance: none;
+    -webkit-appearance: none;
+    appearance: none;
+    background: #eee;
+    border: none;
+    color: #3a878b;
+    height: 15px;
+    }
+  progress[value]::-webkit-progress-value {
+    background-image: -moz-linear-gradient(top, #3a878b, #8cbbb8);
+    background-image: -webkit-linear-gradient(top, #3a878b, #8cbbb8);
+    }
+  progress[value]::-moz-progress-bar {
+    background-image: -moz-linear-gradient(top, #3a878b, #8cbbb8);
+    }
+
+/* TOOLBOX
+-------------------------------------------------------*/
+#toolbox {
+  background: url(../images/toolbox-closed.png) no-repeat;
+  background-size: 100%;
+  bottom: 1%;
+  cursor: pointer;
+  height: 232px;
+  position: absolute;
+  right: 1%;
+  width: 300px;
+  }
+  #toolbox a { display: none; text-decoration: none; }
+  #toolbox a img { margin-top: 6px;}
+  #tool-temperature-small { margin-right: 40px; margin-left: 50px; }
+  #tool-moisture-small { margin-right: 20px; }
+
+#fan-container {
+  bottom: 1%;
+  height: 150px;
+  left: 10px;
+  position: absolute;
+  }
+
+/* INFRARED TOOL
+-------------------------------------------------------*/
+#tool-ircamera {
+  bottom: 0px;
+  display: none;
+  height: 712px;
+  left: 50%;
+  margin: 0 auto;
+  position: absolute;
+  width: 624px;
+  }
+  #tool-ircamera > div:first-child {
+    height: 712px;
+    left: -50%;
+    position: absolute; 
+    width: 624px; 
+    }
+  #tool-ircamera > img:first-child { position: absolute; z-index: 1; }
+  #target {
+    left: 250px;
+    position: absolute;
+    top: 220px;
+    }
+   #quizImage {
+     display: none;
+     height: 385px;
+     left: 90px;
+     position: absolute;
+     top: 118px;
+     width: 450px;
+     }
+   #temperature-high {
+     color: white;
+     display: none;
+     font-size: xx-large;
+     position: absolute;
+     right: 98px;
+     text-align: center;
+     top: 185px;
+     width: 50px;
+     }
+    #temperature-low {
+      color: white;
+      display: none;
+      font-size: xx-large;
+      position: absolute;
+      right: 98px;
+      text-align: center;
+      top: 399px;
+      width: 50px;
+      }
+    #minimize { position: absolute; top: 130px; left: 105px; z-index: 3; display: none; }
+    .quiz {
+      height: 365px;
+      left: 90px;
+      padding: 10px;
+      position: absolute;
+      top: 118px;
+      width: 430px;
+      z-index: 2;
+      }
+    #quizQuestionAnswers {
+      background-color: rgba(255,255,0,0.6);
+      border-radius: 10px;
+      display: none;
+      padding: 10px;
+      }
+      #answers label { margin: 0 .75em 0 .25em; }
+      #question { font-size: large; }
+      #lastAnswer { font-size: large; }
+      #quizCorrect { padding: 10px; border-radius: 10px; background-color: rgba(255,255,0,0.6); display: none; }
+      #quizIncorrect { padding: 10px; border-radius: 10px; background-color: rgba(255,255,0,0.6); display: none; }
+      #quizAlreadyChecked { padding: 10px; border-radius: 10px; background-color: rgba(255,255,0,0.6); display: none; font-size: xx-large; text-align: center; position: absolute; top: 100px; width: 410px; }
+
+/* MOISTURE TOOL
+-------------------------------------------------------*/
+#tool-moisture {
+  bottom: -400px;
+  display: none;
+  height: 909px;
+  left: 50%;
+  margin: 0 auto;
+  position: absolute;
+  width: 400px;
+  }
+  #tool-moisture > div:first-child {
+    height: 909px;
+    left: -50%;
+    position: absolute;
+    width: 400px;
+    }
+  #moisture-target { left: 140px; position: absolute; top: -100px; }
+  #moisture-value {
+    font-size: 100px;
+    left: 80px;
+    position: absolute;
+    text-align: right;
+    top: 200px;
+    width: 200px;
+    }
+
+/* TEMPERATURE TOOL
+-------------------------------------------------------*/
+#tool-temperature {
+  bottom: -250px;
+  display: none;
+  height: 643px;
+  left: 50%;
+  margin: 0 auto;
+  position: absolute;
+  width: 200px;
+  }
+  #tool-temperature > div:first-child {
+    height: 643px;
+    left: -50%;
+    position: absolute;
+    width: 200px;
+    }
+  #temperature-target { left: 35px; position: absolute; top: -140px }
+  #temperature-value {
+    font-size: 2.5em;
+    left: 60px;
+    position: absolute;
+    top: 230px;
+    }
