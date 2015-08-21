@@ -1,4 +1,4 @@
-/* global THREE, scene, blowdoorMode, selectedTool */
+/* global THREE, scene, blowdoorMode, selectedTool, camControl */
 
 "use strict";
 var hotspot = undefined;
@@ -6,6 +6,7 @@ var quizInProgress = false;
 var alreadyAnswered;
 var hotSpotsRoot;
 var hotSpotsHidden;
+var hotSpotsVisible;
 var quizData;
 var whiteMaterial = new THREE.MeshBasicMaterial();
 var greyMaterial = new THREE.MeshBasicMaterial({color: 0x555555});
@@ -16,8 +17,14 @@ function initQuiz() {
         alreadyAnswered = JSON.parse(localStorage.alreadyAnswered);
     else
         alreadyAnswered = [];
+    $.ajaxSetup({
+        async: false
+    });
     $.getJSON('scenarios.json', function (data) {
         quizData = data;
+    });
+    $.ajaxSetup({
+        async: true
     });
 }
 
@@ -25,6 +32,11 @@ function resetQuiz() {
     localStorage.clear();
     localStorage.score = 0;
     localStorage.found = 0;
+
+    for (var i = 0; i < hotSpotsHidden.children.length; i++)
+        hotSpotsHidden.children[i].material = whiteMaterial;
+
+    camControl.reset();
     initQuiz();
     updateFound();
     updateQuiz();
@@ -59,10 +71,7 @@ function updateQuiz() {
     } else {
         hotspot = newHotspot;
         $("[id^=quiz]").hide();
-        var selectedQuizData;
-        for (var i = 0; i < quizData.length && !selectedQuizData; i++)
-            if (quizData[i].ID === hotspot.userData.quizID)
-                selectedQuizData = quizData[i];
+        var selectedQuizData = findQuiz(hotspot.userData.quizID);
         if (selectedTool === 0) {
             $("#question").text(selectedQuizData.Question);
             if (alreadyAnswered[hotspot.userData.id]) {
@@ -149,6 +158,12 @@ function updateQuiz() {
     }
 }
 
+function findQuiz(id) {
+    for (var i = 0; i < quizData.length; i++)
+        if (quizData[i].ID === id)
+            return quizData[i];
+}
+
 function toggleQuizMinimize() {
     var invisible = $("#quizQuestionAnswers").css("display") === "none";
     $("#minimize").attr("value", invisible ? "\u25B2" : "\u25BC");
@@ -161,7 +176,7 @@ function toggleQuizMinimize() {
 function initHotspots() {
     hotSpotsRoot = new THREE.Object3D();
     scene.add(hotSpotsRoot);
-    var hotSpotsVisible = new THREE.Object3D();
+    hotSpotsVisible = new THREE.Object3D();
     hotSpotsRoot.add(hotSpotsVisible);
     hotSpotsHidden = new THREE.Object3D();
     hotSpotsRoot.add(hotSpotsHidden);
@@ -169,9 +184,9 @@ function initHotspots() {
     // Windows
     initHotspotSingle(24, 4.4, 2.35, 4.2, geom, whiteMaterial);
     initHotspotSingle(23, 6.45, 2.35, 4.2, geom, whiteMaterial);
-    initHotspotSingle(26, 10.53, 2.5, 4.2, geom, whiteMaterial);
+    initHotspotSingle(23, 10.53, 2.5, 4.2, geom, whiteMaterial);
     initHotspotSingle(30, 10.9, 0.9, 4.2, geom, whiteMaterial);
-    initHotspotSingle("window-2b", 12.57, 2.5, 4.2, geom, whiteMaterial);
+//    initHotspotSingle("window-2b", 12.57, 2.5, 4.2, geom, whiteMaterial);
     initHotspotSingle(29, 13, 0.9, 4.2, geom, whiteMaterial);
     initHotspotSingle(2, 4.4, 4.8, 4.2, geom, whiteMaterial);
     initHotspotSingle(1, 6.45, 4.8, 4.2, geom, whiteMaterial);
@@ -199,7 +214,7 @@ function initHotspots() {
     initHotspotSingle(16, 10.53, 0.6, 4.2, geom, whiteMaterial);
     initHotspotSingle(15, 12.57, 0.6, 4.2, geom, whiteMaterial);
     initHotspotSingle(18, 13.85, 3, -0.5, geom, whiteMaterial);
-    initHotspotSingle(20, 13, 4, 0.5, geom, whiteMaterial);
+//    initHotspotSingle("wall-4g", 13, 4, 0.5, geom, whiteMaterial);
     initHotspotSingle(19, 9.9, 4, -4.5, geom, whiteMaterial);
     initHotspotSingle(22, 12, 3, -0.25, geom, whiteMaterial);
     initHotspotSingle(21, 3.15, 5, 1, geom, whiteMaterial);
@@ -229,6 +244,8 @@ function initHotspots() {
 }
 
 function initHotspotSingle(quizID, x, y, z, geometry, material) {
+    if (!findQuiz(quizID))
+        throw "Quiz id not found: " + quizID;
     var hotSpot = new THREE.Mesh(geometry, material);
     var id = idCounter++;
     hotSpot.userData.id = id;
@@ -253,4 +270,21 @@ function updateScore() {
 
 function updateFound() {
     $("#found").text("Found: " + localStorage.found + " / Total: " + hotSpotsHidden.children.length);
+}
+
+function exportQuiz() {
+    var result = "";
+    for (var i = 0; i < hotSpotsHidden.children.length; i++) {
+        result += i + ",";
+        var userData = hotSpotsHidden.children[i].userData;
+        if (!alreadyAnswered[userData.id])
+            result += ",";
+        else
+            result += alreadyAnswered[userData.id].Correct ? "Correct," : "Wrong,";
+        result += findQuiz(userData.quizID).Question + ",";
+        if (alreadyAnswered[userData.id])
+            result += alreadyAnswered[userData.id].Answer + ",";
+        result += "\n";
+    }
+    return result;
 }

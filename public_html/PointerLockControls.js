@@ -1,4 +1,4 @@
-/* global THREE, doors, doorToBeOpened, sceneRoot, UNIT_Y */
+/* global THREE, doors, doorToBeOpened, sceneRoot, UNIT_Y, viewerHeight */
 
 "use strict";
 
@@ -11,17 +11,6 @@ THREE.PointerLockControls = function (camera) {
     var yawObject = new THREE.Object3D();
     yawObject.rotation.order = "ZYX";
     yawObject.add(pitchObject);
-
-    if (localStorage.cameraX) {
-        yawObject.position.x = parseFloat(localStorage.cameraX);
-        yawObject.position.y = parseFloat(localStorage.cameraY);
-        yawObject.position.z = parseFloat(localStorage.cameraZ);
-        pitchObject.rotation.x = parseFloat(localStorage.cameraRotX);
-        yawObject.rotation.y = parseFloat(localStorage.cameraRotY);
-    } else {
-        yawObject.position.x = 8.5;
-        yawObject.position.z = 10;
-    }
 
     var enabled = true;
     var isMouseDown = false;
@@ -320,6 +309,26 @@ THREE.PointerLockControls = function (camera) {
         else {
             prevTime = -1;
             return false;
+        }
+    };
+
+    this.reset = function () {
+        yawObject.position.x = 8.5;
+        yawObject.position.y = viewerHeight;
+        yawObject.position.z = 10;
+        pitchObject.rotation.x = 0;
+        yawObject.rotation.y = 0;
+    };
+
+    this.init = function () {
+        if (localStorage.cameraX) {
+            yawObject.position.x = parseFloat(localStorage.cameraX);
+            yawObject.position.y = parseFloat(localStorage.cameraY);
+            yawObject.position.z = parseFloat(localStorage.cameraZ);
+            pitchObject.rotation.x = parseFloat(localStorage.cameraRotX);
+            yawObject.rotation.y = parseFloat(localStorage.cameraRotY);
+        } else {
+            this.reset();
         }
     };
 

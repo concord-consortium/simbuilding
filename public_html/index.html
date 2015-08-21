@@ -27,20 +27,25 @@
         <div id="Stats-output">
         </div>
 
-        <div id="score-wrap">
-          <div id="score">
-            Score: 0
-          </div>
+        <div id="menu">
+            <button type="button" onclick="resetQuiz()">New</button>
+            <button type="button" onclick="exportQuiz()">Export</button>
+        </div>
 
-          <div id="found">
-          </div>
+        <div id="score-wrap">
+            <div id="score">
+                Score: 0
+            </div>
+
+            <div id="found">
+            </div>
         </div>
 
         <div id ="progressPanel">
             <div>
                 <h1>Welcome to SimBuilding!</h1>
                 <p>Concord Consortium &copy; 2015<br/>
-                Supported by the National Science Foundation through grant #1304485</p>
+                    Supported by the National Science Foundation through grant #1304485</p>
             </div>
             <p>Loading...</p>
             <progress id="progress" value="0"></progress>
