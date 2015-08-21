@@ -61,6 +61,8 @@ function startSimBuilding() {
                 initLights();
                 initQuiz();
                 initHotspots();
+                updateScore();
+                updateFound();
                 $("#progressPanel").fadeOut();
                 doRender = true;
                 setTimeout(render, 100);

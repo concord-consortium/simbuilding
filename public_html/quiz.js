@@ -1,8 +1,6 @@
 /* global THREE, scene, blowdoorMode, selectedTool */
 
 "use strict";
-var score = 0;
-var found = 0;
 var hotspot = undefined;
 var quizInProgress = false;
 var alreadyAnswered;
@@ -21,6 +19,15 @@ function initQuiz() {
     $.getJSON('scenarios.json', function (data) {
         quizData = data;
     });
+}
+
+function resetQuiz() {
+    localStorage.clear();
+    localStorage.score = 0;
+    localStorage.found = 0;
+    initQuiz();
+    updateFound();
+    updateQuiz();
 }
 
 function updateQuiz() {
@@ -81,25 +88,27 @@ function updateQuiz() {
 
                 answerTag.click(selectedQuizData.Answers[i], function (e) {
                     $("#quizQuestionAnswers").hide();
-                    if (!alreadyAnswered[hotspot.userData.id])
-                        $("#found").text("Found: " + ++found + " / Total: " + hotSpotsHidden.children.length);
+                    if (!alreadyAnswered[hotspot.userData.id]) {
+                        localStorage.found++;
+                        updateFound();
+                    }
                     alreadyAnswered[hotspot.userData.id] = e.data;
                     localStorage.alreadyAnswered = JSON.stringify(alreadyAnswered);
                     var resultDiv;
                     if (e.data.Correct) {
                         resultDiv = $("#quizCorrect");
-                        score++;
+                        localStorage.score++;
                         $("#score").css("background-color", "green");
                         changeToGrey(hotspot.userData.id);
                     } else {
-                        score--;
+                        localStorage.score--;
                         $("#score").css("background-color", "red");
                         resultDiv = $("#quizIncorrect");
                     }
                     $("#score").animate({
                         opacity: 0.25
                     }, 1000, function () {
-                        $("#score").text("Score: " + score);
+                        updateScore();
                     }).animate({
                         opacity: 1
                     }, 1000, function () {
@@ -236,4 +245,12 @@ function changeToGrey(id) {
             hotSpotsHidden.children[i].material = greyMaterial;
             break;
         }
+}
+
+function updateScore() {
+    $("#score").text("Score: " + localStorage.score);
+}
+
+function updateFound() {
+    $("#found").text("Found: " + localStorage.found + " / Total: " + hotSpotsHidden.children.length);
 }
