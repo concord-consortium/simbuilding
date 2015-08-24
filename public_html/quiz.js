@@ -15,8 +15,11 @@ var idCounter = 0;
 function initQuiz() {
     if (localStorage.alreadyAnswered)
         alreadyAnswered = JSON.parse(localStorage.alreadyAnswered);
-    else
+    else {
         alreadyAnswered = [];
+        localStorage.score = 0;
+        localStorage.found = 0;
+    }
     $.ajaxSetup({
         async: false
     });
@@ -30,8 +33,6 @@ function initQuiz() {
 
 function resetQuiz() {
     localStorage.clear();
-    localStorage.score = 0;
-    localStorage.found = 0;
 
     for (var i = 0; i < hotSpotsHidden.children.length; i++)
         hotSpotsHidden.children[i].material = whiteMaterial;
@@ -273,7 +274,7 @@ function updateFound() {
 }
 
 function exportQuiz() {
-    var result = "";
+    var result = "Id,Grade,Quiz Question,Student Answer,\n";
     for (var i = 0; i < hotSpotsHidden.children.length; i++) {
         result += i + ",";
         var userData = hotSpotsHidden.children[i].userData;
@@ -286,5 +287,38 @@ function exportQuiz() {
             result += alreadyAnswered[userData.id].Answer + ",";
         result += "\n";
     }
+
+    camControl.setEnabled(false);
+    var filename = localStorage.prevFileName ? localStorage.prevFileName : 'quiz.csv';
+    $('#save_to_disk_dialog').html('<div style="font-family: Arial; line-height: 30px; font-size: 90%;">Export quiz result as:<br><input type="text" id="save_filename" style="position: relative; z-index: 100; width: 260px;" value="' + filename + '">');
+    $('#save_to_disk_dialog').dialog({
+        resizable: false,
+        modal: true,
+        title: "Save",
+        height: 220,
+        width: 300,
+        position: {
+            my: 'center center',
+            at: 'center center',
+            of: window
+        },
+        buttons: {
+            'OK': function () {
+                $(this).dialog('close');
+                var filename = document.getElementById('save_filename').value;
+                var vpa = "text/json;charset=utf-8," + encodeURIComponent(result);
+                var link = document.getElementById("invisible_link");
+                link.download = filename;
+                link.href = 'data:' + vpa;
+                link.click();
+                camControl.setEnabled(true);
+            },
+            'Cancel': function () {
+                $(this).dialog('close');
+                camControl.setEnabled(true);
+            }
+        }
+    });
+
     return result;
 }

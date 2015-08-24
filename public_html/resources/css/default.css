@@ -236,3 +236,6 @@ progress[value]::-moz-progress-bar {
     position: absolute;
     top: 230px;
 }
+.ui-dialog-titlebar-close {
+    visibility: hidden;
+}

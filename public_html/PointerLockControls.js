@@ -38,6 +38,8 @@ THREE.PointerLockControls = function (camera) {
     var touchStarty = 0;
 
     var onMouseDown = function (event) {
+        if (!enabled)
+            return;
         isMouseDown = true;
         touchStartx = event.clientX;
         touchStarty = event.clientY;
@@ -45,6 +47,8 @@ THREE.PointerLockControls = function (camera) {
     };
 
     var onMouseUp = function (event) {
+        if (!enabled)
+            return;
         isMouseDown = false;
         event.preventDefault();
     };
@@ -66,6 +70,8 @@ THREE.PointerLockControls = function (camera) {
     };
 
     var onTouchDown = function (event) {
+        if (!enabled)
+            return;
         isMouseDown = true;
         touchStartx = event.touches[0].clientX;
         touchStarty = event.touches[0].clientY;
@@ -76,6 +82,8 @@ THREE.PointerLockControls = function (camera) {
     };
 
     var onTouchUp = function (event) {
+        if (!enabled)
+            return;
         isMouseDown = false;
         if (event.touches.length < 2)
             moveForward = false;
@@ -101,11 +109,15 @@ THREE.PointerLockControls = function (camera) {
     };
 
     var onKeyDown = function (event) {
+        if (!enabled)
+            return;
         isKeyDown = true;
         updateFlags(event, true);
     };
 
     var onKeyUp = function (event) {
+        if (!enabled)
+            return;
         isKeyDown = false;
         updateFlags(event, false);
     };
@@ -330,6 +342,10 @@ THREE.PointerLockControls = function (camera) {
         } else {
             this.reset();
         }
+    };
+
+    this.setEnabled = function (b) {
+        enabled = b;
     };
 
 };
