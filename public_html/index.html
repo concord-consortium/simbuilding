@@ -71,29 +71,27 @@
                 </a>
             </div>
             <div id="tool-ircamera">
-                <div>
-                    <img src="resources/images/tool-ircamera.png" alt="" width="624" height="712" usemap="#IRCameraButtons" />
-                    <map name="IRCameraButtons">
-                        <area shape="rect" coords="120,540,210,600" alt="Play" href="javascript: console.log('n/a')" />
-                        <area shape="rect" coords="420,540,510,600" alt="Reset" href="javascript: console.log('n/a')" />
-                        <area shape="rect" coords="260,565,360,665" alt="Chart" href="javascript: console.log('n/a')" />
-                        <area shape="circle" coords="432,647,20" alt="Off" href='javascript: toggleTool(-1)' />
-                    </map>
-                    <img id="target" src="resources/images/target.png" alt="" />
-                    <img id="quizImage" src="" alt="" />
-                    <div id="temperature-high">80</div>
-                    <div id="temperature-low">60</div>
-                    <input id="minimize" type="button" value="&#x25B2;" onclick="toggleQuizMinimize()"/>
-                    <div class="quiz">
-                        <div id="quizQuestionAnswers">
-                            <p id="question">Do you see a problem here?</p>
-                            <p id="lastAnswer">Last Answer:</p>
-                            <div id="answers"></div>
-                        </div>
-                        <div id="quizCorrect">Correct!</div>
-                        <div id="quizIncorrect">Incorrect!</div>
-                        <div id="quizAlreadyChecked">Already Checked!</div>
+                <img src="resources/images/tool-ircamera.png" alt="" class="tool-img" usemap="#IRCameraButtons" />
+                <map name="IRCameraButtons">
+                    <area shape="rect" coords="120,540,210,600" alt="Play" href="javascript: console.log('n/a')" />
+                    <area shape="rect" coords="420,540,510,600" alt="Reset" href="javascript: console.log('n/a')" />
+                    <area shape="rect" coords="260,565,360,665" alt="Chart" href="javascript: console.log('n/a')" />
+                    <area shape="circle" coords="432,647,20" alt="Off" href='javascript: toggleTool(-1)' />
+                </map>
+                <img id="target" src="resources/images/target.png" alt="" />
+                <img id="quizImage" src="" alt="" />
+                <div id="temperature-high">80</div>
+                <div id="temperature-low">60</div>
+                <input id="minimize" type="button" value="&#x25B2;" onclick="toggleQuizMinimize()"/>
+                <div class="quiz">
+                    <div id="quizQuestionAnswers">
+                        <p id="question">Do you see a problem here?</p>
+                        <p id="lastAnswer">Last Answer:</p>
+                        <div id="answers"></div>
                     </div>
+                    <div id="quizCorrect">Correct!</div>
+                    <div id="quizIncorrect">Incorrect!</div>
+                    <div id="quizAlreadyChecked">Already Checked!</div>
                 </div>
             </div>
             <div id="tool-moisture">
