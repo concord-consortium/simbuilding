@@ -60,7 +60,7 @@ function updateQuiz() {
     else if (!newHotspot) {
         hotspot = undefined;
         quizInProgress = false;
-        $("#moisture-value").text("");
+        $("#moisture-value").text("0.00");
         $("#quizQuestionAnswers").stop(true, false).fadeOut();
         $("#quizCorrect").fadeOut();
         $("#quizIncorrect").fadeOut();
@@ -154,7 +154,7 @@ function updateQuiz() {
             else
                 $("#quizQuestionAnswers").delay(1000).fadeIn();
         } else if (selectedTool === 1) {
-            $("#moisture-value").text(selectedQuizData.Moisture ? (selectedQuizData.Moisture + ".0") : "");
+            $("#moisture-value").text(selectedQuizData.Moisture ? (selectedQuizData.Moisture + ".0") : "00.0");
         }
     }
 }

@@ -30,8 +30,8 @@
         </div>
 
         <div id="menu">
-            <button type="button" onclick="resetQuiz()">New</button>
-            <button type="button" onclick="exportQuiz()">Export</button>
+            <button type="button" onclick="resetQuiz()">Reset</button>
+            <button type="button" onclick="exportQuiz()">Report</button>
         </div>
 
         <div id="score-wrap">
@@ -71,7 +71,8 @@
                 </a>
             </div>
             <div id="tool-ircamera">
-                <img src="resources/images/tool-ircamera.png" alt="" class="tool-img" usemap="#IRCameraButtons" />
+                <img src="resources/images/tool-ircamera.png" alt="" />
+                <a id="tool-ircamera-off" href="javascript: toggleTool(-1)" title="Off"><img src="//:0" alt="" /></a>
                 <map name="IRCameraButtons">
                     <area shape="rect" coords="120,540,210,600" alt="Play" href="javascript: console.log('n/a')" />
                     <area shape="rect" coords="420,540,510,600" alt="Reset" href="javascript: console.log('n/a')" />
@@ -79,37 +80,29 @@
                     <area shape="circle" coords="432,647,20" alt="Off" href='javascript: toggleTool(-1)' />
                 </map>
                 <img id="target" src="resources/images/target.png" alt="" />
-                <img id="quizImage" src="" alt="" />
+                <img id="quizImage" src="resources/images/baseboard-1b.jpg" alt="" />
                 <div id="temperature-high">80</div>
                 <div id="temperature-low">60</div>
                 <input id="minimize" type="button" value="&#x25B2;" onclick="toggleQuizMinimize()"/>
-                <div class="quiz">
-                    <div id="quizQuestionAnswers">
-                        <p id="question">Do you see a problem here?</p>
-                        <p id="lastAnswer">Last Answer:</p>
-                        <div id="answers"></div>
-                    </div>
-                    <div id="quizCorrect">Correct!</div>
-                    <div id="quizIncorrect">Incorrect!</div>
-                    <div id="quizAlreadyChecked">Already Checked!</div>
+                <div id="quizQuestionAnswers" class="quiz">
+                    <p id="question">Do you see a problem here?</p>
+                    <p id="lastAnswer">Last Answer:</p>
+                    <div id="answers"></div>
                 </div>
+                <div id="quizCorrect" class="quiz">Correct!</div>
+                <div id="quizIncorrect" class="quiz">Incorrect!</div>
+                <div id="quizAlreadyChecked" class="quiz">Already Checked!</div>
             </div>
             <div id="tool-moisture">
-                <div>
-                    <img id="moisture-target" src="resources/images/target.png" alt="" />
-                    <img src="resources/images/tool-moisture.png" alt="" width="400" height="909" usemap="#MoistureButtons" />
-                    <div id="moisture-value">
-                        98
-                    </div>
-                    <map name="MoistureButtons">
-                        <area shape="rect" coords="120,430,190,490" alt="Off" href="javascript: toggleTool(-1)" />
-                    </map>
-                </div>
+                <img src="resources/images/tool-moisture.png" alt="" usemap="#MoistureButtons" />
+                <a id="moisture-off" href="javascript: toggleTool(-1)" title="Off"><img src="//:0" alt="" /></a>
+                <img id="moisture-target" src="resources/images/target.png" alt="" />
+                <div id="moisture-value">98</div>
             </div>
             <div id="tool-temperature">
                 <div>
-                    <img id="temperature-target" src="resources/images/target.png" alt="" />
                     <img src="resources/images/tool-temperature.png" alt="" width="200" height="643" usemap="#TemperatureButtons"/>
+                    <img id="temperature-target" src="resources/images/target.png" alt="" />
                     <div id="temperature-value">
                         20&deg;C
                     </div>
