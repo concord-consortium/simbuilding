@@ -242,18 +242,31 @@ progress[value]::-moz-progress-bar {
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -38vw;
+    bottom: -34vw;
 }
 #tool-temperature > img:first-child {
     width: 100%;
     height: 100%;
 }
-#temperature-target { left: 35px; position: absolute; top: -140px }
-#temperature-value {
-    font-size: 2.5em;
-    left: 60px;
+#temperature-target {
+    width: 15vw;
+    height: 15vw;
     position: absolute;
-    top: 230px;
+    top: -20%;
+    left: 20%;
+}
+#temperature-off {
+    position: absolute;
+    left: 23%;
+    top: 52%;
+    width: 15%;
+    height: 20%;
+}
+#temperature-value {
+    font-size: 5vw;
+    position: absolute;
+    top: 37%;
+    left: 25%;
 }
 .ui-dialog-titlebar-close {
     visibility: hidden;
