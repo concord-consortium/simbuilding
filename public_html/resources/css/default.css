@@ -158,6 +158,7 @@ progress[value]::-moz-progress-bar {
     top: 16%;
 }
 #temperature-high {
+    display: none;
     color: white;
     font-size: 2vw;
     position: absolute;
@@ -165,13 +166,14 @@ progress[value]::-moz-progress-bar {
     top: 25.5%;
 }
 #temperature-low {
+    display: none;
     color: white;
     font-size: 2vw;
     position: absolute;
     right: 16.5%;
     top: 56%;
 }
-#minimize { font-size: 1vw; position: absolute; top: 19%; left: 23%; z-index: 3 }
+#minimize { display: none; font-size: 1vw; position: absolute; top: 19%; left: 23%; z-index: 3 }
 .quiz {
     display: none;
     background-color: rgba(255,255,0,0.6);
@@ -185,7 +187,7 @@ progress[value]::-moz-progress-bar {
     font-size: 1.1vw;
     z-index: 2;
 }
-#quizQuestionAnswers { display: block }
+#quizQuestionAnswers { display: none }
 #answers label { }
 #question { }
 #lastAnswer { }
