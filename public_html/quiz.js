@@ -45,10 +45,17 @@ function resetQuiz() {
 
 function updateQuiz() {
     var y = 0;
+    var target;
     if (selectedTool === 1)
-        y = -((window.innerHeight - 546.5) / window.innerHeight * 2.0 - 1);
+        target = "moisture-target";
     else if (selectedTool === 2)
-        y = -((window.innerHeight - 470.5) / window.innerHeight * 2.0 - 1);
+        target = "temperature-target";
+
+    if (target) {
+        var bound = document.getElementById(target).getBoundingClientRect();
+        var centerY = bound.top + bound.height / 2;
+        y = -(centerY / window.innerHeight * 2.0 - 1);
+    }
 
     var newHotspot = pickHotspot(0, y);
     if (newHotspot)
@@ -60,7 +67,8 @@ function updateQuiz() {
     else if (!newHotspot) {
         hotspot = undefined;
         quizInProgress = false;
-        $("#moisture-value").text("0.00");
+        $("#moisture-value").text("");
+        $("#temperature-value").html("");
         $("#quizQuestionAnswers").stop(true, false).fadeOut();
         $("#quizCorrect").fadeOut();
         $("#quizIncorrect").fadeOut();
@@ -154,7 +162,9 @@ function updateQuiz() {
             else
                 $("#quizQuestionAnswers").delay(1000).fadeIn();
         } else if (selectedTool === 1) {
-            $("#moisture-value").text(selectedQuizData.Moisture ? (selectedQuizData.Moisture + ".0") : "00.0");
+            $("#moisture-value").text(selectedQuizData.Moisture ? (selectedQuizData.Moisture + ".0") : "--");
+        } else if (selectedTool === 2) {
+            $("#temperature-value").text(selectedQuizData.Temperature ? (selectedQuizData.Temperature + ".0") : "--");
         }
     }
 }

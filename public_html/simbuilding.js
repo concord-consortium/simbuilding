@@ -100,10 +100,7 @@ function render() {
 
         if (irMode) {
             if ($("#tool-ircamera").css("opacity") === "1") {
-                var irWidth = 460;
-//                renderer.setViewport(window.innerWidth / 2 - irWidth / 2 + 5, 200, irWidth, irWidth);
-    var rect = document.getElementById("tool-ircamera-img").getBoundingClientRect();
-//    console.log(rect.top);      
+                var rect = document.getElementById("tool-ircamera").getBoundingClientRect();
                 renderer.setViewport(rect.left + rect.width * 0.10, 0 + rect.height * 0.20, rect.width * 0.8, rect.height * 0.7);
                 camera.fov = 25;
                 camera.aspect = 1;
