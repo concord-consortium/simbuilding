@@ -53,6 +53,21 @@
             <progress id="progress" value="0"></progress>
         </div>
 
+        <video id="video" width="400" height="400" controls autoplay>
+            <source src="resources/videos/video.mp4" type="video/mp4">
+            Your browser does not support the video tag.
+        </video>
+
+        <div id="quiz">
+            <div id="quizQuestionAnswers">
+                <p id="question">Do you see a problem here?</p>
+                <p id="lastAnswer">Last Answer:</p>
+                <div id="answers"></div>
+            </div>
+            <div id="quizCorrect">Correct!</div>
+            <div id="quizIncorrect">Incorrect!</div>
+        </div>
+
         <div id="WebGL-output">
             <div id="toolbox" onclick="toggleToolbox();">
                 <a href="javascript: toggleTool(2); toggleToolbox('open');">
@@ -83,14 +98,6 @@
                 <img id="quizImage" src="resources/images/baseboard-1b.jpg" alt="" />
                 <div id="temperature-high">80</div>
                 <div id="temperature-low">60</div>
-                <input id="minimize" type="button" value="&#x25B2;" onclick="toggleQuizMinimize()"/>
-                <div id="quizQuestionAnswers" class="quiz">
-                    <p id="question">Do you see a problem here?</p>
-                    <p id="lastAnswer">Last Answer:</p>
-                    <div id="answers"></div>
-                </div>
-                <div id="quizCorrect" class="quiz">Correct!</div>
-                <div id="quizIncorrect" class="quiz">Incorrect!</div>
                 <div id="quizAlreadyChecked" class="quiz">Already Checked!</div>
             </div>
             <div id="tool-moisture">

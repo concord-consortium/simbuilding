@@ -69,9 +69,7 @@ function updateQuiz() {
         quizInProgress = false;
         $("#moisture-value").text("");
         $("#temperature-value").html("");
-        $("#quizQuestionAnswers").stop(true, false).fadeOut();
-        $("#quizCorrect").fadeOut();
-        $("#quizIncorrect").fadeOut();
+        $("#quiz").stop(true, false).fadeOut();
         $("#quizAlreadyChecked").fadeOut();
         $("#quizImage").fadeOut();
         $("#temperature-high").fadeOut();
@@ -157,10 +155,8 @@ function updateQuiz() {
             $("#temperature-low").fadeIn();
             $("#minimize").attr("value", "\u25B2");
             $("#minimize").delay(1000).fadeIn();
-            if (alreadyAnswered.indexOf(hotspot.userData.id) !== -1)
-                $("#quizAlreadyChecked").show();
-            else
-                $("#quizQuestionAnswers").delay(1000).fadeIn();
+            $("#quizQuestionAnswers").show();
+            $("#quiz").delay(1000).fadeIn();
         } else if (selectedTool === 1) {
             $("#moisture-value").text(selectedQuizData.Moisture ? (selectedQuizData.Moisture + ".0") : "--");
         } else if (selectedTool === 2) {

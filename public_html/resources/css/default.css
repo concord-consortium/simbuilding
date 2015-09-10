@@ -92,29 +92,28 @@ progress[value]::-moz-progress-bar {
 #toolbox {
     background: url(../images/toolbox-closed.png) no-repeat;
     background-size: 100%;
-    bottom: 1%;
     cursor: pointer;
     position: absolute;
+    bottom: 1%;
     right: 1%;
-    width: 25vw;
-    height: 19vw;
+    width: 17vw;
+    height: 13vw;
 }
 #toolbox a { display: none; text-decoration: none; }
-#toolbox a img { margin-top: -1.5vw;}
-#tool-temperature-small { width: 3.2vw; height: 10vw; margin-left: 4vw; margin-right: 2vw }
-#tool-moisture-small { width: 4.5vw; height: 10vw; margin-right: 0vw }
-#tool-ircamera-small { width: 8vw; height: 10vw}
+#toolbox a img { margin-top: -7%}
+#tool-temperature-small { width: 12%; height: 55%; margin-left: 10%; margin-right: 8% }
+#tool-moisture-small { width: 18%; height: 55%; margin-right: 4% }
+#tool-ircamera-small { width: 30%; height: 55%}
 
 #fan-container {
     bottom: 1%;
-    left: 10px;
+    right: 20%;
     position: absolute;
 }
 #fan-container a img {
-    height: 15vw;
-    width: 7vw;
+    height: 11vw;
+    width: 5vw;
 }
-
 
 /* INFRARED TOOL
 -------------------------------------------------------*/
@@ -173,7 +172,17 @@ progress[value]::-moz-progress-bar {
     right: 16.5%;
     top: 56%;
 }
-#minimize { display: none; font-size: 1vw; position: absolute; top: 19%; left: 23%; z-index: 3 }
+#quiz {
+    display: none;
+    position: absolute;
+    left: 1%;
+    top: 10%;
+    background-color: rgba(255,255,0,0.6);
+    border-radius: 10px;
+    width: 20%;
+    padding: 1%;
+    font-size: 1.1vw;
+}
 .quiz {
     display: none;
     background-color: rgba(255,255,0,0.6);
@@ -191,8 +200,8 @@ progress[value]::-moz-progress-bar {
 #answers label { }
 #question { }
 #lastAnswer { }
-#quizCorrect { }
-#quizIncorrect {  }
+#quizCorrect { display: none }
+#quizIncorrect { display: none }
 #quizAlreadyChecked { font-size: 2vw; text-align: center }
 
 /* MOISTURE TOOL
@@ -270,6 +279,12 @@ progress[value]::-moz-progress-bar {
     top: 37%;
     left: 25%;
 }
+
+#video {
+    position: absolute;
+    display: none;
+}
+
 .ui-dialog-titlebar-close {
     visibility: hidden;
 }
