@@ -200,6 +200,7 @@ progress[value]::-moz-progress-bar {
 #answers label { }
 #question { }
 #lastAnswer { }
+#hintButton { font-size: 1vw; }
 #quizCorrect { display: none }
 #quizIncorrect { display: none }
 #quizAlreadyChecked { font-size: 2vw; text-align: center }

@@ -134,15 +134,12 @@ function updateQuiz() {
                     resultDiv.fadeIn();
                 });
             }
-            $("#answers").append("<br/><br/>");
-            var tipTag = jQuery('<input/>', {
-                type: "button",
-                value: "Hint"
-            });
-            tipTag.appendTo('#answers');
-            tipTag.click(selectedQuizData, function (e) {
-                if (!$("#answers").children().last().is("p"))
-                    $("#answers").append("<p>" + e.data.Tip + "</p>");
+            $("#hint").text("");
+            $("#hintButton").click(selectedQuizData, function (e) {
+                if ($("#hint").text() === "")
+                    $("#hint").text(e.data.Tip);
+                else
+                    $("#hint").text("");
             });
             var filename;
             if (blowdoorMode)
