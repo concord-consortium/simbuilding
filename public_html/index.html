@@ -90,13 +90,7 @@
             </div>
             <div id="tool-ircamera">
                 <img src="resources/images/tool-ircamera.png" alt="" />
-                <a id="tool-ircamera-off" href="javascript: toggleTool(-1)" title="Off"><img src="//:0" alt="" /></a>
-                <map name="IRCameraButtons">
-                    <area shape="rect" coords="120,540,210,600" alt="Play" href="javascript: console.log('n/a')" />
-                    <area shape="rect" coords="420,540,510,600" alt="Reset" href="javascript: console.log('n/a')" />
-                    <area shape="rect" coords="260,565,360,665" alt="Chart" href="javascript: console.log('n/a')" />
-                    <area shape="circle" coords="432,647,20" alt="Off" href='javascript: toggleTool(-1)' />
-                </map>
+                <div id="tool-ircamera-off" onclick="toggleTool(-1)" title="Off"></div>
                 <img id="target" src="resources/images/target.png" alt="" />
                 <img id="quizImage" src="resources/images/baseboard-1b.jpg" alt="" />
                 <div id="temperature-high">80</div>
@@ -105,13 +99,13 @@
             </div>
             <div id="tool-moisture">
                 <img src="resources/images/tool-moisture.png" alt="" />
-                <a id="moisture-off" href="javascript: toggleTool(-1)" title="Off"><img src="//:0" alt="" /></a>
+                <div id="moisture-off" onclick="toggleTool(-1)" title="Off"></div>
                 <img id="moisture-target" src="resources/images/target.png" alt="" />
                 <div id="moisture-value">98</div>
             </div>
             <div id="tool-temperature">
                 <img src="resources/images/tool-temperature.png" alt="" />
-                <a id="temperature-off" href="javascript: toggleTool(-1)" title="Off"><img src="//:0" alt="" /></a>
+                <div id="temperature-off" onclick="toggleTool(-1)" title="Off"></div>
                 <img id="temperature-target" src="resources/images/target.png" alt="" />
                 <div id="temperature-value">20&deg;C</div>
             </div>

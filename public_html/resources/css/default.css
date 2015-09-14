@@ -135,6 +135,7 @@ progress[value]::-moz-progress-bar {
 }
 #tool-ircamera-off {
     position: absolute;
+    cursor: pointer;
     left: 67%;
     top: 88%;
     width: 5%;
@@ -223,6 +224,7 @@ progress[value]::-moz-progress-bar {
 }
 #moisture-off {
     position: absolute;
+    cursor: pointer;
     left: 30%;
     top: 48%;
     width: 20%;
@@ -269,6 +271,7 @@ progress[value]::-moz-progress-bar {
 }
 #temperature-off {
     position: absolute;
+    cursor: pointer;
     left: 23%;
     top: 52%;
     width: 15%;
