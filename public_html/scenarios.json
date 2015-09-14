@@ -447,8 +447,9 @@
     "ThermalBypassID": "None",
     "ThermogramWithoutBlowerDoor": "wall-5b.jpg",
     "ThermogramWithBlowerDoor": "wall-5b.jpg",
+    "Video" : "thermal-bridge-wood-frame.mp4",
     "Question": "What part of the wall is outlined by these stripes?",
-    "Tip": "Look at the thermal readings-- what would allow cold air through in stripe patterns?",
+    "Tip": "Look at the video that simulates the heat flow through a cross section of the wall.",
     "Answers": [
       {
         "Answer": "Wall Structure",
