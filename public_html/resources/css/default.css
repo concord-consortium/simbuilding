@@ -208,14 +208,14 @@ progress[value]::-moz-progress-bar {
 /* MOISTURE TOOL
 -------------------------------------------------------*/
 #tool-moisture {
-    width: 35vw;
-    height: 80vw;
+    width: 31vw;
+    height: 70vw;
     display: none;
     margin: auto;
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -35vw;
+    bottom: -31vw;
 }
 #tool-moisture > img:first-child {
     width: 100%;
@@ -232,8 +232,8 @@ progress[value]::-moz-progress-bar {
     width: 15vw;
     height: 15vw;
     position: absolute;
-    top: -15%;
-    left: 29%;
+    top: -11%;
+    left: 25.5%;
 }
 #moisture-value {
     font-size: 7vw;
@@ -247,14 +247,14 @@ progress[value]::-moz-progress-bar {
 /* TEMPERATURE TOOL
 -------------------------------------------------------*/
 #tool-temperature {
-    width: 25vw;
-    height: 80vw;
+    width: 19vw;
+    height: 60vw;
     display: none;
     margin: auto;
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -34vw;
+    bottom: -25vw;
 }
 #tool-temperature > img:first-child {
     width: 100%;
@@ -264,8 +264,8 @@ progress[value]::-moz-progress-bar {
     width: 15vw;
     height: 15vw;
     position: absolute;
-    top: -20%;
-    left: 20%;
+    top: -15%;
+    left: 10%;
 }
 #temperature-off {
     position: absolute;
