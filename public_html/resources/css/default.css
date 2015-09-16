@@ -285,8 +285,9 @@ progress[value]::-moz-progress-bar {
 }
 
 #video {
-    position: absolute;
     display: none;
+    width: 100%;
+    height: auto;
 }
 
 .ui-dialog-titlebar-close {

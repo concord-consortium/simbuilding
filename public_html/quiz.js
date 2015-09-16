@@ -135,11 +135,19 @@ function updateQuiz() {
                 });
             }
             $("#hint").text("");
+            $("#video").hide();
+            $("#hintButton").off("click");
             $("#hintButton").click(selectedQuizData, function (e) {
-                if ($("#hint").text() === "")
+                if ($("#hint").text() === "") {
                     $("#hint").text(e.data.Tip);
-                else
+                    if (e.data.Video) {
+                        $("#video").first().attr("src", "resources/videos/" + e.data.Video);
+                        $("#video").show();
+                    }
+                } else {
                     $("#hint").text("");
+                    $("#video").hide();
+                }
             });
             var filename;
             if (blowdoorMode)
