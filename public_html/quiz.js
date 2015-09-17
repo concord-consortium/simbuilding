@@ -112,9 +112,9 @@ function updateQuiz() {
                     localStorage.alreadyAnswered = JSON.stringify(alreadyAnswered);
                     var resultDiv;
                     if (e.data.Correct) {
-                        resultDiv = $("#quizCorrect");
                         localStorage.score++;
                         $("#score").css("background-color", "green");
+                        resultDiv = $("#quizCorrect");
                         changeToGrey(hotspot.userData.id);
                     } else {
                         localStorage.score--;
@@ -131,19 +131,21 @@ function updateQuiz() {
                         $("#score").css("background-color", "black");
                     });
                     resultDiv.html("<br/>" + e.data.Feedback);
+                    $("#video").hide();
+                    if ($("#hint").text() === "") {
+                        resultDiv.append("<br/><br/>");
+                        showVideo(e.data.Video);
+                    }
                     resultDiv.fadeIn();
                 });
             }
             $("#hint").text("");
-            $("#video").hide();
+            updateVideo(selectedQuizData.Video);
             $("#hintButton").off("click");
             $("#hintButton").click(selectedQuizData, function (e) {
                 if ($("#hint").text() === "") {
                     $("#hint").text(e.data.Tip);
-                    if (e.data.Video) {
-                        $("#video").first().attr("src", "resources/videos/" + e.data.Video);
-                        $("#video").show();
-                    }
+                    showVideo();
                 } else {
                     $("#hint").text("");
                     $("#video").hide();
@@ -168,6 +170,16 @@ function updateQuiz() {
             $("#temperature-value").text(selectedQuizData.Temperature ? (selectedQuizData.Temperature + ".0") : "--");
         }
     }
+}
+
+function updateVideo(videoFile) {
+    $("#video").first().attr("src", videoFile ? ("resources/videos/" + videoFile) : "");
+    $("#video").hide();
+}
+
+function showVideo() {
+    if ($("#video").first().attr("src") !== "")
+        $("#video").show();
 }
 
 function findQuiz(id) {
