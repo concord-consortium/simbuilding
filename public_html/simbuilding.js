@@ -474,33 +474,34 @@ function toggleTool(tool) {
         hotspot = null;
         updateQuiz();
     } else {
-        selectedTool = tool;
-        if (tool !== 0)
-            $("#tool-ircamera-small").animate({opacity: 1});
-        if (tool !== 1)
-            $("#tool-moisture-small").animate({opacity: 1});
-        if (tool !== 2)
-            $("#tool-temperature-small").animate({opacity: 1});
+        $("#tool-ircamera-small").animate({opacity: 1});
+        $("#tool-moisture-small").animate({opacity: 1});
+        $("#tool-temperature-small").animate({opacity: 1});
 
         $("#tool-ircamera").fadeOut();
         $("#tool-moisture").fadeOut();
         $("#tool-temperature").fadeOut();
 
         irMode = false;
-        var opacityOff = 0.3;
 
-        if (tool === 0) {
-            $("#tool-ircamera").fadeIn();
-            $("#tool-ircamera-small").animate({opacity: opacityOff});
-            irMode = true;
-        } else if (tool === 1) {
-            $("#tool-moisture").fadeIn();
-            $("#tool-moisture-small").animate({opacity: opacityOff});
-        } else if (tool === 2) {
-            $("#sensor-graph").hide();
-            $("#temperature-target").show();
-            $("#tool-temperature").fadeIn();
-            $("#tool-temperature-small").animate({opacity: opacityOff});
+        if (selectedTool !== tool) {
+            selectedTool = tool;
+
+            var opacityOff = 0.3;
+
+            if (tool === 0) {
+                $("#tool-ircamera").fadeIn();
+                $("#tool-ircamera-small").animate({opacity: opacityOff});
+                irMode = true;
+            } else if (tool === 1) {
+                $("#tool-moisture").fadeIn();
+                $("#tool-moisture-small").animate({opacity: opacityOff});
+            } else if (tool === 2) {
+                $("#sensor-graph").hide();
+                $("#temperature-target").show();
+                $("#tool-temperature").fadeIn();
+                $("#tool-temperature-small").animate({opacity: opacityOff});
+            }
         }
     }
     doRender = true;
