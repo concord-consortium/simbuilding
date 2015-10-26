@@ -167,7 +167,7 @@ function updateQuiz() {
             $("#quizQuestionAnswers").show();
             $("#quiz").delay(1000).fadeIn();
         } else if (selectedTool === 1) {
-            $("#moisture-value").text(selectedQuizData.Moisture ? (selectedQuizData.Moisture + ".0") : "--");
+            $("#moisture-value").text(selectedQuizData.Moisture ? selectedQuizData.Moisture : "--");
         } else if (selectedTool === 2) {
 //            $("#temperature-value").text(selectedQuizData.Temperature ? (selectedQuizData.Temperature + ".0") : "--");
             $("#temperature-target").fadeOut();
@@ -241,7 +241,7 @@ function initHotspots() {
     initHotspotSingle(15, 6.45, 0.6, 4.2, geom, whiteMaterial);
     initHotspotSingle(16, 10.53, 0.6, 4.2, geom, whiteMaterial);
     initHotspotSingle(15, 12.57, 0.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle(18, 13.85, 3, -0.5, geom, whiteMaterial);
+    initHotspotSingle(17, 13.85, 3, -0.5, geom, whiteMaterial);
 //    initHotspotSingle("wall-4g", 13, 4, 0.5, geom, whiteMaterial);
     initHotspotSingle(19, 9.9, 4, -4.5, geom, whiteMaterial);
     initHotspotSingle(22, 12, 3, -0.25, geom, whiteMaterial);

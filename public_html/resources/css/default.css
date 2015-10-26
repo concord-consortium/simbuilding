@@ -242,8 +242,8 @@ progress[value]::-moz-progress-bar {
     text-align: right;
     width: 100%;
     position: absolute;
-    top: 24%;
-    right: 27%;
+    top: 22%;
+    right: 30%;
 }
 
 /* TEMPERATURE TOOL
