@@ -146,7 +146,7 @@ progress[value]::-moz-progress-bar {
     width: 15vw;
     height: 15vw;
     position: absolute;
-    top: 28%;
+    top: 30%;
     left: 34%;
 }
 #quizImage {
