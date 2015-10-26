@@ -75,6 +75,8 @@ function updateQuiz() {
         $("#temperature-high").fadeOut();
         $("#temperature-low").fadeOut();
         $("#minimize").fadeOut();
+        $("#temperature-target").stop(true, false).show();
+        $("#sensor-graph").hide();
     } else {
         hotspot = newHotspot;
         $("[id^=quiz]").hide();
@@ -167,7 +169,9 @@ function updateQuiz() {
         } else if (selectedTool === 1) {
             $("#moisture-value").text(selectedQuizData.Moisture ? (selectedQuizData.Moisture + ".0") : "--");
         } else if (selectedTool === 2) {
-            $("#temperature-value").text(selectedQuizData.Temperature ? (selectedQuizData.Temperature + ".0") : "--");
+//            $("#temperature-value").text(selectedQuizData.Temperature ? (selectedQuizData.Temperature + ".0") : "--");
+            $("#temperature-target").fadeOut();
+            $("#sensor-graph").fadeIn();
         }
     }
 }
@@ -263,6 +267,12 @@ function initHotspots() {
     hotSpot.userData.quizID = 32;
     hotSpot.position.set(10, 3, -2.8);
     hotSpotsVisible.add(hotSpot);
+
+//    var hotSpot = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), shadeMaterial);
+//    hotSpot.userData.id = idCounter++;
+//    hotSpot.userData.quizID = 33;
+//    hotSpot.position.set(10, 3, -2.8);
+//    hotSpotsVisible.add(hotSpot);
 
     $("#found").text("Found: 0 / Total: " + hotSpotsHidden.children.length);
 }

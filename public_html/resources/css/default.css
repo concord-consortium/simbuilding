@@ -101,7 +101,7 @@ progress[value]::-moz-progress-bar {
 }
 #toolbox a { display: none; text-decoration: none; }
 #toolbox a img { margin-top: -7%}
-#tool-temperature-small { width: 12%; height: 55%; margin-left: 10%; margin-right: 8% }
+#tool-temperature-small { width: 21%; height: 48%; margin-left: 10%; margin-right: 8% }
 #tool-moisture-small { width: 18%; height: 55%; margin-right: 4% }
 #tool-ircamera-small { width: 30%; height: 55%}
 
@@ -249,25 +249,34 @@ progress[value]::-moz-progress-bar {
 /* TEMPERATURE TOOL
 -------------------------------------------------------*/
 #tool-temperature {
-    width: 19vw;
-    height: 60vw;
+    width: 50vw;
+    height: 30vw;
     display: none;
     margin: auto;
     position: absolute;
     left: 0;
     right: 0;
-    bottom: -25vw;
+    bottom: 10vw;
 }
 #tool-temperature > img:first-child {
     width: 100%;
     height: 100%;
 }
+
+#tool-temperature > img:nth-child(2) {
+    position: absolute;
+    width: 66%;
+    height: 84%;
+    left: 17%;
+    top: 8%;
+}
+
 #temperature-target {
     width: 15vw;
     height: 15vw;
     position: absolute;
-    top: -15%;
-    left: 10%;
+    top: 25%;
+    left: 35%;
 }
 #temperature-off {
     position: absolute;
