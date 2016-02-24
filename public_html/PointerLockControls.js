@@ -1,4 +1,4 @@
-/* global THREE, doors, doorToBeOpened, sceneRoot, UNIT_Y, viewerHeight */
+/* global THREE, doors, doorToBeOpened, sceneRoot, UNIT_Y, viewerHeight, tutorialMode */
 
 "use strict";
 
@@ -67,6 +67,9 @@ THREE.PointerLockControls = function (camera) {
         pitchObject.rotation.x -= movementY * 0.004;
 
         pitchObject.rotation.x = Math.max(-PI_2, Math.min(PI_2, pitchObject.rotation.x));
+
+        if (tutorialMode)
+            tutorialStep(4);
     };
 
     var onTouchDown = function (event) {
@@ -136,6 +139,7 @@ THREE.PointerLockControls = function (camera) {
             case "w":
             case "W":
                 moveForward = enable;
+                tutorialStep(0);
                 break;
             case 40: // down
             case 83: // s
@@ -144,16 +148,19 @@ THREE.PointerLockControls = function (camera) {
             case "s":
             case "S":
                 moveBackward = enable;
+                tutorialStep(1);
                 break;
             case 39: // right
             case "ArrowRight":
             case "Right":
                 rotateRight = enable;
+                tutorialStep(2);
                 break;
             case 37: // left
             case "ArrowLeft":
             case "Left":
                 rotateLeft = enable;
+                tutorialStep(3);
                 break;
             case 65: // a
             case "a":
@@ -258,11 +265,13 @@ THREE.PointerLockControls = function (camera) {
         this.updateWhichRoom(yawObject.position);
         updateQuiz();
 
-        localStorage.cameraX = yawObject.position.x;
-        localStorage.cameraY = yawObject.position.y;
-        localStorage.cameraZ = yawObject.position.z;
-        localStorage.cameraRotX = pitchObject.rotation.x;
-        localStorage.cameraRotY = yawObject.rotation.y;
+        if (!tutorialMode) {
+            localStorage.cameraX = yawObject.position.x;
+            localStorage.cameraY = yawObject.position.y;
+            localStorage.cameraZ = yawObject.position.z;
+            localStorage.cameraRotX = pitchObject.rotation.x;
+            localStorage.cameraRotY = yawObject.rotation.y;
+        }
 
         prevTime = time;
     };
@@ -333,7 +342,7 @@ THREE.PointerLockControls = function (camera) {
     };
 
     this.init = function () {
-        if (localStorage.cameraX) {
+        if (!tutorialMode && localStorage.cameraX) {
             yawObject.position.x = parseFloat(localStorage.cameraX);
             yawObject.position.y = parseFloat(localStorage.cameraY);
             yawObject.position.z = parseFloat(localStorage.cameraZ);

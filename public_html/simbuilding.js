@@ -14,6 +14,7 @@ var camera;
 var scene;
 var sceneRoot;
 var land;
+var houseModel;
 var viewerHeight = 1.3;
 var hoveredObject;
 var doRender;
@@ -27,6 +28,7 @@ var renderPass, copyPass, colorifyPass;
 var selectedTool = -1;
 var blowdoorMode = false;
 var showHotspots = false;
+var tutorialMode = false;
 //var options, spawnerOptions, particleSystem;
 //var tick = 0;
 
@@ -40,8 +42,6 @@ function startSimBuilding() {
 
     camera = new THREE.PerspectiveCamera(45, window.innerWidth / window.innerHeight, 0.1, 1000);
     camControl = new THREE.PointerLockControls(camera);
-    camControl.init();
-    camControl.enabled = true;
     scene.add(camControl.getObject());
 
     renderer = new THREE.WebGLRenderer({antialias: false});
@@ -80,20 +80,16 @@ function startSimBuilding() {
     var loader = new THREE.ColladaLoader();
     loader.options.convertUpAxis = true;
     loader.load('./resources/models/Yorktown.dae',
-            function (houseModel) {
-                houseModel.scene.traverse(function (child) {
+            function (houseModelLoaded) {
+                houseModelLoaded.scene.traverse(function (child) {
                     if (child instanceof THREE.Mesh)
                         child.geometry.computeFaceNormals();
                 });
-                initScene(houseModel.scene);
+                houseModel = houseModelLoaded.scene;
+                initScene();
                 initLights();
-                initQuiz();
-                initHotspots();
-                updateScore();
-                updateFound();
                 $("#progressPanel").fadeOut();
-                doRender = true;
-                setTimeout(render, 100);
+                $("#welcome").fadeIn();
             },
             function (callback) {
                 $("#progress").attr("value", callback.loaded / callback.total);
@@ -183,19 +179,17 @@ function initShaders() {
     copyPass.renderToScreen = true;
 }
 
-function initScene(houseModel) {
-    var axis = new THREE.AxisHelper(20);
-    scene.add(axis);
+function initScene() {
+//    var axis = new THREE.AxisHelper(20);
+//    scene.add(axis);
     sceneRoot = new THREE.Object3D();
     scene.add(sceneRoot);
     land = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshPhongMaterial());
     land.rotation.x = -Math.PI / 2;
     land.position.y = -0.1;
     land.geometry.computeBoundingBox();
-//    sceneRoot.add(land);
     collisionPartsWithoutDoors.push(land);
 
-    sceneRoot.add(houseModel);
     houseModel.children[0].children.forEach(function (child) {
         if (child.children[0]) {
             var doorComponentName = child.children[0].name;
@@ -443,7 +437,7 @@ function animateDoor() {
             }
         }
 
-    if (doorToBeClosed.length !== 0)
+    if (doorToBeClosed.length !== 0) {
         for (var i = 0; i < doorToBeClosed.length; i++) {
             var door = doorToBeClosed[i];
             if (door.userData.doorTimeout > 0)
@@ -464,6 +458,9 @@ function animateDoor() {
                 }
             }
         }
+        if (tutorialMode && camControl.getObject().position.z < 4.2)
+            tutorialStep(5);
+    }
 }
 
 function toggleTool(tool) {
@@ -537,6 +534,8 @@ function openToolbox() {
     for (var i = 0; i < tool_links.length; i++) {
         tool_links[i].style.display = 'inline';
     }
+    if (tutorialMode)
+        tutorialStep(6);
 }
 
 function closeToolbox() {
@@ -546,4 +545,18 @@ function closeToolbox() {
     for (var i = 0; i < tool_links.length; i++) {
         tool_links[i].style.display = 'none';
     }
+}
+
+function startGame() {
+    camControl.init();
+    camControl.enabled = true;
+    sceneRoot.add(land);
+    sceneRoot.add(houseModel);
+    initQuiz();
+    initHotspots();
+    updateScore();
+    updateFound();
+    doRender = true;
+    setTimeout(render, 100);
+    $("#welcome").hide();
 }

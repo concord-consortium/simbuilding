@@ -302,3 +302,54 @@ progress[value]::-moz-progress-bar {
 .ui-dialog-titlebar-close {
     visibility: hidden;
 }
+
+#welcome {
+    display: none;
+    background-color: orange;
+    border-style: solid;
+    border-radius: 20px;
+    margin: auto;
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 400px;
+    height: 200px;
+}
+
+#welcome > :first-child, #welcome > :nth-child(2) {
+    display: inline-block;
+    background-color: yellow;
+    margin: 10px;
+    padding: 10px;
+    border-style: solid;
+    border-radius: 10px;
+    width: 150px;
+    line-height: 155px;
+    text-align: center;
+}
+
+#tutorial {
+    display: none;
+    position: absolute;
+    bottom: 10%;
+    left: 1%;
+    padding: 1%;
+    background-color: rgba(0,190,0,0.7);
+    border-radius: 10px;
+    width: 20%;
+    font-size: 1.1vw;
+}
+
+#tutorialToolDescription {
+    display: none;
+    position: absolute;
+    bottom: 16vw;
+    right: 1%;
+    padding: 1%;
+    background-color: rgba(255,255,0,0.6);
+    border-radius: 10px;
+    width: 20%;
+    font-size: 1.1vw;
+}

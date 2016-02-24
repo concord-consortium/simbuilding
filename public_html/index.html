@@ -23,6 +23,7 @@
         <script type="text/javascript" src="simbuilding.js"></script>
         <script type="text/javascript" src="PointerLockControls.js"></script>
         <script type="text/javascript" src="quiz.js"></script>
+        <script type="text/javascript" src="tutorial.js"></script>
         <script type="text/javascript" src="libs/GPUParticleSystem.js"></script>
     </head>
 
@@ -54,6 +55,14 @@
             <progress id="progress" value="0"></progress>
         </div>
 
+        <div id="welcome">
+            <div><a href="javascript: startTutorial()">Tutorial</a></div>
+            <div><a href="javascript: startGame()">Begin Game</a></div>
+        </div>
+
+        <div id="tutorial">Tutorial</div>
+        <div id="tutorialToolDescription">Tutorial</div>
+
         <div id="quiz">
             <div id="quizQuestionAnswers">
                 <p id="question">Do you see a problem here?</p>
@@ -73,13 +82,13 @@
         <div id="WebGL-output">
             <div id="toolbox" onclick="toggleToolbox();">
                 <a href="javascript: toggleTool(2); toggleToolbox('open');">
-                    <img id="tool-temperature-small" src="resources/images/tool-phone-small.png" alt="" width="31" height="100" />
+                    <img id="tool-temperature-small" src="resources/images/tool-phone-small.png" alt="" width="31" height="100" onmouseover="popupToolDescription(2)" onmouseout="popupToolDescription(-1)" />
                 </a>
                 <a href="javascript: toggleTool(1); toggleToolbox('open');">
-                    <img id="tool-moisture-small" src="resources/images/tool-moisture.png" alt="" width="44" height="100" />
+                    <img id="tool-moisture-small" src="resources/images/tool-moisture.png" alt="" width="44" height="100" onmouseover="popupToolDescription(1)" onmouseout="popupToolDescription(-1)" />
                 </a>
                 <a href="javascript: toggleTool(0); toggleToolbox('open');">
-                    <img id="tool-ircamera-small" src="resources/images/tool-ircamera-small.png" alt="" width="75" height="100" />
+                    <img id="tool-ircamera-small" src="resources/images/tool-ircamera-small.png" alt="" width="75" height="100" onmouseover="popupToolDescription(0)" onmouseout="popupToolDescription(-1)" />
                 </a>
             </div>
             <div id="fan-container">

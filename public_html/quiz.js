@@ -1,4 +1,4 @@
-/* global THREE, scene, blowdoorMode, selectedTool, camControl */
+/* global THREE, scene, blowdoorMode, selectedTool, camControl, tutorialMode */
 
 "use strict";
 var hotspot = undefined;
@@ -139,6 +139,8 @@ function updateQuiz() {
                         showVideo(e.data.Video);
                     }
                     resultDiv.fadeIn();
+                    if (tutorialMode)
+                        tutorialStep(9);
                 });
             }
             $("#hint").text("");
@@ -173,6 +175,8 @@ function updateQuiz() {
             $("#temperature-target").fadeOut();
             $("#sensor-graph").fadeIn();
         }
+        if (tutorialMode && selectedTool === 0)
+            tutorialStep(8);
     }
 }
 
