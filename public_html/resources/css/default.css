@@ -353,3 +353,46 @@ progress[value]::-moz-progress-bar {
     width: 20%;
     font-size: 1.1vw;
 }
+
+#map {
+    position: absolute;
+    display: none;
+    top: 20%;
+    right: 3%;
+    width: 400px;
+    height: 250px;
+}
+
+#map > :first-child {
+    text-align: center;
+}
+
+#mapDownstairs {
+    background-image: url("../images/map1.png");
+    background-size: cover;
+    height: 100%;
+    width: 95%;
+    margin: 0px auto;
+}
+
+#mapUpstairs {
+    display: none;
+    background-image: url("../images/map2.png");
+    background-size: cover;
+    height: 95%;
+    width: 95%;
+}
+
+#mapShowButton {
+    position: absolute;
+    top: 30%;
+    right: 0;
+    background-color: yellow;
+    border-style: solid;
+    border-radius: 5px;
+    padding: 5px;
+}
+
+#mapShowButton > a {
+    text-decoration: none;
+}

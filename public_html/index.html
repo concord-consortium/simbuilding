@@ -24,6 +24,7 @@
         <script type="text/javascript" src="PointerLockControls.js"></script>
         <script type="text/javascript" src="quiz.js"></script>
         <script type="text/javascript" src="tutorial.js"></script>
+        <script type="text/javascript" src="map.js"></script>
         <script type="text/javascript" src="libs/GPUParticleSystem.js"></script>
     </head>
 
@@ -58,6 +59,21 @@
         <div id="welcome">
             <div><a href="javascript: startTutorial()">Tutorial</a></div>
             <div><a href="javascript: startGame()">Begin Game</a></div>
+        </div>
+
+        <div id="mapShowButton">
+            <a href="javascript:toggleMap()">Map</a>
+        </div>
+
+        <div id="map">
+            <div>
+                <input id="upstairsRadio" type="radio" name="floor" value="Downstairs" onclick="switchMapFloor(1)">
+                <label for="upstairsRadio">Downstairs</label>
+                <input id="downstairsRadio" type="radio" name="floor" value="Upstairs" onclick="switchMapFloor(2)">
+                <label for="downstairsRadio">Upstairs</label>
+            </div>
+            <div id="mapDownstairs"></div>
+            <div id="mapUpstairs"></div>
         </div>
 
         <div id="tutorial">Tutorial</div>
