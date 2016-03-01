@@ -67,13 +67,16 @@
 
         <div id="map">
             <div>
-                <input id="upstairsRadio" type="radio" name="floor" value="Downstairs" onclick="switchMapFloor(1)">
-                <label for="upstairsRadio">Downstairs</label>
-                <input id="downstairsRadio" type="radio" name="floor" value="Upstairs" onclick="switchMapFloor(2)">
-                <label for="downstairsRadio">Upstairs</label>
+                <input id="downstairsRadio" type="radio" name="floor" value="Downstairs" onclick="switchMapFloor(1)">
+                <label for="downstairsRadio">Downstairs</label>
+                <input id="upstairsRadio" type="radio" name="floor" value="Upstairs" onclick="switchMapFloor(2)">
+                <label for="upstairsRadio">Upstairs</label>
             </div>
-            <div id="mapDownstairs"></div>
-            <div id="mapUpstairs"></div>
+            <div>
+                <div id="mapDownstairs"></div>
+                <div id="mapUpstairs"></div>
+                <div id="GPS"></div>
+            </div>
         </div>
 
         <div id="tutorial">Tutorial</div>

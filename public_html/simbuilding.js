@@ -111,6 +111,7 @@ function render() {
             enforceCameraGravity();
         firstRender = false;
         animateDoor();
+        updateMapGPS();
 
 
 //        var delta = clock.getDelta() * spawnerOptions.timeScale;

@@ -354,35 +354,6 @@ progress[value]::-moz-progress-bar {
     font-size: 1.1vw;
 }
 
-#map {
-    position: absolute;
-    display: none;
-    top: 20%;
-    right: 3%;
-    width: 400px;
-    height: 250px;
-}
-
-#map > :first-child {
-    text-align: center;
-}
-
-#mapDownstairs {
-    background-image: url("../images/map1.png");
-    background-size: cover;
-    height: 100%;
-    width: 95%;
-    margin: 0px auto;
-}
-
-#mapUpstairs {
-    display: none;
-    background-image: url("../images/map2.png");
-    background-size: cover;
-    height: 95%;
-    width: 95%;
-}
-
 #mapShowButton {
     position: absolute;
     top: 30%;
@@ -395,4 +366,45 @@ progress[value]::-moz-progress-bar {
 
 #mapShowButton > a {
     text-decoration: none;
+}
+
+#map {
+    position: absolute;
+    display: none;
+    top: 20%;
+    right: 3%;
+}
+
+#map > :first-child {
+    text-align: center;
+    padding-bottom: 10px;
+}
+
+#map > :nth-child(2) {
+    position: relative;
+    height: 250px;
+    width: 400px;
+}
+
+#mapDownstairs {
+    background-image: url("../images/map1.png");
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+
+#mapUpstairs {
+    display: none;
+    background-image: url("../images/map2.png");
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+
+#GPS {
+    position: absolute;
+    width: 10px;
+    height: 10px;
+    border-radius: 25px;
+    background: red;
 }
