@@ -187,6 +187,7 @@ THREE.PointerLockControls = function (camera) {
                 rotateDown = enable;
                 break;
         }
+        updateMapGPS();
         event.preventDefault();
     };
 
@@ -339,6 +340,7 @@ THREE.PointerLockControls = function (camera) {
         yawObject.position.z = 10;
         pitchObject.rotation.x = 0;
         yawObject.rotation.y = 0;
+        updateMapGPS();
     };
 
     this.init = function () {
@@ -348,6 +350,7 @@ THREE.PointerLockControls = function (camera) {
             yawObject.position.z = parseFloat(localStorage.cameraZ);
             pitchObject.rotation.x = parseFloat(localStorage.cameraRotX);
             yawObject.rotation.y = parseFloat(localStorage.cameraRotY);
+            updateMapGPS();
         } else {
             this.reset();
         }

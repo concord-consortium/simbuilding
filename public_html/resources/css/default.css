@@ -408,3 +408,54 @@ progress[value]::-moz-progress-bar {
     border-radius: 25px;
     background: red;
 }
+
+#map a {
+    position: absolute;
+    transform: translate(-50%, -50%);
+    font-size: x-small;
+}
+
+#kitchen {
+    left: 39%;
+    top: 27%;
+}
+
+#diningRoom {
+    left: 48%;
+    top: 77%;
+}
+
+#tvRoom {
+    left: 83%;
+    top: 77%;
+}
+
+#livingRoom {
+    left: 77%;
+    top: 37%;
+}
+
+#garage {
+    left: 18%;
+    top: 68%;
+}
+
+#bedroom1 {
+    left: 86%;
+    top: 73%;
+}
+
+#bedroom2 {
+    left: 86%;
+    top: 20%;
+}
+
+#bedroom3 {
+    left: 65%;
+    top: 20%;
+}
+
+#bedroomMaster {
+    left: 54%;
+    top: 70%;
+}
