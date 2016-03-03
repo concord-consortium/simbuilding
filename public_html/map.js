@@ -18,14 +18,22 @@ function updateMapGPS() {
     var secondFloor = p.y > 4;
     var w = $("#GPS").parent().width();
     var h = $("#GPS").parent().height();
+    var x = (3 + p.x) / 17.5 * w;
+    var y;
     if (secondFloor) {
         $("#upstairsRadio").prop("checked", true);
         switchMapFloor(2);
-        $("#GPS").css("bottom", (5 - p.z) / 11 * h);
+        y = (5 - p.z) / 11 * h;
     } else {
         $("#downstairsRadio").prop("checked", true);
         switchMapFloor(1);
-        $("#GPS").css("bottom", (4 - p.z) / 11 * h);
+        y = (4 - p.z) / 11 * h;
     }
-    $("#GPS").css("left", (3 + p.x) / 17.5 * w);
+
+    x = Math.max(x, -w / 20);
+    x = Math.min(x, w);
+    y = Math.max(y, -h / 20);
+    y = Math.min(y, h);
+    $("#GPS").css("left", x);
+    $("#GPS").css("bottom", y);
 }
