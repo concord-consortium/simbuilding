@@ -12,7 +12,7 @@ var tutorial = [
     "There are 3 tools available to you. To learn more about them, hover your mouse over each of them and read their description.",
     "Select IR Camera tool by clicking on it. When IR Camera is on, you can see white HotSpots on various parts of the house such as walls and windows. Find one such HotSpot and point the camera to it.",
     "You can now see the IR image of this part of the house on the IR Camera screen. On left side you see a question along with 3 possible answers. If you are not sure about the answer, click on the Hint button for additional information. When you're ready, click on an answer. If you're correct, the score will increase by one. Otherwise the score will be reduced.",
-    "Congradulation you have successfully completed the tutorial. Now continue the game by walking around the house and discovering new HotSpots. Good luck!"
+    "Congratulations you have successfully completed the tutorial. Now continue the game by walking around the house and discovering new HotSpots. Good luck!"
 ];
 
 function startTutorial() {
@@ -46,11 +46,13 @@ function popupToolDescription(tool) {
         $("#tutorialToolDescription").hide();
     else {
         if (tool === 0)
-            $("#tutorialToolDescription").html("IR Camera:<br/>This tool allows you to see the infra-red images of various parts of the house. The yellow shade indicates a hot surface and the purple shade indicates a cold surface. Use it to identify in which areas the cold outside air is leaking into the house.");
+            $("#tutorialToolDescription").html("IR Camera:<br/>This tool allows you to see the infrared images of various parts of the house. The red/yellow shade indicates a hot surface and the purple/blue shade indicates a cold surface. Use it to identify in which areas the cold outside air is leaking into the house.");
         else if (tool === 1)
-            $("#tutorialToolDescription").html("Moisture Meter:<br/>This tool allows you to see the moisture level of various parts of the house. 100% means fully wet and 0% means fully dry. Use it to identify in which areas the moisture is leaking into the room from outside or from upper floors.");
+            $("#tutorialToolDescription").html("Moisture Meter:<br/>This tool allows you to see the moisture level of various parts of the house. 100% means fully wet and 0% means fully dry. Use it to identify in which areas there is moisture on the surface or inside of the walls from leaks.");
         else if (tool === 2)
             $("#tutorialToolDescription").html("Sensor:<br/>This tool allows you to see the temperature and moisture levels during the course of the day.");
+        else if (tool === 3)
+            $("#tutorialToolDescription").html("Blower Door:<br/>This is a machine used to measure the airtightness of buildings. It can help locate air leakage sites in the building envelope. When looking at a hot spot using IR Camera, you can turn on the blower door to see if the IR image changes. If it changes then we probably have air leakage.");
         $("#tutorialToolDescription").show();
         tutorialStep(7);
     }
