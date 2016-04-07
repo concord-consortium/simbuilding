@@ -235,9 +235,9 @@ function initHotspots() {
     initHotspotSingle(6, 13.85, 0.4, 0.5, geom, whiteMaterial);
     initHotspotSingle(5, 13.85, 0.4, -4.7, geom, whiteMaterial);
     initHotspotSingle(5, 13.85, 3.45, 0, geom, whiteMaterial);
-    initHotspotSingle(6, 13, 0.4, -0.25, geom, whiteMaterial);
+    initHotspotSingle(6, 13, 0.4, -0.3, geom, whiteMaterial);
     initHotspotSingle(6, 3.15, 3.45, 3.5, geom, whiteMaterial);
-    initHotspotSingle(6, 13.85, 3.45, -4.7, geom, whiteMaterial);
+    initHotspotSingle(6, 10.9, 3.45, -5.4, geom, whiteMaterial);
     // Wall
     initHotspotSingle(14, 3.15, 2.5, 2, geom, whiteMaterial);
     initHotspotSingle(13, 13.85, 2.5, 2, geom, whiteMaterial);
@@ -247,8 +247,8 @@ function initHotspots() {
     initHotspotSingle(15, 12.57, 0.6, 4.2, geom, whiteMaterial);
     initHotspotSingle(17, 13.85, 3, -0.5, geom, whiteMaterial);
 //    initHotspotSingle("wall-4g", 13, 4, 0.5, geom, whiteMaterial);
-    initHotspotSingle(19, 9.9, 4, -4.5, geom, whiteMaterial);
-    initHotspotSingle(22, 12, 3, -0.25, geom, whiteMaterial);
+    initHotspotSingle(19, 13.85, 4, -2.5, geom, whiteMaterial);
+    initHotspotSingle(22, 13.85, 2.7, -2.9, geom, whiteMaterial);
     initHotspotSingle(21, 3.15, 5, 1, geom, whiteMaterial);
     // Ceiling
     initHotspotSingle(7, 3.15, 5.8, 3.3, geom, whiteMaterial);
