@@ -5,12 +5,22 @@ function toggleMap() {
 }
 
 function switchMapFloor(floor) {
-    if (floor === 1) {
-        $("#mapUpstairs").hide();
-        $("#mapDownstairs").show();
-    } else {
+    houseModel.visible = floor < 2;
+    if (floor === 2)
+        sceneRoot.add(atticModel);
+    else
+        sceneRoot.remove(atticModel);
+
+    if (floor === 0) {
         $("#mapDownstairs").hide();
         $("#mapUpstairs").show();
+    } else if (floor === 1) {
+        $("#mapUpstairs").hide();
+        $("#mapDownstairs").show();
+    } else if (floor === 2) {
+        camControl.getObject().position.set(0, 1, 0);
+        updateMapGPS();
+        doRender = true;
     }
 }
 

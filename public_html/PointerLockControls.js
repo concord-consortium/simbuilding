@@ -335,9 +335,11 @@ THREE.PointerLockControls = function (camera) {
     };
 
     this.reset = function () {
-        yawObject.position.x = 8.5;
+//        yawObject.position.x = 8.5;
+        yawObject.position.x = 0;
         yawObject.position.y = viewerHeight;
-        yawObject.position.z = 10;
+//        yawObject.position.z = 10;
+        yawObject.position.z = 0;
         pitchObject.rotation.x = 0;
         yawObject.rotation.y = 0;
         updateMapGPS();

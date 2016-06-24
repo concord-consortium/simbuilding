@@ -15,6 +15,7 @@ var scene;
 var sceneRoot;
 var land;
 var houseModel;
+var atticModel;
 var viewerHeight = 1.3;
 var hoveredObject;
 var doRender;
@@ -79,17 +80,29 @@ function startSimBuilding() {
 
     var loader = new THREE.ColladaLoader();
     loader.options.convertUpAxis = true;
-    loader.load('./resources/models/Yorktown.dae',
+    loader.load('./resources/models/attic.dae',
             function (houseModelLoaded) {
                 houseModelLoaded.scene.traverse(function (child) {
                     if (child instanceof THREE.Mesh)
                         child.geometry.computeFaceNormals();
                 });
                 houseModel = houseModelLoaded.scene;
-                initScene();
-                initLights();
-                $("#progressPanel").fadeOut();
-                $("#welcome").fadeIn();
+                loader.load('./resources/models/attic.dae',
+                        function (houseModelLoaded) {
+//                            houseModelLoaded.scene.traverse(function (child) {
+//                                if (child instanceof THREE.Mesh)
+//                                    child.geometry.computeFaceNormals();
+//                            });
+                            atticModel = houseModelLoaded.scene;
+                            initScene();
+                            initLights();
+                            $("#progressPanel").fadeOut();
+                            $("#welcome").fadeIn();
+                        },
+                        function (callback) {
+                            $("#progress").attr("value", callback.loaded / callback.total);
+                        }
+                );
             },
             function (callback) {
                 $("#progress").attr("value", callback.loaded / callback.total);
@@ -180,8 +193,8 @@ function initShaders() {
 }
 
 function initScene() {
-//    var axis = new THREE.AxisHelper(20);
-//    scene.add(axis);
+    var axis = new THREE.AxisHelper(20);
+    scene.add(axis);
     sceneRoot = new THREE.Object3D();
     scene.add(sceneRoot);
     land = new THREE.Mesh(new THREE.PlaneGeometry(100, 100), new THREE.MeshPhongMaterial());
