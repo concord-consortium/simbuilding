@@ -186,6 +186,8 @@ THREE.PointerLockControls = function (camera) {
             case "Z":
                 rotateDown = enable;
                 break;
+            default:
+                return;
         }
         updateMapGPS();
         event.preventDefault();
@@ -265,7 +267,7 @@ THREE.PointerLockControls = function (camera) {
         this.adjustCameraPositionForCollision();
         this.updateWhichRoom(yawObject.position);
         updateQuiz();
-
+        
         if (!tutorialMode) {
             localStorage.cameraX = yawObject.position.x;
             localStorage.cameraY = yawObject.position.y;
@@ -302,7 +304,7 @@ THREE.PointerLockControls = function (camera) {
             var position = yawObject.position.clone();
             position.y -= 0.8;
             var raycaster = new THREE.Raycaster(position, direction);
-            var intersects = raycaster.intersectObject(sceneRoot, true);
+            var intersects = raycaster.intersectObjects(getCollisionModel(), true);
             var MIN_DISTANCE_TO_WALL = 0.3;
             if (intersects.length > 0 && intersects[0].distance < MIN_DISTANCE_TO_WALL) {
                 var newPosition = intersects[0].point.clone().sub(direction.clone().multiplyScalar(MIN_DISTANCE_TO_WALL * 1.01));
@@ -335,14 +337,20 @@ THREE.PointerLockControls = function (camera) {
     };
 
     this.reset = function () {
-//        yawObject.position.x = 8.5;
-        yawObject.position.x = 0;
+        yawObject.position.x = 8.5;
         yawObject.position.y = viewerHeight;
-//        yawObject.position.z = 10;
-        yawObject.position.z = 0;
+        yawObject.position.z = 10;
         pitchObject.rotation.x = 0;
         yawObject.rotation.y = 0;
         updateMapGPS();
+    };
+
+    this.resetAtticView = function () {
+        yawObject.position.x = 1.45;
+        yawObject.position.y = viewerHeight;
+        yawObject.position.z = 1.77;
+        pitchObject.rotation.x = 0;
+        yawObject.rotation.y = 0;
     };
 
     this.init = function () {

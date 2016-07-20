@@ -16,6 +16,7 @@ var sceneRoot;
 var land;
 var houseModel;
 var atticModel;
+var atticCollisionModel;
 var viewerHeight = 1.3;
 var hoveredObject;
 var doRender;
@@ -80,29 +81,45 @@ function startSimBuilding() {
 
     var loader = new THREE.ColladaLoader();
     loader.options.convertUpAxis = true;
-    loader.load('./resources/models/attic.dae',
-            function (houseModelLoaded) {
-                houseModelLoaded.scene.traverse(function (child) {
+
+    loader.load('./resources/models/Yorktown.dae',
+            function (modelLoaded) {
+                modelLoaded.scene.traverse(function (child) {
                     if (child instanceof THREE.Mesh)
                         child.geometry.computeFaceNormals();
                 });
-                houseModel = houseModelLoaded.scene;
-                loader.load('./resources/models/attic.dae',
-                        function (houseModelLoaded) {
-//                            houseModelLoaded.scene.traverse(function (child) {
-//                                if (child instanceof THREE.Mesh)
-//                                    child.geometry.computeFaceNormals();
-//                            });
-                            atticModel = houseModelLoaded.scene;
-                            initScene();
-                            initLights();
-                            $("#progressPanel").fadeOut();
-                            $("#welcome").fadeIn();
-                        },
-                        function (callback) {
-                            $("#progress").attr("value", callback.loaded / callback.total);
-                        }
-                );
+                houseModel = modelLoaded.scene;
+                houseModel.visible = false;
+                initScene();
+                initLights();
+                $("#progressPanel").fadeOut();
+                $("#welcome").fadeIn();
+            },
+            function (callback) {
+                $("#progress").attr("value", callback.loaded / callback.total);
+            }
+    );
+
+    var loader = new THREE.ColladaLoader();
+    loader.options.convertUpAxis = true;
+
+    loader.load('./resources/models/attic.dae',
+            function (modelLoaded) {
+                modelLoaded.scene.traverse(function (child) {
+                    if (child instanceof THREE.Mesh)
+                        child.geometry.computeFaceNormals();
+                });
+                atticModel = modelLoaded.scene;
+                atticModel.visible = false;
+                atticCollisionModel = new THREE.Mesh(new THREE.BoxGeometry(11.5, 2, 6));
+                atticCollisionModel.material.side = THREE.BackSide;
+                atticCollisionModel.position.x = 0.2;
+                atticCollisionModel.position.y = 1;
+//                houseModel = new THREE.Object3D();
+//                initScene();
+//                initLights();
+                $("#progressPanel").fadeOut();
+                $("#welcome").fadeIn();
             },
             function (callback) {
                 $("#progress").attr("value", callback.loaded / callback.total);
@@ -120,7 +137,7 @@ function render() {
         var delta = clock.getDelta();
         if (camControl.needsUpdate())
             camControl.update(delta);
-        if (!firstRender)
+        if (!firstRender && localStorage.floor !== 3)
             enforceCameraGravity();
         firstRender = false;
         animateDoor();
@@ -250,7 +267,7 @@ function initLights() {
 
     var light = new THREE.SpotLight();
     light.distance = 8;
-    light.intensity = 1.5;
+    light.intensity = 1;
     light.exponent = 0.4;
     light.angle = Math.PI / 2;
     light.position.set(5, 3, 2);
@@ -258,10 +275,11 @@ function initLights() {
     light.target.updateMatrixWorld();
     scene.add(light);
 
+    // Master bedroom
     var light = new THREE.SpotLight();
     light.distance = 8;
     light.intensity = 1.5;
-    light.exponent = 0;
+    light.exponent = 0.4;
     light.angle = Math.PI / 2;
     light.position.set(5, 5.8, 2);
     light.target.position.set(light.position.x, 0, light.position.z);
@@ -270,7 +288,7 @@ function initLights() {
 
     var light = new THREE.SpotLight();
     light.distance = 8;
-    light.intensity = 1.5;
+    light.intensity = 1;
     light.exponent = 0.4;
     light.angle = Math.PI / 2;
     light.position.set(12, 3, 2);
@@ -278,19 +296,21 @@ function initLights() {
     light.target.updateMatrixWorld();
     scene.add(light);
 
+    // blue room
     var light = new THREE.SpotLight();
     light.distance = 8;
     light.intensity = 1.5;
-    light.exponent = 0;
+    light.exponent = 0.4;
     light.angle = Math.PI / 2;
     light.position.set(12, 5.8, 2);
     light.target.position.set(light.position.x, 0, light.position.z);
     light.target.updateMatrixWorld();
     scene.add(light);
 
+    // fireplace room
     var light = new THREE.SpotLight();
     light.distance = 8;
-    light.intensity = 1.5;
+    light.intensity = 1.2;
     light.exponent = 0.4;
     light.angle = Math.PI / 2;
     light.position.set(11, 3, -3);
@@ -298,9 +318,10 @@ function initLights() {
     light.target.updateMatrixWorld();
     scene.add(light);
 
+    // kitchen
     var light = new THREE.SpotLight();
     light.distance = 8;
-    light.intensity = 1.5;
+    light.intensity = 1.2;
     light.exponent = 0.4;
     light.angle = Math.PI / 2;
     light.position.set(4, 3, -4);
@@ -309,7 +330,7 @@ function initLights() {
     scene.add(light);
 
     var light = new THREE.SpotLight();
-    light.distance = 8;
+    light.distance = 5;
     light.intensity = 1.5;
     light.exponent = 0.2;
     light.angle = Math.PI / 2;
@@ -319,7 +340,7 @@ function initLights() {
     scene.add(light);
 
     var light = new THREE.SpotLight();
-    light.distance = 8;
+    light.distance = 5;
     light.intensity = 1.5;
     light.exponent = 0.2;
     light.angle = Math.PI / 2;
@@ -340,7 +361,7 @@ function initLights() {
 
     var light = new THREE.SpotLight();
     light.distance = 8;
-    light.intensity = 1.5;
+    light.intensity = 1;
     light.exponent = 0;
     light.angle = Math.PI / 2;
     light.position.set(-2, 3, 1);
@@ -348,12 +369,24 @@ function initLights() {
     light.target.updateMatrixWorld();
     scene.add(light);
 
+    // outside
     var light = new THREE.SpotLight();
     light.distance = 8;
     light.intensity = 1.5;
     light.exponent = 0.4;
     light.angle = Math.PI / 2.5;
     light.position.set(8.5, 4, 7);
+    light.target.position.set(light.position.x, 0, light.position.z);
+    light.target.updateMatrixWorld();
+    scene.add(light);
+    
+    // hallway
+    var light = new THREE.SpotLight();
+    light.distance = 8;
+    light.intensity = 0.5;
+    light.exponent = 0;
+    light.angle = Math.PI / 2;
+    light.position.set(8.5, 5.8, 0);
     light.target.position.set(light.position.x, 0, light.position.z);
     light.target.updateMatrixWorld();
     scene.add(light);
@@ -420,9 +453,13 @@ function closestPoint(p1, v1, p2, v2) {
 function enforceCameraGravity() {
     var camera = camControl.getObject();
     var raycaster = new THREE.Raycaster(camera.position, NEG_UNIT_Y);
-    var intersects = raycaster.intersectObjects(collisionPartsWithoutDoors, true);
+    var intersects = raycaster.intersectObjects(getCollisionModel(), true);
     if (intersects.length > 0)
-        camera.position.y = intersects[0].point.y + viewerHeight;
+        camera.position.y = Math.max(0, intersects[0].point.y) + viewerHeight;
+}
+
+function getCollisionModel() {
+    return localStorage.floor === "3" ? [atticCollisionModel] : collisionPartsWithoutDoors;
 }
 
 function animateDoor() {
@@ -565,10 +602,15 @@ function startGame() {
     camControl.enabled = true;
     sceneRoot.add(land);
     sceneRoot.add(houseModel);
+    sceneRoot.add(atticModel);
     initQuiz();
     initHotspots();
     updateScore();
     updateFound();
+    if (localStorage.floor === "3")
+        atticModel.visible = true;
+    else
+        houseModel.visible = true;
     doRender = true;
     setTimeout(render, 100);
     $("#welcome").hide();

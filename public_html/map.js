@@ -1,30 +1,30 @@
-/* global camControl */
+/* global camControl, houseModel, atticModel */
 
 function toggleMap() {
     $("#map").fadeToggle();
 }
 
 function switchMapFloor(floor) {
-    houseModel.visible = floor < 2;
-    if (floor === 2)
-        sceneRoot.add(atticModel);
-    else
-        sceneRoot.remove(atticModel);
-
-    if (floor === 0) {
-        $("#mapDownstairs").hide();
-        $("#mapUpstairs").show();
-    } else if (floor === 1) {
+    if (floor === 1) {
         $("#mapUpstairs").hide();
         $("#mapDownstairs").show();
     } else if (floor === 2) {
-        camControl.getObject().position.set(0, 1, 0);
-        updateMapGPS();
+        $("#mapDownstairs").hide();
+        $("#mapUpstairs").show();
+    } else if (floor === 3) {
+        $("#mapUpstairs").hide();
+        $("#mapDownstairs").hide();
+        localStorage.floor = floor;
+        houseModel.visible = false;
+        atticModel.visible = true;
+        camControl.resetAtticView();        
         doRender = true;
     }
 }
 
 function updateMapGPS() {
+    if (localStorage.floor === "3")
+        return;
     var p = camControl.getObject().position;
     var secondFloor = p.y > 4;
     var w = $("#GPS").parent().width();
@@ -50,6 +50,8 @@ function updateMapGPS() {
 }
 
 function moveToRoom(roomId) {
+    atticModel.visible = false;
+    houseModel.visible = true;
     var linkA = $("#" + roomId);
     var left = linkA.position().left;
     var top = linkA.position().top;
@@ -58,10 +60,13 @@ function moveToRoom(roomId) {
     var x = left * 17.5 / w - 3;
     var y;
     var secondFloor = $("#upstairsRadio").is(':checked');
-    if (secondFloor)
+    if (secondFloor) {
         y = -((h - top) * 11 / h - 5);
-    else
+        localStorage.floor = "2";
+    } else {
         y = -((h - top) * 11 / h - 4);
+        localStorage.floor = "1";
+    }
     camControl.getObject().position.set(x, secondFloor ? 5 : 1, y);
     updateMapGPS();
     doRender = true;
