@@ -215,8 +215,7 @@ function initHotspots() {
     var geom = new THREE.SphereGeometry(0.1, 20, 20);
     // Windows
     initHotspotSingle(24, 4.4, 2.35, 4.2, geom, whiteMaterial);
-    initHotspotSingle(23, 6.45, 2.35, 4.2, geom, whiteMaterial);
-    initHotspotSingle(23, 10.53, 2.5, 4.2, geom, whiteMaterial);
+    initHotspotSingle(23, 6.45, 2.35, 4.2, geom, whiteMaterial);    
     initHotspotSingle(30, 10.9, 0.9, 4.2, geom, whiteMaterial);
 //    initHotspotSingle("window-2b", 12.57, 2.5, 4.2, geom, whiteMaterial);
     initHotspotSingle(29, 13, 0.9, 4.2, geom, whiteMaterial);
@@ -224,31 +223,31 @@ function initHotspots() {
     initHotspotSingle(1, 6.45, 4.8, 4.2, geom, whiteMaterial);
     initHotspotSingle(28, 8.45, 5.3, 4.2, geom, whiteMaterial);
     initHotspotSingle(27, 10.53, 5.3, 4.2, geom, whiteMaterial);
-    initHotspotSingle(25, 12.57, 5.3, 4.2, geom, whiteMaterial);
-    initHotspotSingle(24, 12.57, 2.35, -5.5, geom, whiteMaterial);
+    initHotspotSingle(39, 12.57, 5.3, 4.2, geom, whiteMaterial);
+    initHotspotSingle(36, 12.57, 2.35, -5.5, geom, whiteMaterial);
     initHotspotSingle(24, 12.57, 5.3, -5.5, geom, whiteMaterial);
-    initHotspotSingle(24, 8.97, 2.35, -5.5, geom, whiteMaterial);
-    initHotspotSingle(24, 8.97, 5.3, -5.5, geom, whiteMaterial);
+    initHotspotSingle(37, 6.1, 2.7, -6.7, geom, whiteMaterial);
+    initHotspotSingle(38, 8.97, 5.3, -5.5, geom, whiteMaterial);
     // Baseboard
     initHotspotSingle(5, 3.15, 0.4, 3.5, geom, whiteMaterial);
     initHotspotSingle(6, 3.7, 0.4, -0.19, geom, whiteMaterial);
-    initHotspotSingle(6, 13.85, 0.4, 0.5, geom, whiteMaterial);
+    initHotspotSingle(33, 13.85, 0.4, 0.5, geom, whiteMaterial);
     initHotspotSingle(5, 13.85, 0.4, -4.7, geom, whiteMaterial);
     initHotspotSingle(5, 13.85, 3.45, 0, geom, whiteMaterial);
-    initHotspotSingle(6, 13, 0.4, -0.3, geom, whiteMaterial);
-    initHotspotSingle(6, 3.15, 3.45, 3.5, geom, whiteMaterial);
-    initHotspotSingle(6, 10.9, 3.45, -5.4, geom, whiteMaterial);
+//    initHotspotSingle(6, 13, 0.4, -0.3, geom, whiteMaterial);
+//    initHotspotSingle(6, 3.15, 3.45, 3.5, geom, whiteMaterial);
+//    initHotspotSingle(6, 10.9, 3.45, -5.4, geom, whiteMaterial);
     // Wall
     initHotspotSingle(14, 3.15, 2.5, 2, geom, whiteMaterial);
     initHotspotSingle(13, 13.85, 2.5, 2, geom, whiteMaterial);
-    initHotspotSingle(16, 4.4, 0.6, 4.2, geom, whiteMaterial);
+    initHotspotSingle(35, 4.4, 0.6, 4.2, geom, whiteMaterial);
     initHotspotSingle(15, 6.45, 0.6, 4.2, geom, whiteMaterial);
     initHotspotSingle(16, 10.53, 0.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle(15, 12.57, 0.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle(17, 13.85, 3, -0.5, geom, whiteMaterial);
+    initHotspotSingle(34, 8.97, 3.7, -5.4, geom, whiteMaterial);    
+    initHotspotSingle(17, 13, 3, -0.1, geom, whiteMaterial);
 //    initHotspotSingle("wall-4g", 13, 4, 0.5, geom, whiteMaterial);
-    initHotspotSingle(19, 13.85, 4, -2.5, geom, whiteMaterial);
-    initHotspotSingle(22, 13.85, 2.7, -2.9, geom, whiteMaterial);
+    initHotspotSingle(19, 13.85, 4, -4, geom, whiteMaterial);
+    initHotspotSingle(22, 13.85, 2.7, -4.5, geom, whiteMaterial);
     initHotspotSingle(21, 3.15, 5, 1, geom, whiteMaterial);
     // Ceiling
     initHotspotSingle(7, 3.15, 5.8, 3.3, geom, whiteMaterial);
@@ -263,13 +262,13 @@ function initHotspots() {
     shadeMaterial.emissive = new THREE.Color(0x555555);
     var hotSpot = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.03, 20, 1), shadeMaterial);
     hotSpot.userData.id = idCounter++;
-    hotSpot.userData.quizID = 31;
-    hotSpot.position.set(8.2, 3, 1);
+    hotSpot.userData.quizID = 12;
+    hotSpot.position.set(9.2, 5.78, -1);
     hotSpotsVisible.add(hotSpot);
     var hotSpot = new THREE.Mesh(new THREE.CylinderGeometry(0.1, 0.1, 0.03, 20, 1), shadeMaterial);
     hotSpot.userData.id = idCounter++;
-    hotSpot.userData.quizID = 32;
-    hotSpot.position.set(10, 3, -2.8);
+    hotSpot.userData.quizID = 11;
+    hotSpot.position.set(12, 5.78, -3.8);
     hotSpotsVisible.add(hotSpot);
 
 //    var hotSpot = new THREE.Mesh(new THREE.BoxGeometry(1, 1, 1), shadeMaterial);

@@ -4,12 +4,12 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "window-3g.jpg",
         "ThermogramWithBlowerDoor": "window-3b.jpg",
-        "Question": "Can air come in through a closed window?",
-        "Tip": "Often we can feel insulation leaks even though we cannot see them. Even tiny cracks in sealing around a window make a big difference in the room over time. Blower Door Tests allow us to find these small leaks.",
+        "Question": "Run the blower door to evaluate this window. Is there an air sealing opportunity?",
+        "Tip": "When used in conjunction with a blower door, visual tools like IR cameras or smoke pencils reveal specific air leakage sites.",
         "Answers": [
             {
                 "Answer": "Yes",
-                "Feedback": "Correct! This window is sealed poorly, allowing air to come through.",
+                "Feedback": "Correct! This window trim is poorly sealed, allowing air to come through.",
                 "Correct": true
             },
             {
@@ -18,7 +18,7 @@
             },
             {
                 "Answer": "No idea",
-                "Feedback": "Try running a blower door test. "
+                "Feedback": "Compare the IR pictures with and without the blower door running. If there is a change, there is likely air sealing opportunity."
             }
         ]
     },
@@ -27,44 +27,44 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "window-3g.jpg",
         "ThermogramWithBlowerDoor": "window-3g.jpg",
-        "Question": "Is this window installation air tight?",
-        "Tip": "Even tiny cracks in sealing around a window make a big difference in the room temperature over time. Blower Door Tests allow us to find these small leaks. ",
+        "Question": "Run the blower door to evaluate this window. Is there an air sealing opportunity?",
+        "Tip": "Running the blower door at a low pressure difference, around 10 PA, gives the evaluator more time to scan the building with an IR camera and detect leakage before the interior and exterior temperatures equalize. Once that happens, IR images are less revealing.",
         "Answers": [
             {
                 "Answer": "Yes",
-                "Feedback": "Correct! This window is sealed well.",
+                "Feedback": "Incorrect. Leaks would be revealed by purple feathering around the leakage sites when the blower door is running.",
                 "Correct": true
             },
             {
                 "Answer": "No",
-                "Feedback": "Incorrect. Running a blower door test shows the window is sealed well."
+                "Feedback": "Correct! The window is sealed well."
             },
             {
                 "Answer": "I can't tell",
-                "Feedback": "Try running a blower door test. Is there any evidence of breaks in the window's seal?"
+                "Feedback": "Compare the IR pictures with and without the blower door running. If there is a change, there is likely air sealing opportunity."
             }
         ]
     },
     {
         "ID": 3,
         "ThermalBypassID": "5.1.1",
-        "ThermogramWithoutBlowerDoor": "attic-1b.jpg",
+        "ThermogramWithoutBlowerDoor": "attic-1g.jpg",
         "ThermogramWithBlowerDoor": "attic-1b.jpg",
-        "Question": "What is coming through the attic door into the house?",
-        "Tip": "Attics were often left uninsulated because people did not realize the importance of the continuous and aligned air and thermal barrier. The hotter or colder air from outside gets into the attic and into the house through these doors. Are there any indicators of temperature difference in the image?",
+        "Question": "Run the blower door to evaluate this attic hatch. Is there an air sealing opportunity?",
+        "Tip": "Attic hatches should be insulated to the same R-value as the rest of the attic and sealed around the edges to prevent air leakage.",
         "Answers": [
             {
-                "Answer": "Cold air",
-                "Feedback": "Nice work!",
+                "Answer": "Yes",
+                "Feedback": "Nice work! The dark purple feathering around the edges shows cold air being pulled from the attic when the blower door is running.",
                 "Correct": true
             },
             {
-                "Answer": "Hot air",
-                "Feedback": "Incorrect. Use the temperature bar on the right to determine what the colors are showing in the IR image. This attic is leaking cold air."
+                "Answer": "No",
+                "Feedback": "Incorrect. If you run the blower door, leaks are revealed."
             },
             {
-                "Answer": "Ghosts",
-                "Feedback": "Incorrect. The streaks indicate air movement: cold air is leaking into the home."
+                "Answer": "I can't tell",
+                "Feedback": "Compare the IR photos with and without the blower door running. Is there any change? If so, there is an air sealing opportunity."
             }
         ]
     },
@@ -73,44 +73,44 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "attic-1g.jpg",
         "ThermogramWithBlowerDoor": "attic-1g.jpg",
-        "Question": "Will this attic hatch allow infiltration or exfiltration from or onto the attic?",
-        "Tip": "Attics were often left uninsulated because people did not realize the importance of the continuous and aligned air and thermal barrier. The hotter or colder air from outside gets into the attic and into the house through these doors. Are there any indicators of temperature difference in the image?",
+        "Question": "Run the blower door to evaluate this attic hatch. Is there an air sealing opportunity?",
+        "Tip": "The blower door is depressurizing the home, so may pull the attic hatch into a more airtight position than it normally rests in. In a real home, check how the attic hatch sits in its frame without the blower door running. If it seems loose or wobbly, it may be a source of air leakage.",
         "Answers": [
+            {
+                "Answer": "Yes",
+                "Feedback": "Incorrect. The even temperature on and around the door even when the blower door is running show that it is well sealed."
+            },
             {
                 "Answer": "No",
                 "Feedback": "Correct! The even temperature on and around the door show that it is well sealed.",
                 "Correct": true
             },
             {
-                "Answer": "Yes",
-                "Feedback": "Incorrect. The even temperature on and around the door show that it is well sealed."
-            },
-            {
                 "Answer": "I can't tell",
-                "Feedback": "Is the color of the attic door similar to that of the surrounding ceiling?"
+                "Feedback": "Compare the IR photos with and without the blower door running. Is there any change? If so, there is an air sealing opportunity."
             }
         ]
     },
     {
         "ID": 5,
         "ThermalBypassID": "None",
-        "ThermogramWithoutBlowerDoor": "baseboard-1b.jpg",
+        "ThermogramWithoutBlowerDoor": "baseboard-1g.jpg",
         "ThermogramWithBlowerDoor": "baseboard-1b.jpg",
-        "Question": "Would it be comfortable to walk barefoot on this floor?",
-        "Tip": "Is the temperature of the floor close to the warm temperature of the walls?",
+        "Question": "This wall was meant to be dense-packed with cellulose insulation. Run the blower door to evaluate the insulation. Is it dense-packed?",
+        "Tip": "Cellulose insulation should be installed at around 3.5 pounds per cubic foot. If correctly installed, it can significantly reduce air leakage as well as improving the home's insulation.",
         "Answers": [
             {
+                "Answer": "Yes",
+                "Feedback": "Incorrect. Properly installed dense-packed cellulose insulation hinders airflow through the wall. The purple feathering indicates air movement through the wall, so the insulation wasn't installed properly."
+            },
+            {
                 "Answer": "No",
-                "Feedback": "Correct! Time to break out the bunny slippers and fuzzy socks.",
+                "Feedback": "Correct. The purple feathering indicates air movement. You would not see this in a properly dense-packed wall.",
                 "Correct": true
             },
             {
-                "Answer": "Yes",
-                "Feedback": "Incorrect! You must like having cold toes! This floor is poorly insulated and would be very cold to walk on."
-            },
-            {
-                "Answer": "Don't know",
-                "Feedback": "Everyone loves heated floors. Poorly insulated floors and baseboards let cold air in just like poorly insulated windows and walls. Materials like stone absorb more of the cold than carpet, making tile on an uninsulated floor particularly uncomfortable."
+                "Answer": "I can't tell",
+                "Feedback": "Compare the IR images with and without the blower door running. If there is any change indicating air movement, the insulation wasn't installed densely enough to stop air movement."
             }
         ]
     },
@@ -119,44 +119,44 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "baseboard-1g.jpg",
         "ThermogramWithBlowerDoor": "baseboard-1g.jpg",
-        "Question": "Would it be comfortable to walk barefoot on this floor?",
-        "Tip": "Is the temperature of the floor close to the warm temperature of the walls?",
+        "Question": "Without looking at the floor plan map, try to determine if this wall is adjacent to outdoors/unheated space or to another heated room. What do you think is on the other side of this wall?",
+        "Tip": "IR scans provide the most reliable images when there is a temperature difference of at least 18 degrees F between inside and outside.",
         "Answers": [
             {
-                "Answer": "Yes",
-                "Feedback": "Great! No socks or slippers necessary! The floor is well insulated, as shown by the even temperature across the IR image.",
+                "Answer": "Heated space",
+                "Feedback": "Correct!",
                 "Correct": true
             },
             {
-                "Answer": "No",
-                "Feedback": "Incorrect.  No socks or slippers necessary! The floor is well insulated, as shown by the even temperature across the IR image. "
+                "Answer": "Unheated space or the outdoors",
+                "Feedback": "Incorrect."
             },
             {
-                "Answer": "Don't know",
-                "Feedback": "Everyone loves heated floors. Poorly insulated floors and baseboards let cold air in just like poorly insulated windows and walls. Materials like stone absorb more of the cold than carpet, making tile on an uninsulated floor particularly uncomfortable."
+                "Answer": "I can't tell",
+                "Feedback": "Try running the blower door. Usually you can see some minimal change in the IR image if you are adjacent to outdoor space and there is a temperature difference between indoors and out."
             }
         ]
     },
     {
         "ID": 7,
         "ThermalBypassID": "None",
-        "ThermogramWithoutBlowerDoor": "ceiling-1b.jpg",
+        "ThermogramWithoutBlowerDoor": "ceiling-1g.jpg",
         "ThermogramWithBlowerDoor": "ceiling-1b.jpg",
-        "Question": "What is highlighted by the bright purple in the wall seams?",
-        "Tip": "Joints need to be insulated as well as individual studs (walls, ceilings, windows) to create a continuous thermal boundary.",
+        "Question": "Run the blower door to evaluate this wall/ceiling juncture. Is there an air sealing opportunity?",
+        "Tip": "These areas are sometimes called \"critical junctures\" because it is so critical to home performance to get installation correct here.",
         "Answers": [
             {
-                "Answer": "Poor Insulation",
-                "Feedback": "Yes! These lines show the framing studs. conventional framing techniques make it difficult to achieve continuous insulation at corners and top of walls. The joints need to be insulated as well as the individual studs to create a continuous thermal boundary.",
+                "Answer": "Yes",
+                "Feedback": "Correct. The increased flow of cold air at the juncture indicates an air sealing opportunity, perhaps in the attached garage or in the attic.",
                 "Correct": true
             },
             {
-                "Answer": "Water",
-                "Feedback": "No. These lines show the framing studs. conventional framing techniques make it difficult to achieve continuous insulation at corners and top of walls. The joints need to be insulated as well as the individual studs to create a continuous thermal boundary. This image shows poor insulation at the wall seams."
+                "Answer": "No",
+                "Feedback": "Incorrect. If you run the blower door, leaks are revealed."
             },
             {
-                "Answer": "Concrete",
-                "Feedback": "No. These lines show the framing studs. conventional framing techniques make it difficult to achieve continuous insulation at corners and top of walls. The joints need to be insulated as well as the individual studs to create a continuous thermal boundary. This image shows poor insulation at the wall seams."
+                "Answer": "I can't tell",
+                "Feedback": "Compare the IR photos with and without the blower door running. Is there any change? If so, there is an air sealing opportunity."
             }
         ]
     },
@@ -165,44 +165,44 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "ceiling-1g.jpg",
         "ThermogramWithBlowerDoor": "ceiling-1g.jpg",
-        "Question": "Are the seams between the wall and ceiling a weak point in insulation?",
-        "Tip": "This image shows well insulated wall, but the joint at the ceiling is not well insulated. Conventional framing techniques make it difficult to achieve continuous insulation at corners and top of walls. The joints need to be insulated as well as the individual studs create a continuous thermal boundary.",
+        "Question": "Based on the IR image, which of these is most likely true?",
+        "Tip": "Insulation is often, improperly, held back from the edges of the attic so it does not cover the top plates of the wall framing. This reduces the effectiveness of the insulation.",
         "Answers": [
             {
-                "Answer": "Yes",
-                "Feedback": "Correct! The wall to ceiling joint is not well insulated. Conventional framing techniques make it difficult to achieve continuous insulation at the corners and top of walls. The joints need to be insulated as well as the individual studs to create a continuous thermal boundary.",
+                "Answer": "Wall top isn't properly insulated.",
+                "Feedback": "Correct! Known as the top plate, if the top framing members of the wall aren't covered with insulation, it allows thermal bridging, as seen in this IR image.",
                 "Correct": true
             },
             {
-                "Answer": "No",
-                "Feedback": "Incorrect. The wall to ceiling joint is not well insulated. Conventional framing techniques make it difficult to achieve continuous insulation at the corners and top of walls. The joints need to be insulated as well as the individual studs to create a continuous thermal boundary."
+                "Answer": "Wall cavity is not properly insulated.",
+                "Feedback": "Incorrect. Based on the image, the wall cavity looks well-insulated."
             },
             {
-                "Answer": "No idea",
-                "Feedback": "The wall to ceiling joint is not well insulated. Conventional framing techniques make it difficult to achieve continuous insulation at the corners and top of walls. The joints need to be insulated as well as the individual studs to create a continuous thermal boundary."
+                "Answer": "Water is leaking from the roof.",
+                "Feedback": "Incorrect. There is no water leakage evident in the image."
             }
         ]
     },
     {
         "ID": 9,
         "ThermalBypassID": "None",
-        "ThermogramWithoutBlowerDoor": "ceiling-2b.jpg",
+        "ThermogramWithoutBlowerDoor": "ceiling-2g.jpg",
         "ThermogramWithBlowerDoor": "ceiling-2b.jpg",
-        "Question": "Which of these has a leak?",
-        "Tip": "Anywhere numerous framing members joing together offer a weak point in a house’s air barrier. Try comparing an image from a well-sealed window and ceiling seam in the house to the those shown here.",
+        "Question": "Use the blower door to evaluate this corner. What does the IR image show?",
+        "Tip": "If the wall top was air sealed in the attic, and insulation extended over the framing, there would be little to no change in the IR image with the blower door running.",
         "Answers": [
             {
-                "Answer": "Ceiling Corner",
-                "Feedback": "Yep! The window is well insulated and the ceiling corner is not. Anywhere numerous framing members are put together offer a weak point in a house’s air barrier.",
+                "Answer": "The ceiling corner needs additional air sealing or insulation in the attic.",
+                "Feedback": "Yep!  Critical junctures like this wall/ceiling corner are often weak points in a building's thermal performance.",
                 "Correct": true
             },
             {
-                "Answer": "Window Pane",
-                "Feedback": "Nope! The window is well insulated and the ceiling corner is not. Anywhere numerous framing members are put together offer a weak point in a house’s air barrier."
+                "Answer": "The window trim is not well air-sealed.",
+                "Feedback": "Nope! The window trim is well sealed. "
             },
             {
-                "Answer": "Both",
-                "Feedback": "Nope! The window is well insulated and the ceiling corner is not. Anywhere numerous framing members are put together offer a weak point in a house’s air barrier."
+                "Answer": "The framing and trim show no evidence of air leakage or poor insulation.",
+                "Feedback": "Nope! There is a weak point somewhere. Try again."
             }
         ]
     },
@@ -211,21 +211,21 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "ceiling-2g.jpg",
         "ThermogramWithBlowerDoor": "ceiling-2g.jpg",
-        "Question": "Which of these has a leak?",
-        "Tip": "Anywhere numerous framing members joing together offer a weak point in a house’s air barrier. Try comparing an image from a well-sealed window and ceiling seam in the house to the those shown here.",
+        "Question": "Use the blower door to evaluate this corner. What does the IR image show?",
+        "Tip": "",
         "Answers": [
             {
-                "Answer": "Window Pane",
-                "Feedback": "Nope! The IR image shows a well sealed window and ceiling corner."
+                "Answer": "The ceiling corner needs additional air sealing or insulation in the attic.",
+                "Feedback": "Nope! The IR image shows a well sealed and insulated ceiling corner."
             },
             {
-                "Answer": "Neither",
-                "Feedback": "Yep! The IR image shows a well sealed window and ceiling corner.",
+                "Answer": "The window trim is not well air-sealed.",
+                "Feedback": "Nope! The IR image shows there is no air leakage around the window trim, even with the blower door running."
+            },
+            {
+                "Answer": "The framing and trim show no evidence of air leakage or poor insulation.",
+                "Feedback": "That's correct! The IR image shows well sealed window trim and a well sealed and insulated ceiling corner.",
                 "Correct": true
-            },
-            {
-                "Answer": "Ceiling Corner",
-                "Feedback": "Nope! The IR image shows a well sealed window and ceiling corner."
             }
         ]
     },
@@ -234,21 +234,21 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "light-bad.png",
         "ThermogramWithBlowerDoor": "light-bad.png",
-        "Question": "What does the purple area tell you about this light?",
-        "Tip": "Don’t trust your intuition, look at the IR readings. A light can be “IC”, or “Installation Contact”, meaning insulation is placed over the fixture after it is installed. It also needs to be properly sealed to the drywall to reduce air leakage.",
+        "Question": "Based on the IR image, is the ceiling insulated over this light fixture?",
+        "Tip": "The light fixture, commonly known as a \"can light\", penetrates the thermal boundary of a house. These fixtures are often sites of significant air leakage in homes.",
         "Answers": [
             {
-                "Answer": "It's on",
-                "Feedback": "Not quite. This light fixture was installed without an “Insulation Contact” rating, and was not well sealed, allowing cold air to enter around it."
+                "Answer": "Yes",
+                "Feedback": "Incorrect. Note the temperature scale in the IR image. The temperature of the fixture is much lower than the surrounding ceiling."
             },
             {
-                "Answer": "It's off.",
-                "Feedback": "Not quite. This light fixture was installed without an “Insulation Contact” rating, and was not well sealed, allowing cold air to enter around it."
-            },
-            {
-                "Answer": "The area behind it is cold.",
-                "Feedback": "You got it! This light fixture was installed without an “Insulation Contact” rating, and was not well sealed, allowing cold air to enter around it.",
+                "Answer": "No",
+                "Feedback": "Correct! The IR image shows the fixture is much colder than the surrounding ceiling, indicating no insulation.",
                 "Correct": true
+            },
+            {
+                "Answer": "I can't tell",
+                "Feedback": "Look again. Using the color/temperature scale in the IR image, compare the temperature of the fixture to the surrounding ceiling. "
             }
         ]
     },
@@ -257,25 +257,21 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "light-good.png",
         "ThermogramWithBlowerDoor": "light-good.png",
-        "Question": "What is the purple haze around the light?",
-        "Tip": "The heat of a light acts just like the heat in a fireplace, drawing air through it into the room. ",
+        "Question": "This ceiling used to look thermally ideal. An electrician was recently working in the attic around this light fixture. Based on the IR image, which of these most likely happened? The electrician:",
+        "Tip": "Light fixtures like this, commonly called \"can lights\", come in IC- and non-IC-rated versions. IC-rated means it can safely come into contact with insulation. There are ways of properly air sealing and insulating both types, but if installing new, especially where they penetrate into unconditioned space like here, the IC-rated varieties are recommended.",
         "Answers": [
             {
-                "Answer": "Electricity",
-                "Feedback": "IR sensors don't show electricity! This is a light fixture with an “insulation contact” rating. IC rating allows insulation to be placed over the fixture after it is installed. However, insulation alone will not stop all air flow."
+                "Answer": "Spilled a beverage.",
+                "Feedback": "Nope. A beverage spill would likely show up on an IR image, but the contrast would likely be greater, and the shape not quite so uniform."
             },
             {
-                "Answer": "Light",
-                "Feedback": "IR sensors don't show light! This is a light fixture with an “insulation contact” rating. IC rating allows insulation to be placed over the fixture after it is installed. However, insulation alone will not stop all air flow."
-            },
-            {
-                "Answer": "Hot air",
-                "Feedback": "Not quite! This is a light fixture with an “insulation contact” rating. IC rating allows insulation to be placed over the fixture after it is installed. However, insulation alone will not stop all air flow."
-            },
-            {
-                "Answer": "Cold air",
-                "Feedback": "Correct! This is a light fixture with an “insulation contact” rating looks like.  IC is when insulation is placed over the fixture after it is installed, but even this cannot stop all air flow.",
+                "Answer": "Did not replace the insulation around the wiring.",
+                "Feedback": "Correct! The purple haze indicates where the insulation isn't in contact with the air barrier of the ceiling anymore. That area of the ceiling is colder than the rest, where insulation was left in place.",
                 "Correct": true
+            },
+            {
+                "Answer": "Put everything back as it was, this is as good as it gets.",
+                "Feedback": "Not quite. Note the purple haze coming from one side of the light fixture. That part of the ceiling is colder than the rest for some reason. Try again."
             }
         ]
     },
@@ -284,21 +280,21 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "wall-1b.jpg",
         "ThermogramWithBlowerDoor": "wall-1b.jpg",
-        "Question": "The empty space shown by the purple in this image is probably...",
-        "Tip": " Look at the similarity in size of the empty space and the surrounding wall panels.",
+        "Question": "This wall was recently retrofitted with dense packed insulation. Should it pass a final inspection?",
+        "Tip": "",
         "Answers": [
             {
-                "Answer": "A missing insulation panel",
-                "Feedback": "You got it! It looks like the builders missed a panel, or moisture has damaged the insulation. Further investigation would be required to evaluate the cause.",
+                "Answer": "Yes",
+                "Feedback": "Hmmm, you have pretty low standards. That's incorrect. Try again."
+            },
+            {
+                "Answer": "No",
+                "Feedback": "Correct. There appears to be a large section where the insulation was only installed about 1/3 of the way up the wall. Further investigation is required, but if the wall was left empty, the insulators should come back and fill it.",
                 "Correct": true
             },
             {
-                "Answer": "Where a window used to be",
-                "Feedback": "Nope! It looks like the builders missed a panel, or moisture has damaged the insulation. Further investigation would be required to evaluate the cause."
-            },
-            {
-                "Answer": "A secret passage",
-                "Feedback": "Nope! It looks like the builders missed a panel, or moisture has damaged the insulation. Further investigation would be required to evaluate the cause."
+                "Answer": "I can't tell",
+                "Feedback": "Sure you can. If insulation is missing, it will show up as a cold (dark purple) area in the wall, and the job should not pass."
             }
         ]
     },
@@ -307,22 +303,22 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "wall-1g.jpg",
         "ThermogramWithBlowerDoor": "wall-1g.jpg",
-        "Question": "Is the purple on the wall water damage or wall structure?",
+        "Question": "This wall was recently retrofitted with dense packed insulation. Should it pass a final inspection?",
         "Moisture": 10,
-        "Tip": "Try using the moisture sensor. Compare this image to images of other walls. Are the purple lines consistent across all walls? ",
+        "Tip": "Even though this wall abuts the garage, as long as it's an unheated garage, IR scans can still tell you a lot about what is happening inside the wall.",
         "Answers": [
             {
-                "Answer": "Water",
-                "Feedback": "Incorrect. The moisture sensor reads normal on the purple lines, meaning it is the natural difference in resistance to heat movement between the insulation and the studs."
-            },
-            {
-                "Answer": "Structure",
-                "Feedback": "Correct! The moisture sensor reads normal on the purple lines, meaning it is the natural difference in resistance to heat movement between the insulation and the studs.",
+                "Answer": "Yes",
+                "Feedback": "Correct! Even with the blower door running, there is no evidence of missing insulation, which would show up as cold (dark purple) spots in the infrared image.",
                 "Correct": true
             },
             {
-                "Answer": "I don't know",
-                "Feedback": "The moisture sensor reads normal on the purple lines, meaning it is the natural difference in resistance to heat movement between the insulation and the studs."
+                "Answer": "No",
+                "Feedback": "Hmmm, what reason would you give for not passing it? That answer is incorrect. Try again."
+            },
+            {
+                "Answer": "I can't tell",
+                "Feedback": "Sure you can. If insulation is missing, it will show up as a cold (dark purple) area in the wall, and the job should not pass. Look again."
             }
         ]
     },
@@ -331,23 +327,21 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "wall-2b.jpg",
         "ThermogramWithBlowerDoor": "wall-2b.jpg",
-        "Question": "What would cause wall insulation to bunch upward away from the floor?",
-        "Tip": "Which of these is capable of moving insulation upwards?",
+        "Question": "A new outlet was recently installed in this wall. Based on the IR image, which of these most likely happened?",
+        "Tip": "",
         "Answers": [
             {
-                "Answer": "Mice & Rats",
-                "Feedback": "Yes, possibly. Mice and rats eat and move insulation around in the walls to make nests. Compressed, missing, or wet insulation would appear colder in the IR image. Further investigation is required.",
+                "Answer": "Wiring was added and insulation batts were cut to fit around the wiring, leaving no gaps or voids in the insulation of this wall.",
+                "Feedback": "Incorrect. There is evidence of a cold area, which would not be the case if insulation was fitted snugly in the wall cavities."                
+            },
+            {
+                "Answer": "Insulation was cut away to make way for the wires, and no new insulation was installed below.",
+                "Feedback": "Correct! While it's impossible to say for sure how the wall ended up this way, this is the most likely scenario, based on the IR images, which show that each wall cavity under the window is likely missing insulation at the bottom.",
                 "Correct": true
             },
             {
-                "Answer": "Poor insulation",
-                "Feedback": "Yes, possibly. Mice and rats eat and move insulation around in the walls to make nests. Compressed, missing, or wet insulation would appear colder in the IR image. Further investigation is required.",
-                "Correct": true
-            },
-            {
-                "Answer": "Water",
-                "Feedback": "Yes, possibly. Mice and rats eat and move insulation around in the walls to make nests. Compressed, missing, or wet insulation would appear colder in the IR image. Further investigation is required.",
-                "Correct": true
+                "Answer": "Insulation was pinched by the wiring.",
+                "Feedback": "Incorrect. Usually when that happens it shows up as a line where the wiring is pinching the insulation. Where the insulation puffs around the wiring above and below would be the same color as the rest of the wall."                
             }
         ]
     },
@@ -356,21 +350,21 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "wall-2g.jpg",
         "ThermogramWithBlowerDoor": "wall-2g.jpg",
-        "Question": "Is the insulation used under the window different than the rest of the walls?",
-        "Tip": "Try comparing images of a well insulated wall to this image.",
+        "Question": "This wall was meant to be insulated as part of a recent work scope. Based on your evaluation of the area, would the installation pass final inspection?",
+        "Tip": "If the walls appear a consistent temperature in the IR images (warm in this case), and there is little to no change when the blower door is running, the insulation is well installed.",
         "Answers": [
             {
                 "Answer": "Yes",
-                "Feedback": "Incorrect. Compare the insulation in this wall to others you've seen in the house. There is no appreciable difference in the insulation type."
-            },
-            {
-                "Answer": "No",
-                "Feedback": "Very good! Compare the insulation in this wall to others you've seen in the house. There is no appreciable difference in the insulation type.",
+                "Feedback": "Correct! The insulation is even and consistent within the wall cavities, and even with the blower door running, there is no sign of air leakage.",
                 "Correct": true
             },
             {
-                "Answer": "No clue",
-                "Feedback": "Compare the insulation in this wall to others you've seen in the house. There is no appreciable difference in the insulation type."
+                "Answer": "No",
+                "Feedback": "Incorrect. There is no evidence to indicate the insulation installation was less than sufficient to meet work quality guidelines of filling the cavities. Try again."
+            },
+            {
+                "Answer": "I can't tell",
+                "Feedback": "Incorrect. Use the IR scanner and blower door to evaluate the area and try again."
             }
         ]
     },
@@ -379,17 +373,17 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "wall-3b.jpg",
         "ThermogramWithBlowerDoor": "wall-3b.jpg",
-        "Question": "What substance is making splotches of the wall cooler?",
+        "Question": "What is most likely causing the cooler splotches on the wall?",
         "Moisture": 90,
         "Tip": "Try using the moisture sensor.",
         "Answers": [
             {
                 "Answer": "Cold air from outside",
-                "Feedback": "Incorrect. Air leaks tend to show up and distribute more evenly in the wall. Using the moisture sensor confirms that this fault in the insulation is due to water damage. "
+                "Feedback": "Incorrect. Air leaks tend to show up and distribute more evenly in the wall."
             },
             {
-                "Answer": "Cold air from upstairs",
-                "Feedback": "No, sorry. Air leaks tend to show up and distribute more evenly in the wall. Using the moisture sensor confirms that this fault in the insulation is due to water damage."
+                "Answer": "Missing insulation",
+                "Feedback": "Good guess, but not the case here. When blown-in insulation settles it does sometimes look similar to this, but you don't usually see so much contrast in the image as shows up here, without a blower door running."
             },
             {
                 "Answer": "Plumbing leak",
@@ -426,45 +420,45 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "wall-4b.jpg",
         "ThermogramWithBlowerDoor": "wall-4b.jpg",
-        "Question": "What could cause the void in the insulation visible in this IR image?",
+        "Question": "Use the blower door to evaluate this wall. What is the most likely cause of the cold areas shown in the IR image?",
         "Tip": "",
         "Answers": [
             {
-                "Answer": "A Hole",
-                "Feedback": "Correct! Batt insulation is often not well installed. IR imaging allows us to see voids in the insulation.",
+                "Answer": "Voids in the insulation",
+                "Feedback": "Correct! There is no change when the blower door is running, indicating missing insulation instead of air leakage.",
                 "Correct": true
             },
             {
-                "Answer": "Carpenter Ants",
-                "Feedback": "Incorrect! Batt insulation is often not well installed. IR imaging allows us to see voids in the insulation."
+                "Answer": "Hole in exterior sheathing",
+                "Feedback": "Not quite. Air leakage through a hole was the culprit, you would see a change in the IR image when the blower door was running, as air was pulled through the hole and into the wall."
             },
             {
-                "Answer": "Lady Bugs",
-                "Feedback": "Though ladybugs can infest homes, they are not a threat to insulation. Batt insulation is often not well installed. IR imaging allows us to see voids in the insulation."
+                "Answer": "Moisture in the walls",
+                "Feedback": "Nope. It's a reasonable guess, but moisture often shows up a little splotchier with higher contrast. Try again."
             }
         ]
     },
     {
         "ID": 21,
         "ThermalBypassID": "None",
-        "ThermogramWithoutBlowerDoor": "wall-5b.jpg",
+        "ThermogramWithoutBlowerDoor": "wall-5g.jpg",
         "ThermogramWithBlowerDoor": "wall-5b.jpg",
         "Video": "thermal-bridge-wood-frame.mp4",
-        "Question": "What part of the wall is outlined by these stripes?",
-        "Tip": "Look at the video that simulates the heat flow through a cross section of the wall.",
+        "Question": "Use the blower door to evaluate this wall. What is the most likely cause of the change you see when the blower door is running versus when it isn't running?",
+        "Tip": "Heat loss through conduction, like thermal bridging at wooden studs shown in both IR images, doesn't change when the blower door is running. Convective heat loss, from air movement, generally shows up as a change when you compare IR images with the blower door running versus without.",
         "Answers": [
             {
-                "Answer": "Wall Structure",
-                "Feedback": "Correct! This is a wood framed wall. Wood offers less resistance to heat movement, and is the thermally weak part of the wall. This is called thermal bridging. ",
+                "Answer": "Rodent infestation",
+                "Feedback": "Nope. Rodents do sometimes disturb insulation, but there are other clues on this wall that lead you to the correct answer."
+            },
+            {
+                "Answer": "Extra framing studs",
+                "Feedback": "Nope. Framing studs show up without the blower door running. That's not what causes the change."
+            },
+            {
+                "Answer": "Insulation poorly installed around electrical wiring.",
+                "Feedback": "Correct! Note the outlet, indicating wiring runs through this wall. Insulation is often bunched around wiring, leaving voids, and wiring penetrations left unsealed in the attic provide a pathway for air leakage.",
                 "Correct": true
-            },
-            {
-                "Answer": "Old paint",
-                "Feedback": "Paint has no effect on insulation. This is a wood framed wall. Wood offers less resistance to heat movement, and is the thermally weak part of the wall. This is called thermal bridging. "
-            },
-            {
-                "Answer": "Hidden treasure",
-                "Feedback": "We wish! This is a wood framed wall. Wood offers less resistance to heat movement, and is the thermally weak part of the wall. This is called thermal bridging. "
             }
         ]
     },
@@ -473,21 +467,21 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "wall-5g.jpg",
         "ThermogramWithBlowerDoor": "wall-5g.jpg",
-        "Question": "Does this image indicate air leakage through the wall?",
-        "Tip": "Are the stripes the internal structure of the wall? Do they appear in other IR wall images?",
+        "Question": "What is the name of the phenomenon illustrated by the purple lines in the IR image?",
+        "Tip": "",
         "Answers": [
             {
-                "Answer": "Yes",
-                "Feedback": "Wrong. This is a well sealed wall. The lines indicate thermal bridging at the wood studs."
-            },
-            {
-                "Answer": "No",
-                "Feedback": "Correct. This is a well sealed wall. The lines indicate thermal bridging at the wood studs. ",
+                "Answer": "Thermal bridging",
+                "Feedback": "Correct! The wood framing has a lower resistance to heat transfer, or R-value, than the surrounding walls, causing greater heat transfer along those framing members, which sow up as cold lines on the IR image.",
                 "Correct": true
             },
             {
-                "Answer": "No clue",
-                "Feedback": "This is a well sealed wall. The lings indicate thermal bridging at the wood studs."
+                "Answer": "Convective loops",
+                "Feedback": "Incorrect. Convective loops or any convective heat loss would likely show up as a change in the IR image when you run the blower door. Try again."
+            },
+            {
+                "Answer": "Radiant barriers",
+                "Feedback": "Nope. Try again."
             }
         ]
     },
@@ -496,22 +490,22 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "window-1b.jpg",
         "ThermogramWithBlowerDoor": "window-1b.jpg",
-        "Question": "The purple splotches on the window frame indicate what kind of damage?",
-        "Tip": " Try using the moisture sensor.",
-        "Moisture": 5,
+        "Question": "What is most likely causing the purple splotches on the window trim?",
+        "Tip": "Try using the moisture sensor.",
+        "Moisture": 22,
         "Answers": [
             {
                 "Answer": "Wind",
-                "Feedback": "Not quite. Water may have penetrated the wood frame, causing cooler spots. Further investigation is required."
+                "Feedback": "Not quite. If this was the case, the blower door would make a difference in the IR image. Did you compare images with and without the blower door running?"
             },
             {
                 "Answer": "Water",
-                "Feedback": "Most likely. Water may have penetrated the wood frame, causing cooler spots. Further investigation is required.",
+                "Feedback": "Correct! The splotchiness and high contrast are typical of moisture on IR images. Windows and other penetrations of the building envelope can allow moisture intrusion if not properly flashed and detailed. Further investigation is required.",
                 "Correct": true
             },
             {
                 "Answer": "Sun",
-                "Feedback": "Incorrect. Water may have penetrated the wood frame, causing cooler spots. Further investigation is required."
+                "Feedback": "Incorrect. Sun shining on the outside of a house can and does effect IR images, but this image doesn't look like it's caused by sun. Compare the temperature of the purple splotches to surrounding materials using the temperature scale at the side of the image."
             }
         ]
     },
@@ -525,16 +519,16 @@
         "Answers": [
             {
                 "Answer": "Yes",
-                "Feedback": "Incorrect. The cooler temperature reading of the glass indicates lower resistance to heat movement. The wooden frame offers greater heat resistance."
+                "Feedback": "Incorrect. The cooler temperature reading of the glass indicates lower resistance to heat movement."
             },
             {
                 "Answer": "No",
-                "Feedback": "Correct! The cooler temperature reading of the glass indicates lower resistance to heat movement. The wooden frame offers greater heat resistance.",
+                "Feedback": "Correct! The wooden frame offers greater resistance than the glass.",
                 "Correct": true
             },
             {
                 "Answer": "Not sure",
-                "Feedback": "The cooler temperature reading of the glass indicates lower resistance to heat movement. The wooden frame offers greater heat resistance."
+                "Feedback": "Compare the temperature of the glass to the temperature of the wood frame using the temperature/color scale on the right side of the IR image. In this scenario, the colder area is the worse insulator. Is the glass a better or worse insulator than the wood?"
             }
         ]
     },
@@ -565,23 +559,23 @@
     {
         "ID": 27,
         "ThermalBypassID": "None",
-        "ThermogramWithoutBlowerDoor": "window-4b.jpg",
+        "ThermogramWithoutBlowerDoor": "window-4g.jpg",
         "ThermogramWithBlowerDoor": "window-4b.jpg",
-        "Question": "Would this window be comfortable to sit next to in the winter?",
-        "Tip": "Are there any signs of a leak in the window seal?",
+        "Question": "The home owner mentioned this room gets very cold on cold, windy nights. Based on your evaluation of the area, which of these is the most effective measure the homeowner could install to keep the room warmer?",
+        "Tip": "Compare the area with and without the blower door running. A blower door depressurizing the home to -50 Pascals is equivalent to a 20 mph wind blowing on all sides of the home. It mimics how the home behaves in windy conditions.",
         "Answers": [
             {
-                "Answer": "Yes",
-                "Feedback": "I don't think so! The cold streaks around the frame shows it is not sealed well, allowing cold air into the building."
+                "Answer": "Insulate the walls around this window.",
+                "Feedback": "Incorrect. The walls appear to be well-insulated, so this measure would not be the most effective option."
             },
             {
-                "Answer": "No",
-                "Feedback": "Correct! It would be drafty. The cold streaks around the frame shows it is not sealed well, allowing cold air into the building.",
+                "Answer": "Caulk the window trim.",
+                "Feedback": "Correct! With the blower door running, you can see there is a lot of air leakage around this window.",
                 "Correct": true
             },
             {
-                "Answer": "Don't know",
-                "Feedback": "It would be drafty. The cold streaks around the frame shows it is not sealed well, allowing cold air into the building."
+                "Answer": "Install a tinted window film.",
+                "Feedback": "Incorrect. A tinted window film may help reduce sun-related overheating of the room, but would not address the issue in question."
             }
         ]
     },
@@ -590,44 +584,44 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "window-4g.jpg",
         "ThermogramWithBlowerDoor": "window-4g.jpg",
-        "Question": "Would this window be comfortable to sit next to in the winter?",
-        "Tip": "Are there signs of a leak in the window seal?",
+        "Question": "This window was recently replaced. Did the installers do a good job?",
+        "Tip": "Sometimes installers don't insulate between the framing when replacing windows. This shows up in IR scans if there is adequate temperature difference between inside and outside. Sometimes they don't caulk the trim, which allows air leakage around the window. Can you see evidence of either of these common installation shortfalls?",
         "Answers": [
             {
                 "Answer": "Yes",
-                "Feedback": "Excellent! This door is sealed tightly, and would not be drafty.",
+                "Feedback": "Correct! The window appears to be well sealed, and there are no gaps in the insulation. It looks like the installers did a good job.",
                 "Correct": true
             },
             {
                 "Answer": "No",
-                "Feedback": "Incorrect. This door is sealed tightly, and would not be drafty."
+                "Feedback": "Incorrect. Evaluate the air tightness and the insulation levels. If everything looks good, the installers did a good job."
             },
             {
-                "Answer": "Don't know",
-                "Feedback": "This door is sealed tightly, and would not be drafty."
+                "Answer": "I can't tell",
+                "Feedback": "Incorrect. Use your available tools and what you know about air sealing and insulation to make a judgment call."
             }
         ]
     },
     {
         "ID": 29,
         "ThermalBypassID": "None",
-        "ThermogramWithoutBlowerDoor": "window-5b.jpg",
+        "ThermogramWithoutBlowerDoor": "window-5g.jpg",
         "ThermogramWithBlowerDoor": "window-5b.jpg",
-        "Question": "What would sitting next to this window be like?",
-        "Tip": "Are there signs of a leak in the window seal?",
+        "Question": "The homeowners usually put seating along this wall for sports viewing parties. On a cold night, would it be cozier to sit next to this window or the other window on this wall?",
+        "Tip": "",
         "Answers": [
             {
-                "Answer": "Drafty",
-                "Feedback": "Great! Window frames need to be sealed exactly like windows do so that they do not leak. Sitting near this window would feel uncomfortably drafty!",
+                "Answer": "This window.",
+                "Feedback": "Incorrect. Compare the two windows with and without the blower door running. This one is leaky and would be draftier on a cold night."
+            },
+            {
+                "Answer": "The other window.",
+                "Feedback": "Correct! The other window is better sealed and wouldn't be as drafty as this one.",
                 "Correct": true
             },
             {
-                "Answer": "Comfortable",
-                "Feedback": "You must like the cold! Window frames need to be sealed exactly like windows do so that they do not leak. Sitting near this window would feel uncomfortably drafty!"
-            },
-            {
-                "Answer": "No idea",
-                "Feedback": "Window frames need to be sealed exactly like windows do so that they do not leak. Sitting near this window would feel uncomfortably drafty!"
+                "Answer": "No difference.",
+                "Feedback": "Incorrect. Try running the blower door and looking at each window to see the difference."
             }
         ]
     },
@@ -636,67 +630,182 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "window-5g.jpg",
         "ThermogramWithBlowerDoor": "window-5g.jpg",
-        "Question": "What would sitting next to this window be like?",
-        "Tip": "Is the temperature around the window frame similar to that of the surrounding room?",
+        "Question": "Is there an air sealing opportunity around this window?",
+        "Tip": "",
         "Answers": [
             {
-                "Answer": "Drafty",
-                "Feedback": "Nope! This window is properly sealed, and keeps the area around it consistent with the rest of the room. It would be very comfortable to sit by."
+                "Answer": "Yes",
+                "Feedback": "Incorrect. Try again."
             },
             {
-                "Answer": "Comfortable",
-                "Feedback": "Correct! This window is properly sealed, and keeps the area around it consistent with the rest of the room. It would be very comfortable to sit by.",
+                "Answer": "No",
+                "Feedback": "Correct. Even with the blower door running, there is no sign of air leakage here.",
                 "Correct": true
             },
             {
-                "Answer": "No idea",
-                "Feedback": " This window is properly sealed, and keeps the area around it consistent with the rest of the room. It would be very comfortable to sit by."
+                "Answer": "I can't tell",
+                "Feedback": "Incorrect. Try again. Compare the IR image with and without the blower door running."
             }
         ]
     },
     {
-        "ID": 31,
+        "ID": 33,
         "ThermalBypassID": "None",
-        "ThermogramWithoutBlowerDoor": "light-good.png",
-        "ThermogramWithBlowerDoor": "light-good.png",
-        "Question": "What did the builder do wrong?",
+        "ThermogramWithoutBlowerDoor": "baseboard-1g.jpg",
+        "ThermogramWithBlowerDoor": "baseboard-1g.jpg",
+        "Question": "This wall was meant to be dense-packed with cellulose insulation. Run the blower door to evaluate the insulation. Is it dense-packed?",
+        "Tip": "Properly installed dense-pack insulation can reduce air leakage by over 50%.",
+        "Answers": [
+            {
+                "Answer": "Yes",
+                "Feedback": "Correct! Properly installed dense-packed cellulose insulation hinders airflow through the wall, so you see no change in the IR image, even with the blower door running.",
+                "Correct": true
+            },
+            {
+                "Answer": "No",
+                "Feedback": "Incorrect."
+            },
+            {
+                "Answer": "I can't tell",
+                "Feedback": "Compare the IR images with and without the blower door running. If there is any change indicating air movement, the insulation wasn't installed densely enough to stop air movement."
+            }
+        ]
+    },
+    {
+        "ID": 34,
+        "ThermalBypassID": "None",
+        "ThermogramWithoutBlowerDoor": "wall-2b.jpg",
+        "ThermogramWithBlowerDoor": "wall-2b.jpg",
+        "Question": "This wall is insulated with batts. Homeowners said they've heard scrabbling noises in the area, and the wall seems cold. Based on your evaluation of the area, what is most likely the cause?",
         "Tip": "",
         "Answers": [
             {
-                "Answer": "Forgot to air seal the recessed",
-                "Feedback": "Wrong"
+                "Answer": "Rodents have been taking the insulation away to create pathways or a nest somewhere else.",
+                "Feedback": "Correct! Given that the lower insulation is missing, it's most likely that pests are to blame. Further investigation is required.",            
+                "Correct": true
             },
             {
-                "Answer": "Forgot to air seal the attic correctly",
-                "Feedback": "Wrong"
+                "Answer": "Poor insulation installation.",
+                "Feedback": "Not likely. Poor batt insulation installation usually shows up more as bunched up or compressed insulation areas, blotchy cold spots on the wall. This is something else."
             },
             {
-                "Answer": "Nothing is wrong",
-                "Feedback": "Correct",
+                "Answer": "Water leakage through the window trim when it rains.",
+                "Feedback": "Not likely. If water was leaking through the window trim, it would usually show up cold closer to the leaky trim, or show a settling pattern as it seeped down the wall. Try again."
+            }
+        ]
+    },
+    {
+        "ID": 35,
+        "ThermalBypassID": "None",
+        "ThermogramWithoutBlowerDoor": "wall-2g.jpg",
+        "ThermogramWithBlowerDoor": "wall-2g.jpg",
+        "Question": "Is the wall a better or a worse insulator than the window above?",
+        "Tip": "",
+        "Answers": [
+            {
+                "Answer": "Better",
+                "Feedback": "Correct! You can tell by the temperature readings of the wall and window that the wall stays warmer during cold weather.",
+                "Correct": true
+            },
+            {
+                "Answer": "Worse",
+                "Feedback": "Incorrect. Check the temperature readings on the IR images for the window and the wall and try again."
+            },
+            {
+                "Answer": "I can't tell",
+                "Feedback": "Incorrect. Check the temperature readings on the IR images for the window and the wall and try again. You have enough information to make an informed decision."
+            }
+        ]
+    },
+    {
+        "ID": 36,
+        "ThermalBypassID": "None",
+        "ThermogramWithoutBlowerDoor": "window-1g.jpg",
+        "ThermogramWithBlowerDoor": "window-1g.jpg",
+        "Question": "This wall was meant to be dense-packed with insulation. Installers often miss the areas above windows. Does the wall above the window appear to be well insulated?",
+        "Tip": "",
+        "Answers": [
+            {
+                "Answer": "Yes",
+                "Feedback": "Correct! There appear to be no gaps or voids in the insulation about the window.",
+                "Correct": true
+            },
+            {
+                "Answer": "No",
+                "Feedback": "Incorrect. If they had missed this area, the empty bays would show up as colder than the surrounding wall, even without the blower door running."
+            },
+            {
+                "Answer": "Not sure",
+                "Feedback": "If the installers had missed this area, the bays would show up as colder than the surrounding area. Evaluate the area and try again."
+            }
+        ]
+    },
+    {
+        "ID": 37,
+        "ThermalBypassID": "None",
+        "ThermogramWithoutBlowerDoor": "window-2g.jpg",
+        "ThermogramWithBlowerDoor": "window-2b.jpg",
+        "Question": "Evaluating the IR images of this area reveal a couple problems. One is air leakage around the window trim. What is another?",
+        "Tip": "Run the blower door and see if the image changes. What does that tell you?",
+        "Answers": [
+            {
+                "Answer": "Water leaks around window trim",
+                "Feedback": "Nope. There may be water leaks, but none are evident in the IR images. Look again."
+            },
+            {
+                "Answer": "Missing ceiling insulation",
+                "Feedback": "Incorrect. Missing insulation would show up as cold spots even without the blower door running. Try again."
+            },
+            {
+                "Answer": "Air leakage at the wall/roof juncture",
+                "Feedback": "Correct! Check the area from the outside. Roofs like this, also common over porches, are often problem sites.",
                 "Correct": true
             }
         ]
     },
     {
-        "ID": 32,
+        "ID": 38,
         "ThermalBypassID": "None",
-        "ThermogramWithoutBlowerDoor": "light-bad.png",
-        "ThermogramWithBlowerDoor": "light-bad.png",
-        "Question": "What did the builder do wrong?",
-        "Tip": "",
+        "ThermogramWithoutBlowerDoor": "window-1g.jpg",
+        "ThermogramWithBlowerDoor": "window-1g.jpg",
+        "Question": "What is the temperature difference between the very coldest and the very warmest item shown in this image? (Round to the nearest whole number.)",
+        "Tip": "Look at the temperature/color scale on the right side of the image.",
         "Answers": [
             {
-                "Answer": "Forgot to air seal the recessed",
-                "Feedback": "Correct",
+                "Answer": "10 degrees F",
+                "Feedback": "Incorrect."
+            },
+            {
+                "Answer": "20 degrees F",
+                "Feedback": "Correct!",
                 "Correct": true
             },
             {
-                "Answer": "Forgot to air seal the attic correctly",
-                "Feedback": "Wrong"
+                "Answer": "30 degrees F",
+                "Feedback": "Incorrect."
+            }
+        ]
+    },
+    {
+        "ID": 39,
+        "ThermalBypassID": "None",
+        "ThermogramWithoutBlowerDoor": "window-1g.jpg",
+        "ThermogramWithBlowerDoor": "window-1g.jpg",
+        "Question": "What is likely causing this watercolor effect at the wall/ceiling juncture?",
+        "Tip": "Paying attention to where you are in the home helps put your observations into context and results in better overall evaluations.",
+        "Answers": [
+            {
+                "Answer": "Air leakage",
+                "Feedback": "Correct! If this house has vented soffits, those cold areas could be evidence of \"wind washing\", when cold air blows through fiberglass or other susceptible insulation.",
+                "Correct": true
             },
             {
-                "Answer": "Nothing is wrong",
-                "Feedback": "Wrong"
+                "Answer": "Thermal bridging",
+                "Feedback": "Incorrect. Try again."
+            },
+            {
+                "Answer": "Plumbing leak",
+                "Feedback": "Incorrect. Review the floor plan, there are no plumbing pipes in the area so a plumbing leak is highly unlikely."
             }
         ]
     }
