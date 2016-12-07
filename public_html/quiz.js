@@ -142,19 +142,25 @@ function updateQuiz() {
                     if (tutorialMode)
                         tutorialStep(9);
                 });
+                $("<br/>").appendTo("#answers");
             }
             $("#hint").text("");
             updateVideo(selectedQuizData.Video);
-            $("#hintButton").off("click");
-            $("#hintButton").click(selectedQuizData, function (e) {
-                if ($("#hint").text() === "") {
-                    $("#hint").text(e.data.Tip);
-                    showVideo();
-                } else {
-                    $("#hint").text("");
-                    $("#video").hide();
-                }
-            });
+            if (selectedQuizData.Tip === "" && !selectedQuizData.Video)
+                $("#hintButton").hide();
+            else {
+                $("#hintButton").show();
+                $("#hintButton").off("click");
+                $("#hintButton").click(selectedQuizData, function (e) {
+                    if ($("#hint").text() === "") {
+                        $("#hint").text(e.data.Tip);
+                        showVideo();
+                    } else {
+                        $("#hint").text("");
+                        $("#video").hide();
+                    }
+                });
+            }
             var filename;
             if (blowdoorMode)
                 filename = selectedQuizData.ThermogramWithBlowerDoor;
@@ -215,7 +221,7 @@ function initHotspots() {
     var geom = new THREE.SphereGeometry(0.1, 20, 20);
     // Windows
     initHotspotSingle(24, 4.4, 2.35, 4.2, geom, whiteMaterial);
-    initHotspotSingle(23, 6.45, 2.35, 4.2, geom, whiteMaterial);    
+    initHotspotSingle(23, 6.45, 2.35, 4.2, geom, whiteMaterial);
     initHotspotSingle(30, 10.9, 0.9, 4.2, geom, whiteMaterial);
 //    initHotspotSingle("window-2b", 12.57, 2.5, 4.2, geom, whiteMaterial);
     initHotspotSingle(29, 13, 0.9, 4.2, geom, whiteMaterial);
@@ -243,7 +249,7 @@ function initHotspots() {
     initHotspotSingle(35, 4.4, 0.6, 4.2, geom, whiteMaterial);
     initHotspotSingle(15, 6.45, 0.6, 4.2, geom, whiteMaterial);
     initHotspotSingle(16, 10.53, 0.6, 4.2, geom, whiteMaterial);
-    initHotspotSingle(34, 8.97, 3.7, -5.4, geom, whiteMaterial);    
+    initHotspotSingle(34, 8.97, 3.7, -5.4, geom, whiteMaterial);
     initHotspotSingle(17, 13, 3, -0.1, geom, whiteMaterial);
 //    initHotspotSingle("wall-4g", 13, 4, 0.5, geom, whiteMaterial);
     initHotspotSingle(19, 13.85, 4, -4, geom, whiteMaterial);
