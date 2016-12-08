@@ -32,12 +32,12 @@
         "Answers": [
             {
                 "Answer": "Yes",
-                "Feedback": "Incorrect. Leaks would be revealed by purple feathering around the leakage sites when the blower door is running.",
-                "Correct": true
+                "Feedback": "Incorrect. Leaks would be revealed by purple feathering around the leakage sites when the blower door is running."
             },
             {
                 "Answer": "No",
-                "Feedback": "Correct! The window is sealed well."
+                "Feedback": "Correct! The window is sealed well.",
+                "Correct": true
             },
             {
                 "Answer": "I can't tell",
