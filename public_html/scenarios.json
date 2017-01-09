@@ -472,7 +472,7 @@
         "Answers": [
             {
                 "Answer": "Thermal bridging",
-                "Feedback": "Correct! The wood framing has a lower resistance to heat transfer, or R-value, than the surrounding walls, causing greater heat transfer along those framing members, which sow up as cold lines on the IR image.",
+                "Feedback": "Correct! The wood framing has a lower resistance to heat transfer, or R-value, than the surrounding walls, causing greater heat transfer along those framing members, which show up as cold lines on the IR image.",
                 "Correct": true
             },
             {
@@ -727,7 +727,7 @@
         "Answers": [
             {
                 "Answer": "Yes",
-                "Feedback": "Correct! There appear to be no gaps or voids in the insulation about the window.",
+                "Feedback": "Correct! There appear to be no gaps or voids in the insulation above the window.",
                 "Correct": true
             },
             {
@@ -745,7 +745,7 @@
         "ThermalBypassID": "None",
         "ThermogramWithoutBlowerDoor": "window-2g.jpg",
         "ThermogramWithBlowerDoor": "window-2b.jpg",
-        "Question": "Evaluating the IR images of this area reveal a couple problems. One is air leakage around the window trim. What is another?",
+        "Question": "Evaluating the IR images of this area reveals a couple problems. One is air leakage around the window trim. What is another?",
         "Tip": "Run the blower door and see if the image changes. What does that tell you?",
         "Answers": [
             {
@@ -808,5 +808,51 @@
                 "Feedback": "Incorrect. Review the floor plan, there are no plumbing pipes in the area so a plumbing leak is highly unlikely."
             }
         ]
-    }
+    },
+    {
+        "ID": 40,
+        "ThermalBypassID": "None",
+        "ThermogramWithoutBlowerDoor": "baseboard-1g.jpg",
+        "ThermogramWithBlowerDoor": "baseboard-1b.jpg",
+        "Question": "Would it be comfortable to walk barefoot on this floor in the winter?",
+        "Tip": "Running the blower door shows you how the walls and floors respond to windy weather. Can you see any clues through the IR camera when you have the blower door running? What would this area be like on a cold, windy winter night?",
+        "Answers": [
+            {
+                "Answer": "Yes",
+                "Feedback": "Incorrect. You must like having cold toes! This floor would be very cold to walk on."
+            },
+            {
+                "Answer": "No",
+                "Feedback": "Correct! Time to break out the bunny slippers and fuzzy socks.",
+                "Correct": true
+            },
+            {
+                "Answer": "I can't tell",
+                "Feedback": "Use your diagnostic tools to see if you can figure it out."
+            }
+        ]
+    },
+    {
+        "ID": 41,
+        "ThermalBypassID": "None",
+        "ThermogramWithoutBlowerDoor": "window-1g.jpg",
+        "ThermogramWithBlowerDoor": "window-1g.jpg",
+        "Question": "Note the yellow stripes on the ceiling indicating the framing members. Based on the temperatures of the materials, are the ceiling framing members increasing or decreasing the overall R-value of the attic?",
+        "Tip": "",
+        "Answers": [
+            {
+                "Answer": "Increasing",
+                "Feedback": "Correct! In this scenario, it is warmer inside than outside. The framing members are warmer than the surrounding ceiling, indicating that they are resisting heat transfer (have a higher R-value) than the surrounding ceiling. Wood has an R-value of about R-1 per inch. This attic must not be very well insulated!",
+                "Correct": true
+            },
+            {
+                "Answer": "Decreasing",
+                "Feedback": "Incorrect. Remember, this house is warmer inside than it is outside, so cooler areas are showing greater heat loss to the outdoors or the attic. Try again."
+            },
+            {
+                "Answer": "Not sure",
+                "Feedback": "In this scenario, where it's colder outside than inside, cooler areas indicate lower resistance to heat transfer. Warmer areas indicate better R-value, and so would add to the overall R-value. Look at the temperatures and try again."
+            }
+        ]
+    }    
 ]

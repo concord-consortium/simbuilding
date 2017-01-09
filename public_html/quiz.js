@@ -231,14 +231,14 @@ function initHotspots() {
     initHotspotSingle(27, 10.53, 5.3, 4.2, geom, whiteMaterial);
     initHotspotSingle(39, 12.57, 5.3, 4.2, geom, whiteMaterial);
     initHotspotSingle(36, 12.57, 2.35, -5.5, geom, whiteMaterial);
-    initHotspotSingle(24, 12.57, 5.3, -5.5, geom, whiteMaterial);
+    initHotspotSingle(41, 12.57, 5.3, -5.5, geom, whiteMaterial);
     initHotspotSingle(37, 6.1, 2.7, -6.7, geom, whiteMaterial);
     initHotspotSingle(38, 8.97, 5.3, -5.5, geom, whiteMaterial);
     // Baseboard
     initHotspotSingle(5, 3.15, 0.4, 3.5, geom, whiteMaterial);
     initHotspotSingle(6, 3.7, 0.4, -0.19, geom, whiteMaterial);
     initHotspotSingle(33, 13.85, 0.4, 0.5, geom, whiteMaterial);
-    initHotspotSingle(5, 13.85, 0.4, -4.7, geom, whiteMaterial);
+    initHotspotSingle(40, 13.85, 0.4, -4.7, geom, whiteMaterial);
     initHotspotSingle(5, 13.85, 3.45, 0, geom, whiteMaterial);
 //    initHotspotSingle(6, 13, 0.4, -0.3, geom, whiteMaterial);
 //    initHotspotSingle(6, 3.15, 3.45, 3.5, geom, whiteMaterial);
