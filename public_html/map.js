@@ -5,15 +5,15 @@ function toggleMap() {
 }
 
 function switchMapFloor(floor) {
+    $("#mapDownstairs").hide();
+    $("#mapUpstairs").hide();
+    $("#mapAttic").hide();
     if (floor === 1) {
-        $("#mapUpstairs").hide();
         $("#mapDownstairs").show();
     } else if (floor === 2) {
-        $("#mapDownstairs").hide();
         $("#mapUpstairs").show();
     } else if (floor === 3) {
-        $("#mapUpstairs").hide();
-        $("#mapDownstairs").hide();
+        $("#mapAttic").show();
         localStorage.floor = floor;
         houseModel.visible = false;
         atticModel.visible = true;
@@ -23,15 +23,20 @@ function switchMapFloor(floor) {
 }
 
 function updateMapGPS() {
-    if (localStorage.floor === "3")
-        return;
     var p = camControl.getObject().position;
     var secondFloor = p.y > 4;
     var w = $("#GPS").parent().width();
     var h = $("#GPS").parent().height();
     var left = (3 + p.x) / 17.5 * w;
     var top;
-    if (secondFloor) {
+    if (localStorage.floor === "3") {
+        if (!$("#atticRadio").prop("checked")) {
+            $("#atticRadio").prop("checked", true);
+            switchMapFloor(3);
+        }
+        left = (5.6 + p.x) / 11.3 * w;
+        top = h - (3.2 - p.z) / 6 * h;
+    } else if (secondFloor) {
         $("#upstairsRadio").prop("checked", true);
         switchMapFloor(2);
         top = h - (5 - p.z) / 11 * h;

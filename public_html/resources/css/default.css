@@ -401,6 +401,14 @@ progress[value]::-moz-progress-bar {
     width: 100%;
 }
 
+#mapAttic {
+    display: none;
+    background-image: url("../images/map3.png");
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+
 #GPS {
     position: absolute;
     width: 10px;
