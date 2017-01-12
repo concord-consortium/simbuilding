@@ -2,6 +2,7 @@
 
 function toggleMap() {
     $("#map").fadeToggle();
+    tutorialStep(10);
 }
 
 function switchMapFloor(floor) {
@@ -14,11 +15,6 @@ function switchMapFloor(floor) {
         $("#mapUpstairs").show();
     } else if (floor === 3) {
         $("#mapAttic").show();
-        localStorage.floor = floor;
-        houseModel.visible = false;
-        atticModel.visible = true;
-        camControl.resetAtticView();        
-        doRender = true;
     }
 }
 
@@ -55,24 +51,34 @@ function updateMapGPS() {
 }
 
 function moveToRoom(roomId) {
-    atticModel.visible = false;
-    houseModel.visible = true;
+    var isAttic = $("#atticRadio").is(':checked');
+    atticModel.visible = isAttic;
+    houseModel.visible = !isAttic;
     var linkA = $("#" + roomId);
     var left = linkA.position().left;
     var top = linkA.position().top;
     var w = $("#GPS").parent().width();
     var h = $("#GPS").parent().height();
-    var x = left * 17.5 / w - 3;
+    var x;
     var y;
     var secondFloor = $("#upstairsRadio").is(':checked');
-    if (secondFloor) {
-        y = -((h - top) * 11 / h - 5);
-        localStorage.floor = "2";
+    if (isAttic) {
+        x = left * 11.3 / w - 5.6;
+        y = -((h - top) * 6 / h - 3.2);
+        localStorage.floor = "3";
     } else {
-        y = -((h - top) * 11 / h - 4);
-        localStorage.floor = "1";
+        x = left * 17.5 / w - 3;
+        if (secondFloor) {
+            y = -((h - top) * 11 / h - 5);
+            localStorage.floor = "2";
+        } else {
+            y = -((h - top) * 11 / h - 4);
+            localStorage.floor = "1";
+        }
     }
     camControl.getObject().position.set(x, secondFloor ? 5 : 1, y);
+    camControl.getObject().rotation.y = -Math.PI / 2.0;
+    
     updateMapGPS();
     doRender = true;
 }

@@ -11,7 +11,11 @@ var tutorial = [
     "There is a red toolbox on the lower right corner of your screen. Click on it to open.",
     "There are 3 tools available to you. To learn more about them, hover your mouse over each of them and read their description.",
     "Select IR Camera tool by clicking on it. When IR Camera is on, you can see HotSpots on various parts of the house such as walls and windows. Find one such HotSpot and point the camera to it.",
-    "You can now see the IR image of this part of the house on the IR Camera screen. On left side you see a question along with 3 possible answers. If you are not sure about the answer, click on the Hint button for additional information. When you're ready, click on an answer. If you're correct, the score will increase by one. Otherwise the score will be reduced."
+    "You can now see the IR image of this part of the house on the IR Camera screen. On left side you see a question along with 3 possible answers. If you are not sure about the answer, click on the Hint button for additional information. When you're ready, click on an answer. If you're correct, the score will increase by one. Otherwise the score will be reduced.",
+    "To see where you are, you can use the map. The red dot on the map indicates your current position. To open the map, click on the map button located on the right side of the screen.",
+    "You can jump to another room by clicking on the room name on the map. Click on Kitchen to jump to it now.",
+    "You can switch to another floor by clicking Upstairs or Attic. Click on Upstairs now.",
+    "Now that the Upstairs floormap is displayed you can jump to one of its rooms by clicking on the name of that room. Click on Master Bedroom now."
 ];
 
 function startTutorial() {

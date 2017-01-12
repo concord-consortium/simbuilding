@@ -467,3 +467,13 @@ progress[value]::-moz-progress-bar {
     left: 54%;
     top: 70%;
 }
+
+#atticEntrance {
+    left: 92%;
+    top: 15%;
+}
+
+#atticMainHull {
+    left: 32%;
+    top: 47%;
+}
