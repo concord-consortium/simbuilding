@@ -40,6 +40,7 @@ function resetQuiz() {
     camControl.reset();
     initQuiz();
     updateFound();
+    updateScore();
     updateQuiz();
 }
 

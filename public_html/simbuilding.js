@@ -531,11 +531,11 @@ function toggleTool(tool) {
 
         irMode = false;
 
-        if (selectedTool !== tool) {
+        if (selectedTool === tool)
+            selectedTool = -1;
+        else {
             selectedTool = tool;
-
             var opacityOff = 0.3;
-
             if (tool === 0) {
                 $("#tool-ircamera").fadeIn();
                 $("#tool-ircamera-small").animate({opacity: opacityOff});
